@@ -37,9 +37,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .topbar h2{font-size:24px;font-weight:700}
 .topbar .meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .topbar .date-range{padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff}
-.topbar .health-badge{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600}
-.topbar .health-badge.good{background:#E8F8F0;color:var(--green)}
-.topbar .health-badge.warn{background:#FEF5E7;color:var(--orange)}
+.topbar .client-badge{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;background:#EBF5FB;color:var(--accent)}
 .btn-primary{background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
 .btn-outline{background:#fff;color:var(--accent);border:1px solid var(--accent);padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
 .btn-admin{background:var(--adm-acc);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
@@ -219,7 +217,7 @@ table tr:last-child td{border-bottom:none}
 // ============ DATA ============
 const CLIENTS = {
   b2c: {
-    name:"GlowUp Beauty",type:"B2C Startup",package:"$5,000/mo",healthScore:87,billing:"direct",lastUpdated:"Feb 28, 2026 · 3:45 PM",
+    name:"GlowUp Beauty",type:"B2C Startup",package:"$5,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 3:45 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: “Morning routine reveal” video",detail:"TikTok, Reels, Shorts — 142K views, 8.2% engagement.",date:"Feb 24"},
@@ -282,7 +280,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"}]},
   },
   b2b: {
-    name:"DataForge AI",type:"B2B Startup",package:"$3,000/mo",healthScore:82,billing:"direct",lastUpdated:"Feb 28, 2026 · 2:15 PM",
+    name:"DataForge AI",type:"B2B Startup",package:"$3,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 2:15 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: ETL post went viral",detail:"12.4K impressions, 7.2% eng, 47 ICP comments.",date:"Feb 23"},
@@ -334,19 +332,217 @@ const CLIENTS = {
     ],
     bwTeam:{owner:{name:"Anita Mehta",role:"Account Owner"},viewers:[{name:"Raj Kumar",role:"Video Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"},{name:"Vikram Patel",role:"Ads Lead"}]},
   },
+  freshbowl: {
+    name:"FreshBowl",type:"B2C Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 4:10 PM",
+    briefing:{weekOf:"Feb 22 – 28, 2026",
+      completed:[
+        {icon:"🎬",type:"done",title:"Published: 'Meal prep in 10 min' video",detail:"TikTok, Reels — 89K views, 6.8% engagement.",date:"Feb 25"},
+        {icon:"✍️",type:"done",title:"Published: 'Best Meal Kits 2026' blog",detail:"Ranking #5 — 1,600 monthly visits.",date:"Feb 22"},
+        {icon:"💰",type:"done",title:"Launched healthy eating ad campaign",detail:"Meta + Google — 4.1x ROAS after 4 days.",date:"Feb 24"},
+        {icon:"⭐",type:"done",title:"@healthyeats posted sponsored reel",detail:"95K followers. 42K views, 5.1% eng.",date:"Feb 23"},
+      ],
+      inProgress:[
+        {icon:"🎬",type:"progress",title:"Editing: Behind the kitchen video",detail:"Chef interview + plating shots. Review Friday.",date:"Due Feb 28"},
+        {icon:"🔍",type:"progress",title:"SEO: meal prep keywords optimization",detail:"Targeting 'easy meal prep' cluster. Building links.",date:"In progress"},
+      ],
+      needsYou:[{icon:"⚠️",type:"review",title:"New menu photos need approval",detail:"12 product shots for spring menu refresh.",date:"Waiting 2d"}],
+    },
+    content:{
+      videos:[
+        {title:"Meal prep in 10 min",status:"Published",platform:"TikTok, Reels",result:"89K views",date:"Feb 25"},
+        {title:"Chef's secret sauce reveal",status:"Published",platform:"TikTok, Shorts",result:"62K views",date:"Feb 18"},
+        {title:"Behind the kitchen",status:"In Editing",platform:"All",result:"Review Fri",date:"Feb 28"},
+        {title:"Customer taste test challenge",status:"Scripting",platform:"TikTok, Reels",result:"—",date:"Mar 5"},
+        {title:"Healthy vs. fast food comparison",status:"Published",platform:"All",result:"104K views",date:"Feb 11"},
+        {title:"Unboxing our meal kit",status:"Published",platform:"Reels, TikTok",result:"55K views",date:"Feb 4"},
+      ],
+      blogs:[
+        {title:"Best Meal Kits 2026",status:"Published",result:"1,600/mo",keyword:"best meal kits 2026"},
+        {title:"Meal Prep for Beginners",status:"Published",result:"2,400/mo",keyword:"easy meal prep ideas"},
+        {title:"Healthy Eating on a Budget",status:"Published",result:"1,100/mo",keyword:"healthy eating budget"},
+        {title:"Spring Menu Preview",status:"Needs Approval",result:"Target: 1,800/mo",keyword:"healthy spring recipes"},
+      ],
+      summary:{videosDelivered:"6 of 6",blogsDelivered:"3 of 4",socialPosts:"44 across 5 platforms",influencerPosts:"3 from 1 influencer"},
+    },
+    impact:{
+      kpis:[{label:"Total Reach",value:"1.8M",change:"+21%",context:"All platforms"},{label:"Leads",value:"2,340",change:"+19%",context:"Orders + signups"},{label:"Ad ROAS",value:"4.1x",change:"+0.3x",context:"$1 → $4.10"},{label:"Organic Traffic",value:"8,600",change:"+16%",context:"Free Google visitors"}],
+      channels:[{name:"Instagram",metric:"18.2K",growth:"+1,100",engagement:"5.1%"},{name:"TikTok",metric:"12.8K",growth:"+980",engagement:"6.8%"},{name:"Google SEO",metric:"8,600 visits",growth:"+16%",engagement:"6 top-10"},{name:"Paid Ads",metric:"$6,200",growth:"4.1x ROAS",engagement:"$14.20 CPA"}],
+      topWins:[{content:"Meal prep video (TikTok)",metric:"89K views",impact:"6.8% eng — drove 340 orders"},{content:"Healthy eating ad",metric:"4.1x ROAS",impact:"Best performing campaign"},{content:"Meal kits blog (SEO)",metric:"#5 Google",impact:"1,600 free visits/mo"}],
+      adBreakdown:[{campaign:"Healthy Eating",platform:"Meta",spend:"$2,800",roas:"4.3x",cpa:"$13.80",status:"Active"},{campaign:"Meal Kit Search",platform:"Google",spend:"$2,200",roas:"3.9x",cpa:"$15.60",status:"Active"},{campaign:"Retargeting",platform:"Meta",spend:"$1,200",roas:"4.6x",cpa:"$11.20",status:"Active"}],
+      reachTrend:[320,520,780,1100,1500,1800],leadsTrend:[480,720,1100,1500,1960,2340],
+    },
+    whatsNext:{
+      planned:[{icon:"🎬",title:"2 videos in production",detail:"Kitchen BTS (Feb 28), Taste test (Mar 5)."},{icon:"✍️",title:"Spring menu blog pending",detail:"Needs photo approval first."},{icon:"💰",title:"Scale healthy eating ads",detail:"4.1x ROAS — increase budget 20%."}],
+      recommendations:[{title:"Launch TikTok Shop integration",reason:"89K views on meal prep — direct purchase link could 2x conversions."},{title:"Start a 'What I Eat in a Day' series",reason:"Trending format. 3 creators per month."}],
+    },
+    account:{admin:"Marcus Johnson",email:"marcus@freshbowl.com",team:[{name:"Marcus Johnson",email:"marcus@freshbowl.com",role:"Admin",status:"Active"}]},
+    comments:{content:[{avatar:"client",name:"Marcus J.",time:"Feb 26, 9 AM",text:"Love the meal prep video numbers!"},{avatar:"team",name:"Raj K.",time:"Feb 26, 10 AM",text:"Next one films Thursday."}]},
+    invoices:[
+      {id:"INV-FB-006",date:"Feb 1, 2026",amount:"$5,000",status:"Paid",paidDate:"Feb 4, 2026"},
+      {id:"INV-FB-005",date:"Jan 1, 2026",amount:"$5,000",status:"Paid",paidDate:"Jan 3, 2026"},
+      {id:"INV-FB-004",date:"Dec 1, 2025",amount:"$5,000",status:"Paid",paidDate:"Dec 4, 2025"},
+    ],
+    bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"}]},
+  },
+  novapay: {
+    name:"NovaPay",type:"B2B Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 1:30 PM",
+    briefing:{weekOf:"Feb 22 – 28, 2026",
+      completed:[
+        {icon:"📎",type:"done",title:"LinkedIn: Fintech regulation post",detail:"8.2K impressions, 5.8% engagement, 28 ICP comments.",date:"Feb 24"},
+        {icon:"🎬",type:"done",title:"Published: NovaPay platform demo",detail:"LinkedIn + YouTube — 1.8K views.",date:"Feb 21"},
+        {icon:"💰",type:"done",title:"Google Ads: payment API keywords",detail:"3.2x ROAS, $52 CPA.",date:"Feb 23"},
+      ],
+      inProgress:[
+        {icon:"📎",type:"progress",title:"Drafting compliance thought-leadership post",detail:"PCI DSS changes for 2026. Due Monday.",date:"Due Mar 3"},
+        {icon:"🔍",type:"progress",title:"SEO recovery plan for traffic dip",detail:"Traffic -8%. Auditing backlink profile.",date:"In progress"},
+      ],
+      needsYou:[{icon:"⚠️",type:"review",title:"Case study draft needs client quotes",detail:"Enterprise client success story. Need 2 quotes.",date:"Waiting 4d"}],
+    },
+    content:{
+      videos:[
+        {title:"NovaPay platform demo",status:"Published",platform:"LinkedIn, YouTube",result:"1.8K views",date:"Feb 21"},
+        {title:"Founder: Future of payments",status:"Published",platform:"LinkedIn",result:"1.2K views",date:"Feb 10"},
+      ],
+      blogs:[
+        {title:"Payment API Comparison 2026",status:"Published",result:"980/mo",keyword:"payment api comparison"},
+        {title:"PCI DSS Compliance Guide",status:"Published",result:"720/mo",keyword:"pci dss compliance"},
+        {title:"Embedded Payments Explained",status:"Published",result:"540/mo",keyword:"embedded payments"},
+        {title:"Enterprise Case Study",status:"Needs Review",result:"Target: 800/mo",keyword:"payment processing enterprise"},
+      ],
+      summary:{videosDelivered:"2 of 2",blogsDelivered:"3 of 4",socialPosts:"28 (20 LI, 6 X, 2 YT)",influencerPosts:"N/A"},
+    },
+    impact:{
+      kpis:[{label:"Total Reach",value:"180K",change:"+14%",context:"LI, X, YT, Google"},{label:"Qualified Leads",value:"89",change:"+11%",context:"Demos + forms"},{label:"Ad ROAS",value:"3.2x",change:"-0.2x",context:"Below 3.5x target"},{label:"Organic Traffic",value:"3,200",change:"-8%",context:"SEO traffic dip"}],
+      channels:[{name:"LinkedIn",metric:"2.8K",growth:"+220",engagement:"4.6%"},{name:"Google SEO",metric:"3,200 visits",growth:"-8%",engagement:"4 top-10"},{name:"Paid Ads",metric:"$3,800",growth:"3.2x ROAS",engagement:"$52 CPA"}],
+      topWins:[{content:"Fintech regulation post (LI)",metric:"8.2K imp",impact:"5.8% eng, 28 ICP comments"},{content:"Payment API blog (SEO)",metric:"#7 Google",impact:"980 free visits/mo"},{content:"Platform demo (YouTube)",metric:"1.8K views",impact:"12 demo requests"}],
+      adBreakdown:[{campaign:"Payment API",platform:"Google",spend:"$2,000",roas:"3.4x",cpa:"$48",status:"Active"},{campaign:"Fintech ICP",platform:"LinkedIn",spend:"$1,200",roas:"2.8x",cpa:"$62",status:"Active"},{campaign:"Retargeting",platform:"LinkedIn",spend:"$600",roas:"3.6x",cpa:"$38",status:"Active"}],
+      reachTrend:[60,80,100,130,158,180],leadsTrend:[18,30,42,58,80,89],
+    },
+    whatsNext:{
+      planned:[{icon:"📎",title:"Compliance thought-leadership post",detail:"PCI DSS changes. Ghostwritten for founder."},{icon:"🔍",title:"SEO recovery audit",detail:"Identify lost backlinks. Rebuild link profile."},{icon:"✍️",title:"Enterprise case study",detail:"Pending client quotes."}],
+      recommendations:[{title:"Increase retargeting budget",reason:"3.6x ROAS on retargeting vs. 2.8x on broad. Shift $400."},{title:"Launch webinar series",reason:"Fintech compliance webinar could drive 30+ qualified leads."}],
+    },
+    account:{admin:"David Park",email:"david@novapay.io",team:[{name:"David Park",email:"david@novapay.io",role:"Admin",status:"Active"}]},
+    comments:{content:[{avatar:"client",name:"David P.",time:"Feb 22, 3 PM",text:"SEO traffic drop is concerning."},{avatar:"team",name:"Deepa L.",time:"Feb 22, 4 PM",text:"Running full audit. Update by Monday."}]},
+    invoices:[
+      {id:"INV-NP-006",date:"Feb 1, 2026",amount:"$3,000",status:"Paid",paidDate:"Feb 3, 2026"},
+      {id:"INV-NP-005",date:"Jan 1, 2026",amount:"$3,000",status:"Paid",paidDate:"Jan 4, 2026"},
+      {id:"INV-NP-004",date:"Dec 1, 2025",amount:"$3,000",status:"Paid",paidDate:"Dec 3, 2025"},
+    ],
+    bwTeam:{owner:{name:"Deepa Lakshmi",role:"Account Owner"},viewers:[{name:"Vikram Patel",role:"Ads Lead"},{name:"Anita Mehta",role:"Social Lead"}]},
+  },
+  petvibe: {
+    name:"PetVibe",type:"B2C Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 5:20 PM",
+    briefing:{weekOf:"Feb 22 – 28, 2026",
+      completed:[
+        {icon:"🎬",type:"done",title:"Published: 'Dog vs. cat taste test' video",detail:"TikTok, Reels — 118K views, 9.1% engagement.",date:"Feb 25"},
+        {icon:"🎬",type:"done",title:"Published: 'New puppy essentials' video",detail:"Reels, Shorts — 76K views.",date:"Feb 22"},
+        {icon:"💰",type:"done",title:"Pet subscription ad performing well",detail:"Meta — 3.8x ROAS, $16 CPA.",date:"Feb 24"},
+        {icon:"✍️",type:"done",title:"Published: 'Best Dog Food 2026' blog",detail:"Ranking #4 — 3,800 monthly visits.",date:"Feb 20"},
+      ],
+      inProgress:[
+        {icon:"🎬",type:"progress",title:"Filming: Vet Q&A series episode 3",detail:"Pet nutrition focus. Shoots Wednesday.",date:"Due Mar 5"},
+        {icon:"⭐",type:"progress",title:"Onboarding @petparent influencer",detail:"210K followers. $1,200 for 3 posts.",date:"Negotiating"},
+      ],
+      needsYou:[{icon:"⚠️",type:"review",title:"Spring product line photos needed",detail:"Need 8 product shots for new treats & toys launch.",date:"Waiting 3d"}],
+    },
+    content:{
+      videos:[
+        {title:"Dog vs. cat taste test",status:"Published",platform:"TikTok, Reels",result:"118K views",date:"Feb 25"},
+        {title:"New puppy essentials",status:"Published",platform:"Reels, Shorts",result:"76K views",date:"Feb 22"},
+        {title:"Vet Q&A: Allergies",status:"Published",platform:"YouTube, Reels",result:"45K views",date:"Feb 15"},
+        {title:"Vet Q&A: Nutrition",status:"Scripting",platform:"YouTube, Reels",result:"—",date:"Mar 5"},
+        {title:"Day in the life of PetVibe HQ",status:"Published",platform:"TikTok",result:"92K views",date:"Feb 8"},
+        {title:"Valentine's treats unboxing",status:"Published",platform:"All",result:"68K views",date:"Feb 12"},
+      ],
+      blogs:[
+        {title:"Best Dog Food 2026",status:"Published",result:"3,800/mo",keyword:"best dog food 2026"},
+        {title:"Cat Nutrition Guide",status:"Published",result:"2,200/mo",keyword:"cat nutrition guide"},
+        {title:"Pet Subscription Box Review",status:"Published",result:"1,400/mo",keyword:"pet subscription box"},
+        {title:"Spring Pet Safety Tips",status:"Needs Approval",result:"Target: 2,000/mo",keyword:"spring pet safety"},
+      ],
+      summary:{videosDelivered:"6 of 6",blogsDelivered:"3 of 4",socialPosts:"48 across 5 platforms",influencerPosts:"4 from 2 influencers"},
+    },
+    impact:{
+      kpis:[{label:"Total Reach",value:"920K",change:"+26%",context:"All platforms"},{label:"Leads",value:"1,120",change:"+22%",context:"Subscriptions + orders"},{label:"Ad ROAS",value:"3.8x",change:"+0.4x",context:"$1 → $3.80"},{label:"Organic Traffic",value:"9,800",change:"+19%",context:"Free Google visitors"}],
+      channels:[{name:"Instagram",metric:"14.6K",growth:"+1,080",engagement:"5.8%"},{name:"TikTok",metric:"11.2K",growth:"+1,320",engagement:"7.4%"},{name:"YouTube",metric:"4.8K",growth:"+420",engagement:"4.2%"},{name:"Google SEO",metric:"9,800 visits",growth:"+19%",engagement:"7 top-10"},{name:"Paid Ads",metric:"$4,500",growth:"3.8x ROAS",engagement:"$16 CPA"}],
+      topWins:[{content:"Dog vs. cat taste test (TikTok)",metric:"118K views",impact:"9.1% eng — viral potential"},{content:"Best dog food blog (SEO)",metric:"#4 Google",impact:"3,800 free visits/mo"},{content:"Subscription ad (Meta)",metric:"3.8x ROAS",impact:"$16 CPA — scaling"}],
+      adBreakdown:[{campaign:"Pet Subscription",platform:"Meta",spend:"$2,200",roas:"4.1x",cpa:"$14.80",status:"Active"},{campaign:"Dog Food Search",platform:"Google",spend:"$1,500",roas:"3.6x",cpa:"$18.20",status:"Active"},{campaign:"Retargeting",platform:"Meta",spend:"$800",roas:"4.4x",cpa:"$12.40",status:"Active"}],
+      reachTrend:[180,300,450,620,740,920],leadsTrend:[220,380,540,720,920,1120],
+    },
+    whatsNext:{
+      planned:[{icon:"🎬",title:"Vet Q&A episode 3",detail:"Pet nutrition. Filming Wed, live next week."},{icon:"⭐",title:"@petparent collab",detail:"210K followers. 3 posts for $1,200."},{icon:"💰",title:"Scale subscription ads",detail:"3.8x ROAS. Increase by 15%."}],
+      recommendations:[{title:"Launch user-generated content contest",reason:"Pet owners love sharing. 'Cutest trick' contest could drive 500+ submissions."},{title:"Start breed-specific content series",reason:"Long-tail SEO goldmine. 'Best food for [breed]' gets 5K+ monthly searches."}],
+    },
+    account:{admin:"Lisa Huang",email:"lisa@petvibe.co",team:[{name:"Lisa Huang",email:"lisa@petvibe.co",role:"Admin",status:"Active"}]},
+    comments:{content:[{avatar:"client",name:"Lisa H.",time:"Feb 26, 11 AM",text:"Taste test video is amazing! More of those please."},{avatar:"team",name:"Raj K.",time:"Feb 26, 12 PM",text:"Already planning a sequel!"}]},
+    invoices:[
+      {id:"INV-PV-006",date:"Feb 1, 2026",amount:"$5,000",status:"Paid",paidDate:"Feb 3, 2026"},
+      {id:"INV-PV-005",date:"Jan 1, 2026",amount:"$5,000",status:"Paid",paidDate:"Jan 2, 2026"},
+      {id:"INV-PV-004",date:"Dec 1, 2025",amount:"$5,000",status:"Paid",paidDate:"Dec 4, 2025"},
+    ],
+    bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"}]},
+  },
+  cloudhr: {
+    name:"CloudHR",type:"B2B Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 26, 2026 · 11:45 AM",
+    briefing:{weekOf:"Feb 22 – 28, 2026",
+      completed:[
+        {icon:"📎",type:"done",title:"LinkedIn: Remote work policy post",detail:"6.4K impressions, 4.2% engagement.",date:"Feb 24"},
+        {icon:"✍️",type:"done",title:"Published: 'HR Tech Stack 2026' blog",detail:"Ranking #11 — 480 monthly visits.",date:"Feb 20"},
+        {icon:"💰",type:"done",title:"LinkedIn Ads: HR leaders targeting",detail:"2.9x ROAS. Below 3x target.",date:"Feb 22"},
+      ],
+      inProgress:[
+        {icon:"📎",type:"progress",title:"Drafting employee retention series",detail:"3-part LinkedIn series. Part 1 due Monday.",date:"Due Mar 3"},
+        {icon:"💰",type:"progress",title:"Restructuring ad campaigns",detail:"Pausing broad targeting, shifting to retargeting + lookalike.",date:"In progress"},
+      ],
+      needsYou:[{icon:"⚠️",type:"review",title:"Product demo video script needs approval",detail:"2-min walkthrough of new onboarding feature.",date:"Waiting 5d"}],
+    },
+    content:{
+      videos:[
+        {title:"CloudHR platform overview",status:"Published",platform:"LinkedIn, YouTube",result:"820 views",date:"Feb 14"},
+        {title:"Onboarding feature demo",status:"Needs Approval",platform:"LinkedIn, YouTube",result:"—",date:"Mar 3"},
+      ],
+      blogs:[
+        {title:"HR Tech Stack 2026",status:"Published",result:"480/mo",keyword:"hr tech stack"},
+        {title:"Employee Onboarding Best Practices",status:"Published",result:"620/mo",keyword:"employee onboarding"},
+        {title:"Remote Work Policy Template",status:"Published",result:"890/mo",keyword:"remote work policy template"},
+        {title:"HR Automation ROI Calculator",status:"Needs Review",result:"Target: 700/mo",keyword:"hr automation roi"},
+      ],
+      summary:{videosDelivered:"1 of 2",blogsDelivered:"3 of 4",socialPosts:"24 (18 LI, 4 X, 2 YT)",influencerPosts:"N/A"},
+    },
+    impact:{
+      kpis:[{label:"Total Reach",value:"95K",change:"+8%",context:"LI, X, Google"},{label:"Qualified Leads",value:"42",change:"+6%",context:"Demos + trials"},{label:"Ad ROAS",value:"2.9x",change:"-0.3x",context:"Below 3x target"},{label:"Organic Traffic",value:"2,100",change:"+12%",context:"Free Google visitors"}],
+      channels:[{name:"LinkedIn",metric:"1.6K",growth:"+140",engagement:"3.8%"},{name:"Google SEO",metric:"2,100 visits",growth:"+12%",engagement:"3 top-10"},{name:"Paid Ads",metric:"$2,200",growth:"2.9x ROAS",engagement:"$68 CPA"}],
+      topWins:[{content:"Remote work policy blog (SEO)",metric:"#8 Google",impact:"890 free visits/mo — best performer"},{content:"Remote work LinkedIn post",metric:"6.4K imp",impact:"4.2% engagement, 18 DMs"},{content:"Retargeting campaign",metric:"3.4x ROAS",impact:"Best ROAS among campaigns"}],
+      adBreakdown:[{campaign:"HR Leaders ICP",platform:"LinkedIn",spend:"$1,200",roas:"2.6x",cpa:"$74",status:"Active"},{campaign:"HR Software Search",platform:"Google",spend:"$600",roas:"3.1x",cpa:"$58",status:"Active"},{campaign:"Retargeting",platform:"LinkedIn",spend:"$400",roas:"3.4x",cpa:"$52",status:"Active"}],
+      reachTrend:[30,42,55,68,88,95],leadsTrend:[8,14,20,28,40,42],
+    },
+    whatsNext:{
+      planned:[{icon:"📎",title:"Employee retention series",detail:"3-part LinkedIn. Part 1 on Monday."},{icon:"🎬",title:"Onboarding demo video",detail:"Pending script approval from client."},{icon:"💰",title:"Restructure ad targeting",detail:"Shift from broad to retargeting + lookalike."}],
+      recommendations:[{title:"Invest more in SEO content",reason:"Remote work policy blog at 890/mo. HR content has low competition."},{title:"Launch a free HR audit tool",reason:"Interactive lead magnet. Could double qualified lead volume."}],
+    },
+    account:{admin:"Rachel Torres",email:"rachel@cloudhr.io",team:[{name:"Rachel Torres",email:"rachel@cloudhr.io",role:"Admin",status:"Active"}]},
+    comments:{content:[{avatar:"client",name:"Rachel T.",time:"Feb 23, 2 PM",text:"ROAS drop is a concern. What's the plan?"},{avatar:"team",name:"Vikram P.",time:"Feb 23, 3 PM",text:"Restructuring targeting. Shifting to retargeting + lookalike. Update next week."}]},
+    invoices:[
+      {id:"INV-CH-006",date:"Feb 1, 2026",amount:"$3,000",status:"Paid",paidDate:"Feb 5, 2026"},
+      {id:"INV-CH-005",date:"Jan 1, 2026",amount:"$3,000",status:"Paid",paidDate:"Jan 4, 2026"},
+      {id:"INV-CH-004",date:"Dec 1, 2025",amount:"$3,000",status:"Paid",paidDate:"Dec 5, 2025"},
+    ],
+    bwTeam:{owner:{name:"Vikram Patel",role:"Account Owner"},viewers:[{name:"Deepa Lakshmi",role:"SEO Lead"},{name:"Anita Mehta",role:"Social Lead"}]},
+  },
 };
 
 const AGENCY = {
   name:"Momentum Digital",
   agencyClients:[
-    {id:"freshbowl",name:"FreshBowl",type:"B2C — Food",package:"B2C $5K",health:91,reach:"1.8M",leads:"2,340",adSpend:"$6,200",roas:"4.1x",needsAttention:null},
-    {id:"novapay",name:"NovaPay",type:"B2B — Fintech",package:"B2B $3K",health:78,reach:"180K",leads:"89",adSpend:"$3,800",roas:"3.2x",needsAttention:"SEO traffic -8%"},
-    {id:"petvibe",name:"PetVibe",type:"B2C — Pets",package:"B2C $5K",health:85,reach:"920K",leads:"1,120",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
-    {id:"cloudhr",name:"CloudHR",type:"B2B — HR Tech",package:"B2B $3K",health:72,reach:"95K",leads:"42",adSpend:"$2,200",roas:"2.9x",needsAttention:"ROAS below 3x target"},
-    {id:"glowup",name:"GlowUp Beauty",type:"B2C — Skin",package:"B2C $5K",health:87,reach:"2.4M",leads:"1,847",adSpend:"$8,200",roas:"4.2x",needsAttention:null},
-    {id:"dataforge",name:"DataForge AI",type:"B2B — Data",package:"B2B $3K",health:82,reach:"340K",leads:"127",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
+    {id:"freshbowl",name:"FreshBowl",type:"B2C — Food",package:"B2C $5K",reach:"1.8M",leads:"2,340",adSpend:"$6,200",roas:"4.1x",needsAttention:null},
+    {id:"novapay",name:"NovaPay",type:"B2B — Fintech",package:"B2B $3K",reach:"180K",leads:"89",adSpend:"$3,800",roas:"3.2x",needsAttention:"SEO traffic -8%"},
+    {id:"petvibe",name:"PetVibe",type:"B2C — Pets",package:"B2C $5K",reach:"920K",leads:"1,120",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
+    {id:"cloudhr",name:"CloudHR",type:"B2B — HR Tech",package:"B2B $3K",reach:"95K",leads:"42",adSpend:"$2,200",roas:"2.9x",needsAttention:"ROAS below 3x target"},
+    {id:"glowup",name:"GlowUp Beauty",type:"B2C — Skin",package:"B2C $5K",reach:"2.4M",leads:"1,847",adSpend:"$8,200",roas:"4.2x",needsAttention:null},
+    {id:"dataforge",name:"DataForge AI",type:"B2B — Data",package:"B2B $3K",reach:"340K",leads:"127",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
   ],
-  totals:{clients:6,totalRevenue:"$24,000",totalAdManaged:"$29,400",avgHealth:82.5,avgRoas:"3.7x"},
+  totals:{clients:6,totalRevenue:"$24,000",totalAdManaged:"$29,400",avgRoas:"3.7x"},
   team:[
     {name:"Alex Rivera",email:"alex@momentumdigital.com",role:"Admin",clients:"All",status:"Active"},
     {name:"Jamie Patel",email:"jamie@momentumdigital.com",role:"Viewer",clients:"FreshBowl, PetVibe",status:"Active"},
@@ -377,7 +573,8 @@ const ADMIN_ACCOUNTS = [
   {key:'agency_momentum',name:'Momentum Digital',type:'Agency (6 clients)',package:'$24,000/mo'},
 ];
 
-let currentMode='client',currentClient='b2c',currentSection='briefing',agencyDrillClient=null,adminClient='b2c';
+let currentMode='client',currentClient='b2c',currentSection='briefing',agencyDrillClient=null,adminClient='b2c',previewSubTab=null;
+let editingInvoiceIdx=null,editingActivityKey=null;
 let commentThreads={};
 function initComments(){Object.keys(CLIENTS).forEach(k=>{commentThreads[k]={};if(CLIENTS[k].comments)Object.keys(CLIENTS[k].comments).forEach(s=>{commentThreads[k][s]=[...CLIENTS[k].comments[s]]})});}
 initComments();
@@ -410,7 +607,6 @@ const NAV={
     {id:'briefing',icon:'📋',label:"This Week's Briefing",group:'Your Dashboard'},
     {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
     {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
-    {id:'next',icon:'🚀',label:"What's Next",group:'Your Dashboard'},
     {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
     {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
     {id:'account',icon:'⚙️',label:'Account',group:'Settings'},
@@ -420,7 +616,6 @@ const NAV={
     {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
     {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
     {id:'linkedin',icon:'📎',label:'LinkedIn Growth Report',group:'Your Dashboard'},
-    {id:'next',icon:'🚀',label:"What's Next",group:'Your Dashboard'},
     {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
     {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
     {id:'account',icon:'⚙️',label:'Account',group:'Settings'},
@@ -435,14 +630,13 @@ const NAV={
     {id:'briefing',icon:'📋',label:"Briefing",group:'Client View'},
     {id:'content',icon:'🎬',label:'Content',group:'Client View'},
     {id:'impact',icon:'📈',label:'Impact',group:'Client View'},
-    {id:'next',icon:'🚀',label:"What's Next",group:'Client View'},
     {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
     {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
   ],
   admin_client:[
     {id:'adm_briefing',icon:'✍️',label:'Update Briefing',group:'Dashboard Updates'},
-    {id:'adm_metrics',icon:'📈',label:'Update Metrics',group:'Dashboard Updates'},
-    {id:'adm_next',icon:'🚀',label:"Plan What's Next",group:'Dashboard Updates'},
+    {id:'adm_content',icon:'🎬',label:'Update Content',group:'Dashboard Updates'},
+    {id:'adm_metrics',icon:'📈',label:'Update Impact',group:'Dashboard Updates'},
     {id:'adm_billing',icon:'💳',label:'Billing & Payments',group:'Account'},
     {id:'adm_team',icon:'👥',label:'BW Team Assignment',group:'Account'},
     {id:'adm_preview',icon:'👁️',label:'Preview Client View',group:'Account'},
@@ -450,6 +644,7 @@ const NAV={
   admin_agency:[
     {id:'adm_agency_billing',icon:'💳',label:'Agency Billing',group:'Agency Account'},
     {id:'adm_agency_clients',icon:'🏢',label:'Manage Clients',group:'Agency Account'},
+    {id:'adm_agency_preview',icon:'👁️',label:'Preview Agency View',group:'Agency Account'},
   ],
 };
 
@@ -463,7 +658,7 @@ function switchMode(mode){
   buildClientSelect();renderNav();renderMain();
 }
 
-function navTo(s){currentSection=s;document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));document.querySelector(`[data-section="${s}"]`)?.classList.add('active');renderMain();}
+function navTo(s){currentSection=s;previewSubTab=null;document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));document.querySelector(`[data-section="${s}"]`)?.classList.add('active');renderMain();}
 function drillIntoClient(cid){agencyDrillClient=cid;currentSection='briefing';renderNav();renderMain();}
 function backToPortfolio(){agencyDrillClient=null;currentSection='portfolio';renderNav();renderMain();}
 
@@ -485,7 +680,7 @@ function renderNav(){
   document.getElementById('navMenu').innerHTML=html;
 }
 
-function healthColor(s){return s>=80?'green':s>=60?'orange':'red'}
+
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
 function closeModal(id){document.getElementById(id).classList.remove('active')}
 function openModal(id){document.getElementById(id).classList.add('active')}
@@ -513,9 +708,9 @@ function renderMain(){
   if(currentMode==='admin'){renderAdmin(main);return;}
   if(currentMode==='agency'){
     if(agencyDrillClient){
-      const map={glowup:'b2c',dataforge:'b2b'};
+      const map={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
       if(map[agencyDrillClient]){const d=CLIENTS[map[agencyDrillClient]];currentClient=map[agencyDrillClient];
-        switch(currentSection){case 'briefing':renderBriefing(main,d,true);break;case 'content':renderContent(main,d,true);break;case 'impact':renderImpact(main,d,true);break;case 'next':renderNext(main,d,true);break;case 'messages':renderMessages(main,d,true);break;case 'reports':renderReports(main,d,true);break;default:renderBriefing(main,d,true);}
+        switch(currentSection){case 'briefing':renderBriefing(main,d,true);break;case 'content':renderContent(main,d,true);break;case 'impact':renderImpact(main,d,true);break;case 'messages':renderMessages(main,d,true);break;case 'reports':renderReports(main,d,true);break;default:renderBriefing(main,d,true);}
       } else {
         const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
         main.innerHTML=`<button class="btn-back" onclick="backToPortfolio()">← Portfolio</button><div class="topbar"><h2>${cl?.name||''}</h2></div><div class="card"><h3>Dashboard</h3><p style="color:var(--muted)">Full data available for GlowUp Beauty and DataForge AI in this prototype.</p></div>`;
@@ -528,7 +723,7 @@ function renderMain(){
   switch(currentSection){
     case 'briefing':renderBriefing(main,d);break;case 'content':renderContent(main,d);break;
     case 'impact':renderImpact(main,d);break;case 'linkedin':renderLinkedIn(main,d);break;
-    case 'next':renderNext(main,d);break;case 'messages':renderMessages(main,d);break;case 'reports':renderReports(main,d);break;case 'account':renderAccount(main,d);break;
+    case 'next':renderBriefing(main,d);break;case 'messages':renderMessages(main,d);break;case 'reports':renderReports(main,d);break;case 'account':renderAccount(main,d);break;
     default:renderBriefing(main,d);
   }
 }
@@ -538,10 +733,12 @@ function renderBriefing(el,d,drill){
   const b=d.briefing;
   el.innerHTML=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Portfolio</button>':''}
     <div class="topbar"><div><h2>This Week's Briefing</h2><span style="font-size:13px;color:var(--muted)">${d.name} • ${b.weekOf}</span><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div>
-    <div class="meta"><span class="health-badge ${d.healthScore>=80?'good':'warn'}">Health: ${d.healthScore}/100</span></div></div>
+    </div>
     ${b.needsYou.length?`<div style="margin-bottom:24px">${b.needsYou.map(i=>`<div class="highlight-card attention"><div class="hl-title">⚠️ Needs Your Input</div><div class="hl-text"><strong>${i.title}</strong><br>${i.detail}</div></div>`).join('')}</div>`:''}
     <div class="card"><h3>✅ Completed This Week</h3>${b.completed.map(i=>`<div class="activity-item"><div class="activity-icon done">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag green">Done</span></div></div>`).join('')}</div>
-    <div class="card"><h3>🔄 In Progress</h3>${b.inProgress.map(i=>`<div class="activity-item"><div class="activity-icon progress">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag blue">In Progress</span></div></div>`).join('')}</div>`;
+    <div class="card"><h3>🔄 In Progress</h3>${b.inProgress.map(i=>`<div class="activity-item"><div class="activity-icon progress">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag blue">In Progress</span></div></div>`).join('')}</div>
+    <div class="card"><h3>📅 What's Next</h3>${d.whatsNext.planned.map(i=>`<div class="activity-item"><div class="activity-icon planned">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div></div>`).join('')}</div>
+    ${d.whatsNext.recommendations.length?`<div class="card"><h3>💡 Our Recommendations</h3>${d.whatsNext.recommendations.map(r=>`<div class="highlight-card action"><div class="hl-title">💡 Recommendation</div><div class="hl-text"><strong>${r.title}</strong><br>${r.reason}</div></div>`).join('')}</div>`:''}`;
 }
 function renderContent(el,d,drill){
   const c=d.content,st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue'};
@@ -684,15 +881,92 @@ function renderAgency(el){
 }
 function renderPortfolio(el){
   const ag=AGENCY,att=ag.agencyClients.filter(c=>c.needsAttention);
-  el.innerHTML=`<div class="topbar"><h2>Client Portfolio</h2><div class="meta"><span class="health-badge good">${ag.totals.clients} Clients</span></div></div>
-    <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Revenue</div><div class="kpi-value">${ag.totals.totalRevenue}</div></div><div class="kpi-card"><div class="kpi-label">Ad Managed</div><div class="kpi-value">${ag.totals.totalAdManaged}</div></div><div class="kpi-card"><div class="kpi-label">Avg Health</div><div class="kpi-value">${ag.totals.avgHealth}</div></div><div class="kpi-card"><div class="kpi-label">Avg ROAS</div><div class="kpi-value">${ag.totals.avgRoas}</div></div></div>
+  el.innerHTML=`<div class="topbar"><h2>Client Portfolio</h2><div class="meta"><span class="client-badge">${ag.totals.clients} Clients</span></div></div>
+    <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Revenue</div><div class="kpi-value">${ag.totals.totalRevenue}</div></div><div class="kpi-card"><div class="kpi-label">Ad Managed</div><div class="kpi-value">${ag.totals.totalAdManaged}</div></div><div class="kpi-card"><div class="kpi-label">Avg ROAS</div><div class="kpi-value">${ag.totals.avgRoas}</div></div></div>
     ${att.length?`<div class="card"><h3>⚠️ Needs Attention</h3>${att.map(c=>`<div class="alert-row warn"><strong>${c.name}:</strong>&nbsp;${c.needsAttention}</div>`).join('')}</div>`:''}
-    <div class="agency-client-grid">${ag.agencyClients.map(c=>`<div class="agency-client-card" onclick="drillIntoClient('${c.id}')"><div class="client-header"><div><div class="client-name">${c.name}</div><div class="client-type">${c.type} • ${c.package}</div></div><span class="tag ${healthColor(c.health)}">${c.health}</span></div><div style="margin-bottom:12px"><div class="progress-bar"><div class="fill" style="width:${c.health}%;background:${c.health>=80?'var(--green)':'var(--orange)'}"></div></div></div><div class="mini-kpis"><div class="mini-kpi"><span class="val">${c.reach}</span>Reach</div><div class="mini-kpi"><span class="val">${c.leads}</span>Leads</div><div class="mini-kpi"><span class="val">${c.adSpend}</span>Ad Spend</div><div class="mini-kpi"><span class="val">${c.roas}</span>ROAS</div></div>${c.needsAttention?`<div class="needs-attention">⚠️ ${c.needsAttention}</div>`:''}</div>`).join('')}</div>`;
+    <div class="agency-client-grid">${ag.agencyClients.map(c=>`<div class="agency-client-card" onclick="drillIntoClient('${c.id}')"><div class="client-header"><div><div class="client-name">${c.name}</div><div class="client-type">${c.type} • ${c.package}</div></div></div><div class="mini-kpis"><div class="mini-kpi"><span class="val">${c.reach}</span>Reach</div><div class="mini-kpi"><span class="val">${c.leads}</span>Leads</div><div class="mini-kpi"><span class="val">${c.adSpend}</span>Ad Spend</div><div class="mini-kpi"><span class="val">${c.roas}</span>ROAS</div></div>${c.needsAttention?`<div class="needs-attention">⚠️ ${c.needsAttention}</div>`:''}</div>`).join('')}</div>`;
 }
+let agEditInvIdx=null;
+function agEditInvoice(idx){agEditInvIdx=idx;renderMain();}
+function agCancelEditInvoice(){agEditInvIdx=null;renderMain();}
+function agSaveInvoice(idx){
+  const inv=AGENCY.invoices;
+  if(!inv||!inv[idx]) return;
+  inv[idx].id=document.getElementById('agEditInvId')?.value||inv[idx].id;
+  inv[idx].date=document.getElementById('agEditInvDate')?.value||inv[idx].date;
+  inv[idx].amount=document.getElementById('agEditInvAmount')?.value||inv[idx].amount;
+  inv[idx].detail=document.getElementById('agEditInvDetail')?.value||inv[idx].detail;
+  inv[idx].status=document.getElementById('agEditInvStatus')?.value||inv[idx].status;
+  inv[idx].paidDate=document.getElementById('agEditInvPaid')?.value||inv[idx].paidDate;
+  agEditInvIdx=null;renderMain();showToast('Invoice updated');
+}
+function agRemoveInvoice(idx){
+  AGENCY.invoices.splice(idx,1);renderMain();showToast('Invoice removed');
+}
+function agAddInvoice(){
+  const id=document.getElementById('agNewInvId').value.trim();
+  const date=document.getElementById('agNewInvDate').value.trim();
+  const amount=document.getElementById('agNewInvAmount').value.trim();
+  const detail=document.getElementById('agNewInvDetail').value.trim();
+  const status=document.getElementById('agNewInvStatus').value;
+  const paidDate=document.getElementById('agNewInvPaid').value.trim();
+  if(!id||!amount){showToast('Invoice ID and Amount required');return;}
+  AGENCY.invoices.unshift({id,date,amount,detail,status,paidDate});
+  renderMain();showToast('Invoice added');
+}
+
+function agInvRowHtml(x,idx){
+  const statusColor=x.status==='Paid'?'green':x.status==='Overdue'?'red':'orange';
+  if(agEditInvIdx===idx){
+    return `<tr style="background:var(--bg)">
+      <td><input type="text" id="agEditInvId" value="${x.id}" style="width:110px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td><input type="text" id="agEditInvDate" value="${x.date}" style="width:110px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td><input type="text" id="agEditInvAmount" value="${x.amount}" style="width:90px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td><input type="text" id="agEditInvDetail" value="${x.detail||''}" style="width:130px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td><select id="agEditInvStatus" style="padding:4px"><option ${x.status==='Paid'?'selected':''}>Paid</option><option ${x.status==='Pending'?'selected':''}>Pending</option><option ${x.status==='Overdue'?'selected':''}>Overdue</option></select></td>
+      <td><input type="text" id="agEditInvPaid" value="${x.paidDate||''}" style="width:110px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td style="white-space:nowrap"><button class="btn-primary" style="padding:3px 8px;font-size:11px" onclick="agSaveInvoice(${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="agCancelEditInvoice()">Cancel</button></td>
+    </tr>`;
+  }
+  return `<tr>
+    <td><strong>${x.id}</strong></td><td>${x.date}</td><td>${x.amount}</td><td>${x.detail||''}</td>
+    <td><span class="tag ${statusColor}">${x.status}</span></td><td>${x.paidDate||'—'}</td>
+    <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="agEditInvoice(${idx})">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="agRemoveInvoice(${idx})">Remove</button></td>
+  </tr>`;
+}
+
 function renderAgBilling(el){
+  const b2cCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2C')).length;
+  const b2bCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2B')).length;
+  const b2cRev=b2cCount*5000;
+  const b2bRev=b2bCount*3000;
+  const inv=AGENCY.invoices||[];
+  const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+  const outstanding=inv.filter(x=>x.status!=='Paid').length;
   el.innerHTML=`<div class="topbar"><h2>Billing & Revenue</h2></div>
-    <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Revenue</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div><div class="kpi-card"><div class="kpi-label">B2C (3×$5K)</div><div class="kpi-value">$15,000</div></div><div class="kpi-card"><div class="kpi-label">B2B (3×$3K)</div><div class="kpi-value">$9,000</div></div></div>
-    <div class="card"><h3>Billing</h3><table><thead><tr><th>Client</th><th>Package</th><th>Fee</th><th>Status</th><th>Next</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package.includes('B2C')?'$5,000':'$3,000'}</td><td><span class="tag green">Paid</span></td><td>Mar 1</td></tr>`).join('')}</tbody></table></div>`;
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Total Revenue</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div>
+      <div class="kpi-card"><div class="kpi-label">B2C Revenue</div><div class="kpi-value">$${b2cRev.toLocaleString()}</div><div class="kpi-change">${b2cCount} × $5,000</div></div>
+      <div class="kpi-card"><div class="kpi-label">B2B Revenue</div><div class="kpi-value">$${b2bRev.toLocaleString()}</div><div class="kpi-change">${b2bCount} × $3,000</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${totalCollected.toLocaleString()}</div></div>
+    </div>
+    <div class="card"><h3>Client Billing Summary</h3><table><thead><tr><th>Client</th><th>Package</th><th>Monthly Fee</th><th>Status</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package.includes('B2C')?'$5,000':'$3,000'}</td><td><span class="tag green">Active</span></td></tr>`).join('')}</tbody></table></div>
+    <div class="card"><h3>Invoice History</h3>
+      <div style="margin-bottom:8px"><span class="tag ${outstanding?'orange':'green'}">${outstanding?outstanding+' Outstanding':'All Paid'}</span></div>
+      <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Detail</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead><tbody>${inv.map((x,idx)=>agInvRowHtml(x,idx)).join('')}</tbody></table>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Invoice</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+          <div><label style="font-size:11px;color:var(--muted);display:block">Invoice ID</label><input type="text" id="agNewInvId" placeholder="AG-2026-007" style="padding:6px;width:110px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="agNewInvDate" placeholder="Mar 1, 2026" style="padding:6px;width:110px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Amount</label><input type="text" id="agNewInvAmount" placeholder="$24,000" style="padding:6px;width:90px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Detail</label><input type="text" id="agNewInvDetail" placeholder="6 clients" style="padding:6px;width:130px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="agNewInvStatus" style="padding:6px"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Paid Date</label><input type="text" id="agNewInvPaid" placeholder="Mar 5, 2026" style="padding:6px;width:110px"></div>
+          <button class="btn-primary" onclick="agAddInvoice()">Add</button>
+        </div>
+      </div>
+    </div>`;
 }
 function renderAgTeam(el){
   el.innerHTML=`<div class="topbar"><h2>Team & Access</h2><div class="meta"><button class="btn-primary" onclick="document.getElementById('addUserTitle').textContent='Add Member';document.getElementById('clientAccessSection').style.display='none';openModal('addUserModal')">+ Add</button></div></div>
@@ -724,9 +998,32 @@ function markUpdated(){
 // Admin helper functions
 function removeActivity(section,category,idx){
   const d=CLIENTS[adminClient];
-  if(section==='briefing'&&d.briefing[category]){
-    d.briefing[category].splice(idx,1);
+  if(section==='briefing'&&d.briefing[category]){d.briefing[category].splice(idx,1);renderMain();showToast('Item removed');}
+}
+function editActivity(key){editingActivityKey=key;renderMain();}
+function saveActivity(section,category,idx){
+  const d=CLIENTS[adminClient];
+  const arr=section==='briefing'?d.briefing[category]:d.whatsNext[category];
+  if(!arr||!arr[idx]) return;
+  const t=document.getElementById('editActTitle')?.value.trim();
+  const det=document.getElementById('editActDetail')?.value.trim();
+  if(t) arr[idx].title=t;
+  if(det){
+    if(category==='recommendations') arr[idx].reason=det;
+    else arr[idx].detail=det;
   }
+  editingActivityKey=null;renderMain();showToast('Updated!');
+}
+function cancelEditActivity(){editingActivityKey=null;renderMain();}
+function adminAddActivity(){
+  const d=CLIENTS[adminClient];
+  const cat=document.getElementById('actCategory').value;
+  const icon=document.getElementById('actIcon').value;
+  const title=document.getElementById('actTitle').value.trim();
+  const detail=document.getElementById('actDetail').value.trim();
+  if(!title){showToast('Title required');return;}
+  d.briefing[cat].push({icon,title,detail:detail||''});
+  closeModal('addActivityModal');renderMain();showToast('Activity added!');
 }
 
 function saveAdmMetrics(){
@@ -736,9 +1033,7 @@ function saveAdmMetrics(){
 
 function removeNextItem(category,idx){
   const d=CLIENTS[adminClient];
-  if(d.whatsNext[category]){
-    d.whatsNext[category].splice(idx,1);
-  }
+  if(d.whatsNext[category]){d.whatsNext[category].splice(idx,1);renderMain();showToast('Item removed');}
 }
 
 function addNextItem(category){
@@ -751,8 +1046,7 @@ function addNextItem(category){
       d.whatsNext.planned.push({icon,title,detail});
       document.getElementById('addPlanTitle').value='';
       document.getElementById('addPlanDetail').value='';
-      renderMain();
-      showToast('Item added!');
+      renderMain();showToast('Item added!');
     }
   } else if(category==='recommendations'){
     const title=document.getElementById('addRecTitle').value.trim();
@@ -761,10 +1055,23 @@ function addNextItem(category){
       d.whatsNext.recommendations.push({title,reason});
       document.getElementById('addRecTitle').value='';
       document.getElementById('addRecReason').value='';
-      renderMain();
-      showToast('Recommendation added!');
+      renderMain();showToast('Recommendation added!');
     }
   }
+}
+
+function editInvoice(idx){editingInvoiceIdx=idx;renderMain();}
+function cancelEditInvoice(){editingInvoiceIdx=null;renderMain();}
+function saveInvoice(clientKey,idx){
+  const inv=(clientKey.startsWith('agency')?AGENCY:CLIENTS[clientKey]).invoices;
+  if(!inv||!inv[idx]) return;
+  inv[idx].id=document.getElementById('editInvId')?.value||inv[idx].id;
+  inv[idx].date=document.getElementById('editInvDate')?.value||inv[idx].date;
+  inv[idx].amount=document.getElementById('editInvAmount')?.value||inv[idx].amount;
+  inv[idx].status=document.getElementById('editInvStatus')?.value||inv[idx].status;
+  inv[idx].paidDate=document.getElementById('editInvPaid')?.value||inv[idx].paidDate;
+  if(inv[idx].detail!==undefined) inv[idx].detail=document.getElementById('editInvDetail')?.value||inv[idx].detail;
+  editingInvoiceIdx=null;renderMain();showToast('Invoice updated');
 }
 
 function removeViewer(idx){
@@ -789,34 +1096,250 @@ function addViewer(){
   }
 }
 
+function previewTabBar(tabs,active,onclick){
+  return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn-admin" onclick="exitPreview()" style="margin-right:8px">← Exit Preview</button>
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--adm-acc);font-weight:700;background:rgba(230,126,34,.12);padding:4px 10px;border-radius:4px">Preview Mode</span>
+    <div style="display:flex;gap:4px;margin-left:auto">${tabs.map(t=>`<button onclick="${onclick}('${t.id}')" style="padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid ${t.id===active?'var(--adm-acc)':'var(--border)'};background:${t.id===active?'var(--adm-acc)':'#fff'};color:${t.id===active?'#fff':'var(--text)'}">${t.icon} ${t.label}</button>`).join('')}</div>
+  </div>`;
+}
+function exitPreview(){previewSubTab=null;currentSection=adminClient.startsWith('agency')?'adm_agency_billing':'adm_briefing';renderNav();renderMain();}
+function previewClientTab(tab){previewSubTab=tab;renderMain();}
+function previewAgencyTab(tab){previewSubTab=tab;renderMain();}
+
 function renderAdmin(el){
   if(adminClient.startsWith('agency')){
     switch(currentSection){
       case 'adm_agency_billing':renderAdmAgencyBilling(el);break;
       case 'adm_agency_clients':renderAdmAgencyClients(el);break;
+      case 'adm_agency_preview':renderAdmAgencyPreview(el);break;
       default:renderAdmAgencyBilling(el);
     }
   } else {
     const d=CLIENTS[adminClient];
     switch(currentSection){
       case 'adm_briefing':renderAdmBriefing(el,d);break;
+      case 'adm_content':renderAdmContent(el,d);break;
       case 'adm_metrics':renderAdmMetrics(el,d);break;
-      case 'adm_next':renderAdmNext(el,d);break;
+      case 'adm_next':renderAdmBriefing(el,d);break;
       case 'adm_billing':renderAdmBilling(el,d);break;
       case 'adm_team':renderAdmTeam(el,d);break;
-      case 'adm_preview':currentClient=adminClient;renderBriefing(el,d);break;
+      case 'adm_preview':renderAdmClientPreview(el,d);break;
       default:renderAdmBriefing(el,d);
     }
   }
 }
 
+function renderAdmClientPreview(el,d){
+  if(!previewSubTab) previewSubTab='briefing';
+  const tabs=[
+    {id:'briefing',icon:'📋',label:'Briefing'},
+    {id:'content',icon:'🎬',label:'Content'},
+    {id:'impact',icon:'📈',label:'Impact'},
+    {id:'messages',icon:'💬',label:'Messages'},
+    {id:'reports',icon:'📄',label:'Reports'},
+    {id:'account',icon:'⚙️',label:'Account'},
+  ];
+  const bar=previewTabBar(tabs,previewSubTab,'previewClientTab');
+  const wrap=document.createElement('div');
+  el.innerHTML=bar;
+  el.appendChild(wrap);
+  currentClient=adminClient;
+  switch(previewSubTab){
+    case 'briefing':renderBriefing(wrap,d);break;
+    case 'content':renderContent(wrap,d);break;
+    case 'impact':renderImpact(wrap,d);break;
+    case 'messages':renderMessages(wrap,d);break;
+    case 'reports':renderReports(wrap,d);break;
+    case 'account':renderAccount(wrap,d);break;
+    default:renderBriefing(wrap,d);
+  }
+}
+
+function renderAdmAgencyPreview(el){
+  if(!previewSubTab) previewSubTab='portfolio';
+  const tabs=[
+    {id:'portfolio',icon:'🏢',label:'Portfolio'},
+    {id:'billing',icon:'💳',label:'Billing'},
+    {id:'team',icon:'👥',label:'Team'},
+    {id:'settings',icon:'⚙️',label:'White-Label'},
+  ];
+  const bar=previewTabBar(tabs,previewSubTab,'previewAgencyTab');
+  const wrap=document.createElement('div');
+  el.innerHTML=bar;
+  el.appendChild(wrap);
+  switch(previewSubTab){
+    case 'portfolio':renderPortfolio(wrap);break;
+    case 'billing':renderAgBilling(wrap);break;
+    case 'team':renderAgTeam(wrap);break;
+    case 'settings':renderAgSettings(wrap);break;
+    default:renderPortfolio(wrap);
+  }
+}
+
+function actItemHtml(section,category,items,iconClass){
+  return items.map((i,idx)=>{
+    const key=`${section}_${category}_${idx}`;
+    const isEditing=editingActivityKey===key;
+    const detailField=category==='recommendations'?i.reason:i.detail;
+    if(isEditing){
+      return `<div class="activity-item" style="background:var(--bg);border-radius:8px;padding:12px;margin:4px 0">
+        ${i.icon?`<div class="activity-icon ${iconClass}">${i.icon}</div>`:''}
+        <div class="activity-body" style="display:grid;gap:6px">
+          <input type="text" id="editActTitle" value="${i.title}" style="padding:6px;font-size:13px;border:1px solid var(--border);border-radius:4px">
+          <input type="text" id="editActDetail" value="${detailField||''}" style="padding:6px;font-size:13px;border:1px solid var(--border);border-radius:4px">
+        </div>
+        <div class="activity-meta" style="display:flex;flex-direction:column;gap:4px">
+          <button class="btn-admin" style="padding:4px 10px;font-size:11px" onclick="saveActivity('${section}','${category}',${idx})">Save</button>
+          <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer" onclick="cancelEditActivity()">Cancel</button>
+        </div>
+      </div>`;
+    }
+    return `<div class="activity-item">
+      ${i.icon?`<div class="activity-icon ${iconClass}">${i.icon}</div>`:''}
+      <div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${detailField||''}</div></div>
+      <div class="activity-meta" style="display:flex;gap:8px">
+        <button style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;font-weight:600" onclick="editActivity('${key}')">Edit</button>
+        <button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;font-weight:600" onclick="${section==='briefing'?`removeActivity('briefing','${category}',${idx})`:`removeNextItem('${category}',${idx})`}">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function renderAdmBriefing(el,d){
   const b=d.briefing;
+  const n=d.whatsNext;
   el.innerHTML=`${admCtx()}
     <div class="topbar"><h2>Update Briefing</h2><button class="btn-admin" onclick="openModal('addActivityModal')" style="margin-left:auto">+ Add Activity</button></div>
-    <div class="card"><h3>Needs Client Input</h3>${b.needsYou.map((i,idx)=>`<div class="activity-item"><div class="activity-icon review">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:600" onclick="removeActivity('briefing','needsYou',${idx});renderMain()">Remove</button></div></div>`).join('')}</div>
-    <div class="card"><h3>✅ Completed</h3>${b.completed.map((i,idx)=>`<div class="activity-item"><div class="activity-icon done">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:600" onclick="removeActivity('briefing','completed',${idx});renderMain()">Remove</button></div></div>`).join('')}</div>
-    <div class="card"><h3>🔄 In Progress</h3>${b.inProgress.map((i,idx)=>`<div class="activity-item"><div class="activity-icon progress">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:600" onclick="removeActivity('briefing','inProgress',${idx});renderMain()">Remove</button></div></div>`).join('')}</div>`;
+    <div class="card"><h3>⚠️ Needs Client Input</h3>${actItemHtml('briefing','needsYou',b.needsYou,'review')}</div>
+    <div class="card"><h3>✅ Completed</h3>${actItemHtml('briefing','completed',b.completed,'done')}</div>
+    <div class="card"><h3>🔄 In Progress</h3>${actItemHtml('briefing','inProgress',b.inProgress,'progress')}</div>
+    <div class="card"><h3>📅 What's Next — Planned</h3>${actItemHtml('whatsNext','planned',n.planned,'planned')}
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Add Planned Item</div><div style="display:grid;gap:8px"><select id="addPlanIcon" style="padding:8px"><option>🎬</option><option>✍️</option><option>💰</option><option>⭐</option><option>🔍</option></select><input type="text" id="addPlanTitle" placeholder="Title" style="padding:8px"><input type="text" id="addPlanDetail" placeholder="Detail" style="padding:8px"><button class="btn-admin" onclick="addNextItem('planned')">Add</button></div></div></div>
+    <div class="card"><h3>💡 What's Next — Recommendations</h3>${actItemHtml('whatsNext','recommendations',n.recommendations,'')}
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Add Recommendation</div><div style="display:grid;gap:8px"><input type="text" id="addRecTitle" placeholder="Title" style="padding:8px"><input type="text" id="addRecReason" placeholder="Reason" style="padding:8px"><button class="btn-admin" onclick="addNextItem('recommendations')">Add</button></div></div></div>`;
+}
+
+function removeContentItem(type,idx){
+  const d=CLIENTS[adminClient];
+  if(d.content[type]){d.content[type].splice(idx,1);renderMain();showToast('Item removed');}
+}
+function addContentItem(type){
+  const d=CLIENTS[adminClient];
+  if(type==='videos'){
+    const title=document.getElementById('newVidTitle').value.trim();
+    const status=document.getElementById('newVidStatus').value;
+    const platform=document.getElementById('newVidPlatform').value.trim();
+    const result=document.getElementById('newVidResult').value.trim()||'—';
+    const date=document.getElementById('newVidDate').value.trim();
+    if(!title){showToast('Title required');return;}
+    d.content.videos.push({title,status,platform,result,date});
+    renderMain();showToast('Video added!');
+  } else {
+    const title=document.getElementById('newBlogTitle').value.trim();
+    const status=document.getElementById('newBlogStatus').value;
+    const keyword=document.getElementById('newBlogKeyword').value.trim();
+    const result=document.getElementById('newBlogResult').value.trim()||'—';
+    if(!title){showToast('Title required');return;}
+    d.content.blogs.push({title,status,keyword,result});
+    renderMain();showToast('Blog added!');
+  }
+}
+let editingContentKey=null;
+function editContentItem(key){editingContentKey=key;renderMain();}
+function cancelEditContent(){editingContentKey=null;renderMain();}
+function saveContentItem(type,idx){
+  const d=CLIENTS[adminClient];
+  const item=d.content[type][idx];
+  if(!item) return;
+  if(type==='videos'){
+    item.title=document.getElementById('editCTitle')?.value||item.title;
+    item.status=document.getElementById('editCStatus')?.value||item.status;
+    item.platform=document.getElementById('editCPlatform')?.value||item.platform;
+    item.result=document.getElementById('editCResult')?.value||item.result;
+    item.date=document.getElementById('editCDate')?.value||item.date;
+  } else {
+    item.title=document.getElementById('editCTitle')?.value||item.title;
+    item.status=document.getElementById('editCStatus')?.value||item.status;
+    item.keyword=document.getElementById('editCKeyword')?.value||item.keyword;
+    item.result=document.getElementById('editCResult')?.value||item.result;
+  }
+  editingContentKey=null;renderMain();showToast('Updated!');
+}
+function saveSummary(){
+  const d=CLIENTS[adminClient];
+  d.content.summary.videosDelivered=document.getElementById('sumVid')?.value||d.content.summary.videosDelivered;
+  d.content.summary.blogsDelivered=document.getElementById('sumBlog')?.value||d.content.summary.blogsDelivered;
+  d.content.summary.socialPosts=document.getElementById('sumSocial')?.value||d.content.summary.socialPosts;
+  d.content.summary.influencerPosts=document.getElementById('sumInfluencer')?.value||d.content.summary.influencerPosts;
+  showToast('Summary updated!');renderMain();
+}
+
+function renderAdmContent(el,d){
+  const c=d.content;
+  const statusOpts=['Published','In Editing','Needs Approval','Needs Review','Scripting','Planned'];
+  const st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue','Planned':'purple'};
+  el.innerHTML=`${admCtx()}
+    <div class="topbar"><h2>Update Content</h2></div>
+    <div class="card"><h3>Summary Counts</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;color:var(--muted);display:block">Videos</label><input type="text" id="sumVid" value="${c.summary.videosDelivered}" style="width:100%;padding:6px"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block">Blogs</label><input type="text" id="sumBlog" value="${c.summary.blogsDelivered}" style="width:100%;padding:6px"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block">Social Posts</label><input type="text" id="sumSocial" value="${c.summary.socialPosts}" style="width:100%;padding:6px"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block">Influencer</label><input type="text" id="sumInfluencer" value="${c.summary.influencerPosts}" style="width:100%;padding:6px"></div>
+      </div>
+      <button class="btn-admin" style="margin-top:12px" onclick="saveSummary()">Save Summary</button>
+    </div>
+    <div class="card"><h3>Video Pipeline</h3>
+      <table><thead><tr><th>Video</th><th>Status</th><th>Platforms</th><th>Result</th><th>Date</th><th>Actions</th></tr></thead><tbody>${c.videos.map((v,idx)=>{
+        const key='vid_'+idx;
+        if(editingContentKey===key) return `<tr style="background:var(--bg)">
+          <td><input type="text" id="editCTitle" value="${v.title}" style="width:160px;padding:4px"></td>
+          <td><select id="editCStatus" style="padding:4px">${statusOpts.map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+          <td><input type="text" id="editCPlatform" value="${v.platform}" style="width:130px;padding:4px"></td>
+          <td><input type="text" id="editCResult" value="${v.result}" style="width:90px;padding:4px"></td>
+          <td><input type="text" id="editCDate" value="${v.date}" style="width:70px;padding:4px"></td>
+          <td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="saveContentItem('videos',${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="cancelEditContent()">Cancel</button></td>
+        </tr>`;
+        return `<tr><td>${v.title}</td><td><span class="tag ${st[v.status]||'blue'}">${v.status}</span></td><td>${v.platform}</td><td>${v.result}</td><td>${v.date}</td>
+          <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="editContentItem('${key}')">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeContentItem('videos',${idx})">Remove</button></td></tr>`;
+      }).join('')}</tbody></table>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Video</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+          <div><label style="font-size:11px;color:var(--muted);display:block">Title</label><input type="text" id="newVidTitle" placeholder="Video title" style="padding:6px;width:160px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newVidStatus" style="padding:6px">${statusOpts.map(s=>`<option>${s}</option>`).join('')}</select></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Platforms</label><input type="text" id="newVidPlatform" placeholder="TikTok, Reels" style="padding:6px;width:130px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Result</label><input type="text" id="newVidResult" placeholder="—" style="padding:6px;width:90px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newVidDate" placeholder="Mar 3" style="padding:6px;width:70px"></div>
+          <button class="btn-admin" onclick="addContentItem('videos')">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="card"><h3>Blog Posts</h3>
+      <table><thead><tr><th>Title</th><th>Status</th><th>Keyword</th><th>Result</th><th>Actions</th></tr></thead><tbody>${c.blogs.map((b,idx)=>{
+        const key='blog_'+idx;
+        if(editingContentKey===key) return `<tr style="background:var(--bg)">
+          <td><input type="text" id="editCTitle" value="${b.title}" style="width:180px;padding:4px"></td>
+          <td><select id="editCStatus" style="padding:4px">${statusOpts.map(s=>`<option ${b.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+          <td><input type="text" id="editCKeyword" value="${b.keyword}" style="width:140px;padding:4px"></td>
+          <td><input type="text" id="editCResult" value="${b.result}" style="width:100px;padding:4px"></td>
+          <td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="saveContentItem('blogs',${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="cancelEditContent()">Cancel</button></td>
+        </tr>`;
+        return `<tr><td>${b.title}</td><td><span class="tag ${st[b.status]||'blue'}">${b.status}</span></td><td>${b.keyword}</td><td>${b.result}</td>
+          <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="editContentItem('${key}')">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeContentItem('blogs',${idx})">Remove</button></td></tr>`;
+      }).join('')}</tbody></table>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Blog Post</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+          <div><label style="font-size:11px;color:var(--muted);display:block">Title</label><input type="text" id="newBlogTitle" placeholder="Blog title" style="padding:6px;width:180px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newBlogStatus" style="padding:6px">${statusOpts.map(s=>`<option>${s}</option>`).join('')}</select></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Keyword</label><input type="text" id="newBlogKeyword" placeholder="target keyword" style="padding:6px;width:140px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Result</label><input type="text" id="newBlogResult" placeholder="—" style="padding:6px;width:100px"></div>
+          <button class="btn-admin" onclick="addContentItem('blogs')">Add</button>
+        </div>
+      </div>
+    </div>`;
 }
 
 function renderAdmMetrics(el,d){
@@ -824,26 +1347,86 @@ function renderAdmMetrics(el,d){
   el.innerHTML=`${admCtx()}
     <div class="topbar"><h2>Update Metrics</h2><button class="btn-admin" style="margin-left:auto" onclick="saveAdmMetrics()">Save All Changes</button></div>
     <div class="card"><h3>KPI Values</h3><table><thead><tr><th>Label</th><th>Value</th><th>Change</th><th>Context</th></tr></thead><tbody>${im.kpis.map((k,idx)=>`<tr><td>${k.label}</td><td><input type="text" value="${k.value}" onchange="CLIENTS['${adminClient}'].impact.kpis[${idx}].value=this.value" style="width:80px"></td><td><input type="text" value="${k.change}" onchange="CLIENTS['${adminClient}'].impact.kpis[${idx}].change=this.value" style="width:80px"></td><td><input type="text" value="${k.context}" onchange="CLIENTS['${adminClient}'].impact.kpis[${idx}].context=this.value" style="width:200px"></td></tr>`).join('')}</tbody></table></div>
-    <div class="card"><h3>Health Score</h3><div style="margin:12px 0"><input type="number" min="0" max="100" value="${d.healthScore}" onchange="CLIENTS['${adminClient}'].healthScore=parseInt(this.value)" style="width:80px"> / 100</div></div>
     <div class="card"><h3>Top Wins</h3><table><thead><tr><th>Content</th><th>Metric</th><th>Impact</th></tr></thead><tbody>${im.topWins.map((w,idx)=>`<tr><td><input type="text" value="${w.content}" onchange="CLIENTS['${adminClient}'].impact.topWins[${idx}].content=this.value" style="width:200px"></td><td><input type="text" value="${w.metric}" onchange="CLIENTS['${adminClient}'].impact.topWins[${idx}].metric=this.value" style="width:100px"></td><td><input type="text" value="${w.impact}" onchange="CLIENTS['${adminClient}'].impact.topWins[${idx}].impact=this.value" style="width:200px"></td></tr>`).join('')}</tbody></table></div>`;
 }
 
-function renderAdmNext(el,d){
-  const n=d.whatsNext;
-  el.innerHTML=`${admCtx()}
-    <div class="topbar"><h2>Plan What\u2019s Next</h2></div>
-    <div class="card"><h3>📅 Planned Items</h3>${n.planned.map((i,idx)=>`<div class="activity-item"><div class="activity-icon planned">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:600" onclick="removeNextItem('planned',${idx});renderMain()">Remove</button></div></div>`).join('')}
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Add Planned Item</div><div style="display:grid;gap:8px"><select id="addPlanIcon" style="padding:8px"><option>🎬</option><option>✍️</option><option>💰</option><option>⭐</option><option>🔍</option></select><input type="text" id="addPlanTitle" placeholder="Title" style="padding:8px"><input type="text" id="addPlanDetail" placeholder="Detail" style="padding:8px"><button class="btn-admin" onclick="addNextItem('planned')">Add</button></div></div></div>
-    <div class="card"><h3>💡 Recommendations</h3>${n.recommendations.map((r,idx)=>`<div class="activity-item"><div class="activity-body"><div class="activity-title">${r.title}</div><div class="activity-detail">${r.reason}</div></div><div class="activity-meta"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:600" onclick="removeNextItem('recommendations',${idx});renderMain()">Remove</button></div></div>`).join('')}
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Add Recommendation</div><div style="display:grid;gap:8px"><input type="text" id="addRecTitle" placeholder="Title" style="padding:8px"><input type="text" id="addRecReason" placeholder="Reason" style="padding:8px"><button class="btn-admin" onclick="addNextItem('recommendations')">Add</button></div></div></div>`;
+// renderAdmNext merged into renderAdmBriefing
+
+function updateInvoiceField(clientKey,idx,field,value){
+  const inv=(clientKey.startsWith('agency')?AGENCY:CLIENTS[clientKey]).invoices;
+  if(inv&&inv[idx]) inv[idx][field]=value;
+}
+function addInvoice(clientKey){
+  const inv=(clientKey.startsWith('agency')?AGENCY:CLIENTS[clientKey]).invoices;
+  if(!inv) return;
+  const id=document.getElementById('newInvId').value.trim();
+  const date=document.getElementById('newInvDate').value.trim();
+  const amount=document.getElementById('newInvAmount').value.trim();
+  const status=document.getElementById('newInvStatus').value;
+  const paidDate=document.getElementById('newInvPaid').value.trim();
+  if(!id||!amount){showToast('Invoice ID and Amount required');return;}
+  const obj={id,date,amount,status,paidDate};
+  if(clientKey.startsWith('agency')){
+    const detail=document.getElementById('newInvDetail')?.value.trim()||'';
+    obj.detail=detail;
+  }
+  inv.unshift(obj);
+  renderMain();showToast('Invoice added');
+}
+function removeInvoice(clientKey,idx){
+  const inv=(clientKey.startsWith('agency')?AGENCY:CLIENTS[clientKey]).invoices;
+  if(inv){inv.splice(idx,1);renderMain();showToast('Invoice removed');}
+}
+
+function invRowHtml(x,idx,clientKey,hasDetail){
+  const isEditing=editingInvoiceIdx===idx;
+  const statusColor=x.status==='Paid'?'green':x.status==='Overdue'?'red':'orange';
+  if(isEditing){
+    return `<tr style="background:var(--bg)">
+      <td><input type="text" id="editInvId" value="${x.id}" style="width:110px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td><input type="text" id="editInvDate" value="${x.date}" style="width:110px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td><input type="text" id="editInvAmount" value="${x.amount}" style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      ${hasDetail?`<td><input type="text" id="editInvDetail" value="${x.detail||''}" style="width:130px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>`:''}
+      <td><select id="editInvStatus" style="padding:4px"><option ${x.status==='Paid'?'selected':''}>Paid</option><option ${x.status==='Pending'?'selected':''}>Pending</option><option ${x.status==='Overdue'?'selected':''}>Overdue</option></select></td>
+      <td><input type="text" id="editInvPaid" value="${x.paidDate||''}" style="width:110px;padding:4px;border:1px solid var(--border);border-radius:4px"></td>
+      <td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="saveInvoice('${clientKey}',${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="cancelEditInvoice()">Cancel</button></td>
+    </tr>`;
+  }
+  return `<tr>
+    <td><strong>${x.id}</strong></td><td>${x.date}</td><td>${x.amount}</td>
+    ${hasDetail?`<td>${x.detail||''}</td>`:''}
+    <td><span class="tag ${statusColor}">${x.status}</span></td><td>${x.paidDate||'—'}</td>
+    <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="editInvoice(${idx})">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeInvoice('${clientKey}',${idx})">Remove</button></td>
+  </tr>`;
 }
 
 function renderAdmBilling(el,d){
   const inv=d.invoices||[];
+  const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+  const outstanding=inv.filter(x=>x.status!=='Paid').length;
   el.innerHTML=`${admCtx()}
     <div class="topbar"><h2>Billing & Payments</h2></div>
-    <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Monthly Fee</div><div class="kpi-value">${d.package}</div></div><div class="kpi-card"><div class="kpi-label">Billing Type</div><div class="kpi-value">Direct</div></div><div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${inv.reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0).toLocaleString()}</div></div><div class="kpi-card"><div class="kpi-label">Payment Status</div><div class="kpi-value"><span class="tag green">Current</span></div></div></div>
-    <div class="card"><h3>Invoice History</h3><table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th>Paid</th></tr></thead><tbody>${inv.map(x=>`<tr><td><strong>${x.id}</strong></td><td>${x.date}</td><td>${x.amount}</td><td><span class="tag green">${x.status}</span></td><td>${x.paidDate}</td></tr>`).join('')}</tbody></table></div>`;
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Monthly Fee</div><div class="kpi-value">${d.package}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Billing Type</div><div class="kpi-value">Direct</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${totalCollected.toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Payment Status</div><div class="kpi-value"><span class="tag ${outstanding?'orange':'green'}">${outstanding?outstanding+' Outstanding':'Current'}</span></div></div>
+    </div>
+    <div class="card"><h3>Invoice History</h3>
+      <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
+      <tbody>${inv.map((x,idx)=>invRowHtml(x,idx,adminClient,false)).join('')}</tbody></table>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Invoice</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+          <div><label style="font-size:11px;color:var(--muted);display:block">Invoice ID</label><input type="text" id="newInvId" placeholder="INV-2026-007" style="padding:6px;width:120px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newInvDate" placeholder="Mar 1, 2026" style="padding:6px;width:110px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Amount</label><input type="text" id="newInvAmount" placeholder="$5,000" style="padding:6px;width:80px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newInvStatus" style="padding:6px"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Paid Date</label><input type="text" id="newInvPaid" placeholder="Mar 3, 2026" style="padding:6px;width:110px"></div>
+          <button class="btn-admin" onclick="addInvoice('${adminClient}')">Add</button>
+        </div>
+      </div>
+    </div>`;
 }
 
 function renderAdmTeam(el,d){
@@ -859,17 +1442,44 @@ function renderAdmTeam(el,d){
 }
 
 function renderAdmAgencyBilling(el){
+  const b2cCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2C')).length;
+  const b2bCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2B')).length;
+  const b2cRev=b2cCount*5000;
+  const b2bRev=b2bCount*3000;
+  const inv=AGENCY.invoices||[];
+  const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+  const outstanding=inv.filter(x=>x.status!=='Paid').length;
   el.innerHTML=`${admCtx()}
     <div class="topbar"><h2>Agency Billing</h2></div>
     <div class="alert-row info" style="margin-bottom:20px">💳 Momentum Digital's end clients pay the agency directly. BossWallah invoices the agency for all managed clients.</div>
-    <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Monthly Invoice</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div><div class="kpi-card"><div class="kpi-label">Clients Managed</div><div class="kpi-value">${AGENCY.totals.clients}</div></div><div class="kpi-card"><div class="kpi-label">B2C Revenue</div><div class="kpi-value">$15,000</div><div class="kpi-change">3 × $5,000</div></div><div class="kpi-card"><div class="kpi-label">B2B Revenue</div><div class="kpi-value">$9,000</div><div class="kpi-change">3 × $3,000</div></div></div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Monthly Invoice</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Clients Managed</div><div class="kpi-value">${AGENCY.totals.clients}</div></div>
+      <div class="kpi-card"><div class="kpi-label">B2C Revenue</div><div class="kpi-value">$${b2cRev.toLocaleString()}</div><div class="kpi-change">${b2cCount} × $5,000</div></div>
+      <div class="kpi-card"><div class="kpi-label">B2B Revenue</div><div class="kpi-value">$${b2bRev.toLocaleString()}</div><div class="kpi-change">${b2bCount} × $3,000</div></div>
+    </div>
     <div class="card"><h3>Revenue by Client</h3><table><thead><tr><th>Client</th><th>Package</th><th>BW Fee</th><th>Note</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package.includes('B2C')?'$5,000':'$3,000'}</td><td style="color:var(--muted)">Agency billed</td></tr>`).join('')}</tbody></table></div>
-    <div class="card"><h3>Invoice History (BW → Momentum Digital)</h3><table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Detail</th><th>Status</th><th>Paid</th></tr></thead><tbody>${AGENCY.invoices.map(inv=>`<tr><td><strong>${inv.id}</strong></td><td>${inv.date}</td><td>${inv.amount}</td><td>${inv.detail}</td><td><span class="tag green">${inv.status}</span></td><td>${inv.paidDate}</td></tr>`).join('')}</tbody></table></div>`;
+    <div class="card"><h3>Invoice History (BW → Momentum Digital)</h3>
+      <div style="margin-bottom:8px"><span class="tag ${outstanding?'orange':'green'}">${outstanding?outstanding+' Outstanding':'All Paid'}</span> <span style="font-size:12px;color:var(--muted);margin-left:8px">Total collected: $${totalCollected.toLocaleString()}</span></div>
+      <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Detail</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
+      <tbody>${inv.map((x,idx)=>invRowHtml(x,idx,adminClient,true)).join('')}</tbody></table>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Invoice</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+          <div><label style="font-size:11px;color:var(--muted);display:block">Invoice ID</label><input type="text" id="newInvId" placeholder="AG-2026-007" style="padding:6px;width:110px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newInvDate" placeholder="Mar 1, 2026" style="padding:6px;width:110px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Amount</label><input type="text" id="newInvAmount" placeholder="$24,000" style="padding:6px;width:90px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Detail</label><input type="text" id="newInvDetail" placeholder="6 clients" style="padding:6px;width:140px"></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newInvStatus" style="padding:6px"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
+          <div><label style="font-size:11px;color:var(--muted);display:block">Paid Date</label><input type="text" id="newInvPaid" placeholder="Mar 5, 2026" style="padding:6px;width:110px"></div>
+          <button class="btn-admin" onclick="addInvoice('${adminClient}')">Add</button>
+        </div>
+      </div>
+    </div>`;
 }
 
 function recalcAgencyTotals(){
   AGENCY.totals.clients=AGENCY.agencyClients.length;
-  AGENCY.totals.avgHealth=(AGENCY.agencyClients.reduce((s,c)=>s+c.health,0)/AGENCY.agencyClients.length).toFixed(1);
   const b2cRevenue=AGENCY.agencyClients.filter(c=>c.type.includes('B2C')).length*5000;
   const b2bRevenue=AGENCY.agencyClients.filter(c=>c.type.includes('B2B')).length*3000;
   AGENCY.totals.totalRevenue='$'+(b2cRevenue+b2bRevenue).toLocaleString();
@@ -891,7 +1501,6 @@ function removeAgencyClient(id){
 function addAgencyClient(){
   const name=document.getElementById('newClientName').value.trim();
   const type=document.getElementById('newClientType').value;
-  const health=parseInt(document.getElementById('newClientHealth').value)||80;
   const reach=document.getElementById('newClientReach').value.trim()||'0K';
   const leads=document.getElementById('newClientLeads').value.trim()||'0';
   const adSpend=document.getElementById('newClientAdSpend').value.trim()||'$0';
@@ -903,7 +1512,7 @@ function addAgencyClient(){
   const pkg=type==='B2C'?'B2C $5K':'B2B $3K';
 
   AGENCY.agencyClients.push({
-    id,name,type:`B2${type.slice(-1)} — ${name}`,package:pkg,health,reach,leads,adSpend,roas,needsAttention:null
+    id,name,type:`B2${type.slice(-1)} — ${name}`,package:pkg,reach,leads,adSpend,roas,needsAttention:null
   });
 
   recalcAgencyTotals();
@@ -920,7 +1529,7 @@ function updateAgencyClientField(id,field,value){
   const client=AGENCY.agencyClients.find(c=>c.id===id);
   if(client){
     client[field]=value;
-    if(['health','adSpend','roas'].includes(field)){recalcAgencyTotals();}
+    if(['adSpend','roas'].includes(field)){recalcAgencyTotals();}
   }
 }
 
@@ -934,7 +1543,6 @@ function renderAdmAgencyClients(el){
           <tr>
             <th>Client</th>
             <th>Type</th>
-            <th>Health</th>
             <th>Reach</th>
             <th>Leads</th>
             <th>Ad Spend</th>
@@ -948,10 +1556,6 @@ function renderAdmAgencyClients(el){
             <tr>
               <td><strong>${c.name}</strong></td>
               <td>${c.type}</td>
-              <td>
-                <input type="number" value="${c.health}" min="0" max="100" style="width:50px"
-                  onchange="updateAgencyClientField('${c.id}','health',parseInt(this.value));renderMain()">
-              </td>
               <td>
                 <input type="text" value="${c.reach}" style="width:70px"
                   onchange="updateAgencyClientField('${c.id}','reach',this.value)">
@@ -994,10 +1598,6 @@ function renderAdmAgencyClients(el){
             <option value="B2C">B2C</option>
             <option value="B2B">B2B</option>
           </select>
-        </div>
-        <div>
-          <label>Health Score (0-100)</label>
-          <input type="number" id="newClientHealth" value="80" min="0" max="100">
         </div>
         <div>
           <label>Reach</label>
