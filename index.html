@@ -203,11 +203,11 @@ table tr:last-child td{border-bottom:none}
 <!-- Admin: Add Activity Modal -->
 <div class="modal-overlay" id="addActivityModal"><div class="modal">
   <h3>Add Activity</h3>
-  <label>Category</label><select id="actCategory"><option value="completed">Completed</option><option value="inProgress">In Progress</option><option value="needsYou">Needs Client Input</option></select>
-  <label>Icon</label><select id="actIcon"><option value="🎬">🎬 Video</option><option value="✍️">✍️ Blog</option><option value="💰">💰 Ads</option><option value="🔍">🔍 SEO</option><option value="📎">📎 LinkedIn</option><option value="⭐">⭐ Influencer</option><option value="⚠️">⚠️ Alert</option></select>
+  <label>Category</label><select id="actCategory" onchange="toggleActFields()"><option value="completed">Completed</option><option value="inProgress">In Progress</option><option value="needsYou">Needs Client Input</option><option value="planned">What's Next — Planned</option><option value="recommendations">What's Next — Recommendation</option></select>
+  <div id="actIconRow"><label>Icon</label><select id="actIcon"><option value="🎬">🎬 Video</option><option value="✍️">✍️ Blog</option><option value="💰">💰 Ads</option><option value="🔍">🔍 SEO</option><option value="📎">📎 LinkedIn</option><option value="⭐">⭐ Influencer</option><option value="⚠️">⚠️ Alert</option></select></div>
   <label>Title</label><input type="text" id="actTitle" placeholder="e.g. Published: Morning routine video">
-  <label>Detail</label><textarea id="actDetail" placeholder="e.g. 142K views, 8.2% engagement"></textarea>
-  <label>Date</label><input type="text" id="actDate" placeholder="e.g. Feb 24">
+  <label id="actDetailLabel">Detail</label><textarea id="actDetail" placeholder="e.g. 142K views, 8.2% engagement"></textarea>
+  <div id="actDateRow"><label>Date</label><input type="text" id="actDate" placeholder="e.g. Feb 24"></div>
   <div class="btn-row"><button class="btn-outline" onclick="closeModal('addActivityModal')">Cancel</button><button class="btn-admin" onclick="adminAddActivity()">Add</button></div>
 </div></div>
 
@@ -1015,6 +1015,23 @@ function saveActivity(section,category,idx){
   editingActivityKey=null;renderMain();showToast('Updated!');
 }
 function cancelEditActivity(){editingActivityKey=null;renderMain();}
+function toggleActFields(){
+  const cat=document.getElementById('actCategory').value;
+  const iconRow=document.getElementById('actIconRow');
+  const dateRow=document.getElementById('actDateRow');
+  const detailLabel=document.getElementById('actDetailLabel');
+  const detailEl=document.getElementById('actDetail');
+  if(cat==='recommendations'){
+    iconRow.style.display='none';dateRow.style.display='none';
+    detailLabel.textContent='Reason';detailEl.placeholder='e.g. If 3.1x holds, move $500 from Facebook';
+  } else if(cat==='planned'){
+    iconRow.style.display='';dateRow.style.display='none';
+    detailLabel.textContent='Detail';detailEl.placeholder='e.g. Product lab (Mar 3), Spring launch (Mar 7)';
+  } else {
+    iconRow.style.display='';dateRow.style.display='';
+    detailLabel.textContent='Detail';detailEl.placeholder='e.g. 142K views, 8.2% engagement';
+  }
+}
 function adminAddActivity(){
   const d=CLIENTS[adminClient];
   const cat=document.getElementById('actCategory').value;
@@ -1022,7 +1039,13 @@ function adminAddActivity(){
   const title=document.getElementById('actTitle').value.trim();
   const detail=document.getElementById('actDetail').value.trim();
   if(!title){showToast('Title required');return;}
-  d.briefing[cat].push({icon,title,detail:detail||''});
+  if(cat==='planned'){
+    d.whatsNext.planned.push({icon,title,detail:detail||''});
+  } else if(cat==='recommendations'){
+    d.whatsNext.recommendations.push({title,reason:detail||''});
+  } else {
+    d.briefing[cat].push({icon,title,detail:detail||''});
+  }
   closeModal('addActivityModal');renderMain();showToast('Activity added!');
 }
 
@@ -1214,10 +1237,8 @@ function renderAdmBriefing(el,d){
     <div class="card"><h3>⚠️ Needs Client Input</h3>${actItemHtml('briefing','needsYou',b.needsYou,'review')}</div>
     <div class="card"><h3>✅ Completed</h3>${actItemHtml('briefing','completed',b.completed,'done')}</div>
     <div class="card"><h3>🔄 In Progress</h3>${actItemHtml('briefing','inProgress',b.inProgress,'progress')}</div>
-    <div class="card"><h3>📅 What's Next — Planned</h3>${actItemHtml('whatsNext','planned',n.planned,'planned')}
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Add Planned Item</div><div style="display:grid;gap:8px"><select id="addPlanIcon" style="padding:8px"><option>🎬</option><option>✍️</option><option>💰</option><option>⭐</option><option>🔍</option></select><input type="text" id="addPlanTitle" placeholder="Title" style="padding:8px"><input type="text" id="addPlanDetail" placeholder="Detail" style="padding:8px"><button class="btn-admin" onclick="addNextItem('planned')">Add</button></div></div></div>
-    <div class="card"><h3>💡 What's Next — Recommendations</h3>${actItemHtml('whatsNext','recommendations',n.recommendations,'')}
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">Add Recommendation</div><div style="display:grid;gap:8px"><input type="text" id="addRecTitle" placeholder="Title" style="padding:8px"><input type="text" id="addRecReason" placeholder="Reason" style="padding:8px"><button class="btn-admin" onclick="addNextItem('recommendations')">Add</button></div></div></div>`;
+    <div class="card"><h3>📅 What's Next — Planned</h3>${actItemHtml('whatsNext','planned',n.planned,'planned')}</div>
+    <div class="card"><h3>💡 What's Next — Recommendations</h3>${actItemHtml('whatsNext','recommendations',n.recommendations,'')}</div>`;
 }
 
 function removeContentItem(type,idx){
