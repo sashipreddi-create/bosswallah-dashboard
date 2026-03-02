@@ -151,7 +151,7 @@ table tr:last-child td{border-bottom:none}
 </head>
 <body>
 <div class="sidebar" id="sidebar">
-  <div class="logo"><h1 id="brandName">BOSSWALLAH</h1><div class="subtitle" id="brandSubtitle">Client Dashboard</div></div>
+  <div class="logo"><h1 id="brandName"><span id="sidebarLogoArea">BOSSWALLAH</span></h1><div class="subtitle" id="brandSubtitle">Client Dashboard</div></div>
   <div class="client-switcher" id="clientSwitcher">
     <label id="switcherLabel">Client</label>
     <select id="clientSelect" onchange="onClientSelectChange()"></select>
@@ -217,7 +217,7 @@ table tr:last-child td{border-bottom:none}
 // ============ DATA ============
 const CLIENTS = {
   b2c: {
-    name:"GlowUp Beauty",type:"B2C Startup",package:"$5,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 3:45 PM",
+    name:"GlowUp Beauty",type:"Startup",package:"$5,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 3:45 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: “Morning routine reveal” video",detail:"TikTok, Reels, Shorts — 142K views, 8.2% engagement.",date:"Feb 24"},
@@ -234,24 +234,25 @@ const CLIENTS = {
       needsYou:[{icon:"⚠️",type:"review",title:"Blog “SPF Myths” needs approval",detail:"Waiting 3 days. Targets 2,400 monthly searches.",date:"Waiting 3d"}],
     },
     content:{
-      videos:[
-        {title:"Morning routine reveal",status:"Published",platform:"TikTok, Reels, Shorts",result:"142K views",date:"Feb 24"},
-        {title:"Retinol deep-dive",status:"Published",platform:"TikTok, Reels",result:"67K views",date:"Feb 21"},
-        {title:"Customer transformation",status:"In Editing",platform:"All",result:"Review Thu",date:"Feb 28"},
-        {title:"Behind the scenes: Product lab",status:"Scripting",platform:"TikTok, Reels",result:"—",date:"Mar 3"},
-        {title:"Founder Q&A: Clean beauty",status:"Published",platform:"All",result:"52K views",date:"Feb 17"},
-        {title:"5 skincare myths debunked",status:"Published",platform:"TikTok, Shorts",result:"98K views",date:"Feb 14"},
-        {title:"Valentine's Day gift guide",status:"Published",platform:"Reels, TikTok",result:"73K views",date:"Feb 10"},
-        {title:"How to layer products",status:"Published",platform:"All",result:"41K views",date:"Feb 7"},
-      ],
-      blogs:[
-        {title:"Complete Guide to Retinol 2026",status:"Published",result:"3,200/mo",keyword:"best retinol serum 2026"},
-        {title:"Clean Beauty: What It Means",status:"Published",result:"2,100/mo",keyword:"clean beauty routine"},
-        {title:"How to Layer Skincare",status:"Published",result:"1,800/mo",keyword:"skincare layering order"},
-        {title:"SPF Myths",status:"Needs Approval",result:"Target: 2,400/mo",keyword:"sunscreen myths"},
-      ],
-      summary:{videosDelivered:"8 of 8",blogsDelivered:"3 of 4",socialPosts:"52 across 6 platforms",influencerPosts:"5 from 2 influencers"},
+      commitments:{instagramReels:{committed:20,delivered:18},instagramCarousels:{committed:12,delivered:10},instagramStories:{committed:30,delivered:28},youtubeLongForm:{committed:4,delivered:4},youtubeShorts:{committed:15,delivered:13},facebookPosts:{committed:15,delivered:14},podcastEpisodes:{committed:1,delivered:1},blogArticles:{committed:4,delivered:3},designAssets:{committed:8,delivered:8},communityMgmt:{committed:1,delivered:1}},
+      items:[
+        {type:'instagramReels',title:'Morning routine reveal',status:'Published',result:'142K views',date:'Feb 24'},
+        {type:'instagramReels',title:'Retinol deep-dive',status:'Published',result:'67K views',date:'Feb 21'},
+        {type:'instagramReels',title:'Customer transformation',status:'In Editing',result:'Review Thu',date:'Feb 28'},
+        {type:'youtubeLongForm',title:'Behind the scenes: Product lab',status:'Scripting',result:'—',date:'Mar 3'},
+        {type:'youtubeLongForm',title:'Founder Q&A: Clean beauty',status:'Published',result:'52K views',date:'Feb 17'},
+        {type:'youtubeShorts',title:'5 skincare myths debunked',status:'Published',result:'98K views',date:'Feb 14'},
+        {type:'youtubeShorts',title:"Valentine's Day gift guide",status:'Published',result:'73K views',date:'Feb 10'},
+        {type:'instagramCarousels',title:'How to layer products',status:'Published',result:'41K views',date:'Feb 7'},
+        {type:'blogArticles',title:'Complete Guide to Retinol 2026',status:'Published',result:'3,200/mo',date:'Feb 1'},
+        {type:'blogArticles',title:'Clean Beauty: What It Means',status:'Published',result:'2,100/mo',date:'Feb 5'},
+        {type:'blogArticles',title:'How to Layer Skincare',status:'Published',result:'1,800/mo',date:'Feb 8'},
+        {type:'blogArticles',title:'SPF Myths',status:'Needs Approval',result:'Target: 2,400/mo',date:'Feb 20'},
+        {type:'podcastEpisodes',title:'Andamaina Twacha Ep.3',status:'Published',result:'2,400 listens',date:'Feb 15'},
+        {type:'facebookPosts',title:'Spring Collection carousel',status:'Published',result:'8.2K reach',date:'Feb 22'}
+      ]
     },
+    linkedin:{profileViews:'1,240',profileViewsChange:'+12%',connections:'3,200',connectionsChange:'+180',icpPercent:'—',postImpressions:'18,500',postImpressionsChange:'+22%',engagementRate:'4.8%',engagementRateChange:'+0.6%',inboundDMs:'12',inboundDMsChange:'+3',topPosts:[{title:'Our skincare journey',impressions:'4,200',engagement:'6.1%'},{title:'Why clean beauty matters',impressions:'3,100',engagement:'5.4%'}],competitors:[]},
     impact:{
       kpis:[{label:"Total Reach",value:"2.4M",change:"+18%",context:"People who saw your content"},{label:"Leads",value:"1,847",change:"+24%",context:"From all channels"},{label:"Ad ROAS",value:"4.2x",change:"+0.6x",context:"$1 → $4.20"},{label:"Organic Traffic",value:"12,400",change:"+22%",context:"Free Google visitors"}],
       channels:[{name:"Instagram",metric:"22.1K",growth:"+1,200",engagement:"4.8%"},{name:"TikTok",metric:"15.4K",growth:"+1,400",engagement:"6.2%"},{name:"YouTube",metric:"3.2K",growth:"+280",engagement:"3.1%"},{name:"Google SEO",metric:"12.4K visits",growth:"+22%",engagement:"8 top-10"},{name:"Paid Ads",metric:"$8,200",growth:"4.2x ROAS",engagement:"$12.80 CPA"}],
@@ -280,7 +281,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"}]},
   },
   b2b: {
-    name:"DataForge AI",type:"B2B Startup",package:"$3,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 2:15 PM",
+    name:"DataForge AI",type:"Startup",package:"$3,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 2:15 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: ETL post went viral",detail:"12.4K impressions, 7.2% eng, 47 ICP comments.",date:"Feb 23"},
@@ -296,9 +297,21 @@ const CLIENTS = {
       needsYou:[{icon:"⚠️",type:"review",title:"Blog “Real-time vs. Batch” needs review",detail:"1,200/mo keyword. Trending topic.",date:"Waiting 2d"}],
     },
     content:{
-      videos:[{title:"DataForge demo: Real-time pipelines",status:"Published",platform:"LinkedIn, YouTube",result:"2.1K views",date:"Feb 20"},{title:"Founder insights: Future of data ops",status:"Published",platform:"LinkedIn, YouTube",result:"1.4K views",date:"Feb 6"}],
-      blogs:[{title:"ETL is Dead: Alternatives 2026",status:"Published",result:"1,400/mo",keyword:"etl alternatives"},{title:"Data Pipeline Best Practices",status:"Published",result:"980/mo",keyword:"modern data pipeline"},{title:"Data Quality = ROI",status:"Published",result:"640/mo",keyword:"data quality roi"},{title:"Real-time vs. Batch",status:"Needs Review",result:"Target: 1,200/mo",keyword:"real-time vs batch"}],
-      summary:{videosDelivered:"2 of 2",blogsDelivered:"3 of 4",socialPosts:"32 (22 LI, 8 X, 2 YT)",influencerPosts:"N/A (add-on)"},
+      commitments:{youtubeLongForm:{committed:4,delivered:3},youtubeShorts:{committed:10,delivered:9},instagramReels:{committed:5,delivered:4},blogArticles:{committed:20,delivered:17},linkedinPosts:{committed:20,delivered:18},facebookPosts:{committed:5,delivered:5},twitterPosts:{committed:10,delivered:8},instagramPosts:{committed:5,delivered:4},newsletterEmails:{committed:1,delivered:1},caseStudies:{committed:2,delivered:1},websiteEnhancements:{committed:1,delivered:1},strategicReports:{committed:1,delivered:1}},
+      items:[
+        {type:'youtubeLongForm',title:'Enterprise data pipeline deep-dive',status:'Published',result:'12K views',date:'Feb 20'},
+        {type:'youtubeLongForm',title:'DataForge vs competitors',status:'Published',result:'8.5K views',date:'Feb 10'},
+        {type:'youtubeLongForm',title:'CEO interview: Future of data',status:'In Editing',result:'—',date:'Feb 27'},
+        {type:'youtubeShorts',title:'3 data mistakes startups make',status:'Published',result:'45K views',date:'Feb 18'},
+        {type:'blogArticles',title:'Complete Guide to Data Pipelines',status:'Published',result:'5,100/mo',date:'Feb 1'},
+        {type:'blogArticles',title:'ETL vs ELT: 2026 Guide',status:'Published',result:'3,800/mo',date:'Feb 8'},
+        {type:'linkedinPosts',title:'Why we rebuilt our query engine',status:'Published',result:'2.4K impressions',date:'Feb 22'},
+        {type:'linkedinPosts',title:'Hiring data engineers in 2026',status:'Published',result:'1.8K impressions',date:'Feb 19'},
+        {type:'caseStudies',title:'How Acme Corp cut costs 40%',status:'Published',result:'890 downloads',date:'Feb 5'},
+        {type:'newsletterEmails',title:'February Data Digest',status:'Published',result:'34% open rate',date:'Feb 1'},
+        {type:'twitterPosts',title:'Thread: Data mesh explained',status:'Published',result:'12K impressions',date:'Feb 15'},
+        {type:'strategicReports',title:'February Performance Report',status:'Published',result:'Delivered',date:'Feb 28'}
+      ]
     },
     impact:{
       kpis:[{label:"Total Reach",value:"340K",change:"+31%",context:"LI, X, YT, Google"},{label:"Qualified Leads",value:"127",change:"+18%",context:"Demos, DMs, forms"},{label:"Ad ROAS",value:"3.8x",change:"+0.4x",context:"LI + Google"},{label:"Organic Traffic",value:"4,800",change:"+28%",context:"Free Google visitors"}],
@@ -333,7 +346,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Anita Mehta",role:"Account Owner"},viewers:[{name:"Raj Kumar",role:"Video Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"},{name:"Vikram Patel",role:"Ads Lead"}]},
   },
   freshbowl: {
-    name:"FreshBowl",type:"B2C Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 4:10 PM",
+    name:"FreshBowl",type:"Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 4:10 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: 'Meal prep in 10 min' video",detail:"TikTok, Reels — 89K views, 6.8% engagement.",date:"Feb 25"},
@@ -348,22 +361,17 @@ const CLIENTS = {
       needsYou:[{icon:"⚠️",type:"review",title:"New menu photos need approval",detail:"12 product shots for spring menu refresh.",date:"Waiting 2d"}],
     },
     content:{
-      videos:[
-        {title:"Meal prep in 10 min",status:"Published",platform:"TikTok, Reels",result:"89K views",date:"Feb 25"},
-        {title:"Chef's secret sauce reveal",status:"Published",platform:"TikTok, Shorts",result:"62K views",date:"Feb 18"},
-        {title:"Behind the kitchen",status:"In Editing",platform:"All",result:"Review Fri",date:"Feb 28"},
-        {title:"Customer taste test challenge",status:"Scripting",platform:"TikTok, Reels",result:"—",date:"Mar 5"},
-        {title:"Healthy vs. fast food comparison",status:"Published",platform:"All",result:"104K views",date:"Feb 11"},
-        {title:"Unboxing our meal kit",status:"Published",platform:"Reels, TikTok",result:"55K views",date:"Feb 4"},
-      ],
-      blogs:[
-        {title:"Best Meal Kits 2026",status:"Published",result:"1,600/mo",keyword:"best meal kits 2026"},
-        {title:"Meal Prep for Beginners",status:"Published",result:"2,400/mo",keyword:"easy meal prep ideas"},
-        {title:"Healthy Eating on a Budget",status:"Published",result:"1,100/mo",keyword:"healthy eating budget"},
-        {title:"Spring Menu Preview",status:"Needs Approval",result:"Target: 1,800/mo",keyword:"healthy spring recipes"},
-      ],
-      summary:{videosDelivered:"6 of 6",blogsDelivered:"3 of 4",socialPosts:"44 across 5 platforms",influencerPosts:"3 from 1 influencer"},
+      commitments:{instagramReels:{committed:20,delivered:17},instagramCarousels:{committed:10,delivered:9},instagramStories:{committed:25,delivered:23},youtubeShorts:{committed:12,delivered:11},facebookPosts:{committed:10,delivered:10},blogArticles:{committed:4,delivered:3},designAssets:{committed:6,delivered:6}},
+      items:[
+        {type:'instagramReels',title:'Farm-to-bowl journey',status:'Published',result:'89K views',date:'Feb 22'},
+        {type:'instagramReels',title:'Chef recipe: Spring salad',status:'Published',result:'65K views',date:'Feb 18'},
+        {type:'instagramCarousels',title:'Nutrition facts carousel',status:'Published',result:'34K views',date:'Feb 15'},
+        {type:'youtubeShorts',title:'30-second meal prep hack',status:'Published',result:'120K views',date:'Feb 20'},
+        {type:'blogArticles',title:'Organic vs Conventional: Truth',status:'Published',result:'1,900/mo',date:'Feb 10'},
+        {type:'facebookPosts',title:'Customer spotlight: Sarah',status:'Published',result:'5.2K reach',date:'Feb 23'}
+      ]
     },
+    linkedin:{profileViews:'840',profileViewsChange:'+8%',connections:'1,850',connectionsChange:'+120',icpPercent:'—',postImpressions:'9,200',postImpressionsChange:'+18%',engagementRate:'3.2%',engagementRateChange:'+0.4%',inboundDMs:'6',inboundDMsChange:'+2',topPosts:[{title:'Fresh ingredients matter',impressions:'2,100',engagement:'4.1%'},{title:'Meal prep saves time',impressions:'1,800',engagement:'3.8%'}],competitors:[]},
     impact:{
       kpis:[{label:"Total Reach",value:"1.8M",change:"+21%",context:"All platforms"},{label:"Leads",value:"2,340",change:"+19%",context:"Orders + signups"},{label:"Ad ROAS",value:"4.1x",change:"+0.3x",context:"$1 → $4.10"},{label:"Organic Traffic",value:"8,600",change:"+16%",context:"Free Google visitors"}],
       channels:[{name:"Instagram",metric:"18.2K",growth:"+1,100",engagement:"5.1%"},{name:"TikTok",metric:"12.8K",growth:"+980",engagement:"6.8%"},{name:"Google SEO",metric:"8,600 visits",growth:"+16%",engagement:"6 top-10"},{name:"Paid Ads",metric:"$6,200",growth:"4.1x ROAS",engagement:"$14.20 CPA"}],
@@ -385,7 +393,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"}]},
   },
   novapay: {
-    name:"NovaPay",type:"B2B Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 1:30 PM",
+    name:"NovaPay",type:"Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 1:30 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: Fintech regulation post",detail:"8.2K impressions, 5.8% engagement, 28 ICP comments.",date:"Feb 24"},
@@ -399,18 +407,16 @@ const CLIENTS = {
       needsYou:[{icon:"⚠️",type:"review",title:"Case study draft needs client quotes",detail:"Enterprise client success story. Need 2 quotes.",date:"Waiting 4d"}],
     },
     content:{
-      videos:[
-        {title:"NovaPay platform demo",status:"Published",platform:"LinkedIn, YouTube",result:"1.8K views",date:"Feb 21"},
-        {title:"Founder: Future of payments",status:"Published",platform:"LinkedIn",result:"1.2K views",date:"Feb 10"},
-      ],
-      blogs:[
-        {title:"Payment API Comparison 2026",status:"Published",result:"980/mo",keyword:"payment api comparison"},
-        {title:"PCI DSS Compliance Guide",status:"Published",result:"720/mo",keyword:"pci dss compliance"},
-        {title:"Embedded Payments Explained",status:"Published",result:"540/mo",keyword:"embedded payments"},
-        {title:"Enterprise Case Study",status:"Needs Review",result:"Target: 800/mo",keyword:"payment processing enterprise"},
-      ],
-      summary:{videosDelivered:"2 of 2",blogsDelivered:"3 of 4",socialPosts:"28 (20 LI, 6 X, 2 YT)",influencerPosts:"N/A"},
+      commitments:{youtubeLongForm:{committed:4,delivered:3},youtubeShorts:{committed:8,delivered:7},blogArticles:{committed:15,delivered:13},linkedinPosts:{committed:15,delivered:12},twitterPosts:{committed:8,delivered:7},newsletterEmails:{committed:1,delivered:1},caseStudies:{committed:2,delivered:1},websiteEnhancements:{committed:1,delivered:1}},
+      items:[
+        {type:'youtubeLongForm',title:'Payment infrastructure explained',status:'Published',result:'9.2K views',date:'Feb 18'},
+        {type:'blogArticles',title:'Cross-border payments guide',status:'Published',result:'4,200/mo',date:'Feb 5'},
+        {type:'linkedinPosts',title:'Why fintech compliance matters',status:'Published',result:'1.5K impressions',date:'Feb 20'},
+        {type:'caseStudies',title:'How TechCo saved 30% on payments',status:'Published',result:'540 downloads',date:'Feb 12'},
+        {type:'newsletterEmails',title:'February Fintech Pulse',status:'Published',result:'28% open rate',date:'Feb 1'}
+      ]
     },
+    linkedin:{profileViews:'620',profileViewsChange:'+6%',connections:'950',connectionsChange:'+85',icpPercent:'54%',postImpressions:'6,800',postImpressionsChange:'+14%',engagementRate:'2.9%',engagementRateChange:'+0.2%',inboundDMs:'4',inboundDMsChange:'+1',topPosts:[{title:'Payment compliance guide',impressions:'1,600',engagement:'2.8%'},{title:'Fintech trends 2026',impressions:'1,200',engagement:'2.6%'}],competitors:[]},
     impact:{
       kpis:[{label:"Total Reach",value:"180K",change:"+14%",context:"LI, X, YT, Google"},{label:"Qualified Leads",value:"89",change:"+11%",context:"Demos + forms"},{label:"Ad ROAS",value:"3.2x",change:"-0.2x",context:"Below 3.5x target"},{label:"Organic Traffic",value:"3,200",change:"-8%",context:"SEO traffic dip"}],
       channels:[{name:"LinkedIn",metric:"2.8K",growth:"+220",engagement:"4.6%"},{name:"Google SEO",metric:"3,200 visits",growth:"-8%",engagement:"4 top-10"},{name:"Paid Ads",metric:"$3,800",growth:"3.2x ROAS",engagement:"$52 CPA"}],
@@ -432,7 +438,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Deepa Lakshmi",role:"Account Owner"},viewers:[{name:"Vikram Patel",role:"Ads Lead"},{name:"Anita Mehta",role:"Social Lead"}]},
   },
   petvibe: {
-    name:"PetVibe",type:"B2C Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 5:20 PM",
+    name:"PetVibe",type:"Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 5:20 PM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: 'Dog vs. cat taste test' video",detail:"TikTok, Reels — 118K views, 9.1% engagement.",date:"Feb 25"},
@@ -447,22 +453,17 @@ const CLIENTS = {
       needsYou:[{icon:"⚠️",type:"review",title:"Spring product line photos needed",detail:"Need 8 product shots for new treats & toys launch.",date:"Waiting 3d"}],
     },
     content:{
-      videos:[
-        {title:"Dog vs. cat taste test",status:"Published",platform:"TikTok, Reels",result:"118K views",date:"Feb 25"},
-        {title:"New puppy essentials",status:"Published",platform:"Reels, Shorts",result:"76K views",date:"Feb 22"},
-        {title:"Vet Q&A: Allergies",status:"Published",platform:"YouTube, Reels",result:"45K views",date:"Feb 15"},
-        {title:"Vet Q&A: Nutrition",status:"Scripting",platform:"YouTube, Reels",result:"—",date:"Mar 5"},
-        {title:"Day in the life of PetVibe HQ",status:"Published",platform:"TikTok",result:"92K views",date:"Feb 8"},
-        {title:"Valentine's treats unboxing",status:"Published",platform:"All",result:"68K views",date:"Feb 12"},
-      ],
-      blogs:[
-        {title:"Best Dog Food 2026",status:"Published",result:"3,800/mo",keyword:"best dog food 2026"},
-        {title:"Cat Nutrition Guide",status:"Published",result:"2,200/mo",keyword:"cat nutrition guide"},
-        {title:"Pet Subscription Box Review",status:"Published",result:"1,400/mo",keyword:"pet subscription box"},
-        {title:"Spring Pet Safety Tips",status:"Needs Approval",result:"Target: 2,000/mo",keyword:"spring pet safety"},
-      ],
-      summary:{videosDelivered:"6 of 6",blogsDelivered:"3 of 4",socialPosts:"48 across 5 platforms",influencerPosts:"4 from 2 influencers"},
+      commitments:{instagramReels:{committed:20,delivered:19},instagramCarousels:{committed:10,delivered:8},instagramStories:{committed:20,delivered:18},youtubeShorts:{committed:10,delivered:9},facebookPosts:{committed:12,delivered:11},blogArticles:{committed:4,delivered:4},podcastEpisodes:{committed:1,delivered:1},designAssets:{committed:5,delivered:5}},
+      items:[
+        {type:'instagramReels',title:'Puppy training tips',status:'Published',result:'156K views',date:'Feb 23'},
+        {type:'instagramReels',title:'Cat nutrition myths',status:'Published',result:'92K views',date:'Feb 19'},
+        {type:'youtubeShorts',title:'5 signs your dog is happy',status:'Published',result:'210K views',date:'Feb 21'},
+        {type:'blogArticles',title:'Best Dog Foods 2026',status:'Published',result:'6,100/mo',date:'Feb 3'},
+        {type:'podcastEpisodes',title:'Pet Wellness Ep.4',status:'Published',result:'3,100 listens',date:'Feb 14'},
+        {type:'instagramCarousels',title:'Seasonal pet care tips',status:'Published',result:'28K views',date:'Feb 16'}
+      ]
     },
+    linkedin:{profileViews:'720',profileViewsChange:'+10%',connections:'1,450',connectionsChange:'+140',icpPercent:'—',postImpressions:'7,900',postImpressionsChange:'+16%',engagementRate:'3.5%',engagementRateChange:'+0.5%',inboundDMs:'8',inboundDMsChange:'+2',topPosts:[{title:'Pet wellness tips',impressions:'1,900',engagement:'3.8%'},{title:'Dog training basics',impressions:'1,600',engagement:'3.6%'}],competitors:[]},
     impact:{
       kpis:[{label:"Total Reach",value:"920K",change:"+26%",context:"All platforms"},{label:"Leads",value:"1,120",change:"+22%",context:"Subscriptions + orders"},{label:"Ad ROAS",value:"3.8x",change:"+0.4x",context:"$1 → $3.80"},{label:"Organic Traffic",value:"9,800",change:"+19%",context:"Free Google visitors"}],
       channels:[{name:"Instagram",metric:"14.6K",growth:"+1,080",engagement:"5.8%"},{name:"TikTok",metric:"11.2K",growth:"+1,320",engagement:"7.4%"},{name:"YouTube",metric:"4.8K",growth:"+420",engagement:"4.2%"},{name:"Google SEO",metric:"9,800 visits",growth:"+19%",engagement:"7 top-10"},{name:"Paid Ads",metric:"$4,500",growth:"3.8x ROAS",engagement:"$16 CPA"}],
@@ -484,7 +485,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"}]},
   },
   cloudhr: {
-    name:"CloudHR",type:"B2B Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 26, 2026 · 11:45 AM",
+    name:"CloudHR",type:"Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 26, 2026 · 11:45 AM",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: Remote work policy post",detail:"6.4K impressions, 4.2% engagement.",date:"Feb 24"},
@@ -498,18 +499,16 @@ const CLIENTS = {
       needsYou:[{icon:"⚠️",type:"review",title:"Product demo video script needs approval",detail:"2-min walkthrough of new onboarding feature.",date:"Waiting 5d"}],
     },
     content:{
-      videos:[
-        {title:"CloudHR platform overview",status:"Published",platform:"LinkedIn, YouTube",result:"820 views",date:"Feb 14"},
-        {title:"Onboarding feature demo",status:"Needs Approval",platform:"LinkedIn, YouTube",result:"—",date:"Mar 3"},
-      ],
-      blogs:[
-        {title:"HR Tech Stack 2026",status:"Published",result:"480/mo",keyword:"hr tech stack"},
-        {title:"Employee Onboarding Best Practices",status:"Published",result:"620/mo",keyword:"employee onboarding"},
-        {title:"Remote Work Policy Template",status:"Published",result:"890/mo",keyword:"remote work policy template"},
-        {title:"HR Automation ROI Calculator",status:"Needs Review",result:"Target: 700/mo",keyword:"hr automation roi"},
-      ],
-      summary:{videosDelivered:"1 of 2",blogsDelivered:"3 of 4",socialPosts:"24 (18 LI, 4 X, 2 YT)",influencerPosts:"N/A"},
+      commitments:{youtubeLongForm:{committed:4,delivered:2},youtubeShorts:{committed:8,delivered:6},blogArticles:{committed:12,delivered:10},linkedinPosts:{committed:15,delivered:11},twitterPosts:{committed:8,delivered:5},newsletterEmails:{committed:1,delivered:1},webinars:{committed:1,delivered:0},caseStudies:{committed:1,delivered:0}},
+      items:[
+        {type:'youtubeLongForm',title:'Remote workforce management',status:'Published',result:'5.8K views',date:'Feb 15'},
+        {type:'youtubeLongForm',title:'HR automation deep-dive',status:'In Editing',result:'—',date:'Feb 28'},
+        {type:'blogArticles',title:'Future of HR Tech 2026',status:'Published',result:'3,400/mo',date:'Feb 8'},
+        {type:'linkedinPosts',title:'Why compliance is broken',status:'Published',result:'980 impressions',date:'Feb 22'},
+        {type:'newsletterEmails',title:'February HR Insights',status:'Published',result:'22% open rate',date:'Feb 1'}
+      ]
     },
+    linkedin:{profileViews:'580',profileViewsChange:'+5%',connections:'820',connectionsChange:'+75',icpPercent:'48%',postImpressions:'5,600',postImpressionsChange:'+12%',engagementRate:'2.7%',engagementRateChange:'+0.1%',inboundDMs:'3',inboundDMsChange:'+0',topPosts:[{title:'HR tech trends',impressions:'1,200',engagement:'2.6%'},{title:'Remote work policies',impressions:'1,000',engagement:'2.4%'}],competitors:[]},
     impact:{
       kpis:[{label:"Total Reach",value:"95K",change:"+8%",context:"LI, X, Google"},{label:"Qualified Leads",value:"42",change:"+6%",context:"Demos + trials"},{label:"Ad ROAS",value:"2.9x",change:"-0.3x",context:"Below 3x target"},{label:"Organic Traffic",value:"2,100",change:"+12%",context:"Free Google visitors"}],
       channels:[{name:"LinkedIn",metric:"1.6K",growth:"+140",engagement:"3.8%"},{name:"Google SEO",metric:"2,100 visits",growth:"+12%",engagement:"3 top-10"},{name:"Paid Ads",metric:"$2,200",growth:"2.9x ROAS",engagement:"$68 CPA"}],
@@ -532,15 +531,43 @@ const CLIENTS = {
   },
 };
 
+const CONTENT_TYPES = {
+  instagramReels:{label:'Instagram Reels',icon:'🎬',cat:'Video'},
+  instagramCarousels:{label:'Instagram Carousels',icon:'🎨',cat:'Graphics'},
+  instagramStories:{label:'Instagram Stories',icon:'📱',cat:'Graphics'},
+  instagramPosts:{label:'Instagram Posts',icon:'📸',cat:'Graphics'},
+  youtubeLongForm:{label:'YouTube Long-Form',icon:'🎥',cat:'Video'},
+  youtubeShorts:{label:'YouTube Shorts',icon:'⚡',cat:'Video'},
+  facebookPosts:{label:'Facebook Posts',icon:'📘',cat:'Social'},
+  facebookReels:{label:'Facebook Reels',icon:'🎞️',cat:'Video'},
+  linkedinPosts:{label:'LinkedIn Posts',icon:'💼',cat:'Social'},
+  twitterPosts:{label:'Twitter/X Posts',icon:'🐦',cat:'Social'},
+  blogArticles:{label:'Blog Articles',icon:'✍️',cat:'Written'},
+  podcastEpisodes:{label:'Podcast Episodes',icon:'🎙️',cat:'Audio/Live'},
+  caseStudies:{label:'Case Studies',icon:'📊',cat:'Written'},
+  pillarContent:{label:'Pillar Content',icon:'📚',cat:'Written'},
+  newsletterEmails:{label:'Newsletter Emails',icon:'📧',cat:'Written'},
+  webinars:{label:'Webinars',icon:'🖥️',cat:'Audio/Live'},
+  websiteEnhancements:{label:'Website Updates',icon:'🌐',cat:'Operations'},
+  designAssets:{label:'Design Assets',icon:'🎨',cat:'Operations'},
+  communityMgmt:{label:'Community Management',icon:'👥',cat:'Operations'},
+  strategicReports:{label:'Strategic Reports',icon:'📋',cat:'Operations'}
+};
+function getTypeLabel(t){return CONTENT_TYPES[t]?CONTENT_TYPES[t].label:t;}
+function getTypeIcon(t){return CONTENT_TYPES[t]?CONTENT_TYPES[t].icon:'📄';}
+function commitPct(c,d){return c>0?Math.round((d/c)*100):0;}
+function commitColor(pct){return pct>=90?'var(--green)':pct>=70?'var(--orange)':'var(--red)';}
+
 const AGENCY = {
   name:"Momentum Digital",
+  logo:null,
   agencyClients:[
-    {id:"freshbowl",name:"FreshBowl",type:"B2C — Food",package:"B2C $5K",reach:"1.8M",leads:"2,340",adSpend:"$6,200",roas:"4.1x",needsAttention:null},
-    {id:"novapay",name:"NovaPay",type:"B2B — Fintech",package:"B2B $3K",reach:"180K",leads:"89",adSpend:"$3,800",roas:"3.2x",needsAttention:"SEO traffic -8%"},
-    {id:"petvibe",name:"PetVibe",type:"B2C — Pets",package:"B2C $5K",reach:"920K",leads:"1,120",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
-    {id:"cloudhr",name:"CloudHR",type:"B2B — HR Tech",package:"B2B $3K",reach:"95K",leads:"42",adSpend:"$2,200",roas:"2.9x",needsAttention:"ROAS below 3x target"},
-    {id:"glowup",name:"GlowUp Beauty",type:"B2C — Skin",package:"B2C $5K",reach:"2.4M",leads:"1,847",adSpend:"$8,200",roas:"4.2x",needsAttention:null},
-    {id:"dataforge",name:"DataForge AI",type:"B2B — Data",package:"B2B $3K",reach:"340K",leads:"127",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
+    {id:"freshbowl",name:"FreshBowl",type:"Food",package:"$5,000/mo",reach:"1.8M",leads:"2,340",adSpend:"$6,200",roas:"4.1x",needsAttention:null},
+    {id:"novapay",name:"NovaPay",type:"Fintech",package:"$3,000/mo",reach:"180K",leads:"89",adSpend:"$3,800",roas:"3.2x",needsAttention:"SEO traffic -8%"},
+    {id:"petvibe",name:"PetVibe",type:"Pets",package:"$5,000/mo",reach:"920K",leads:"1,120",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
+    {id:"cloudhr",name:"CloudHR",type:"HR Tech",package:"$3,000/mo",reach:"95K",leads:"42",adSpend:"$2,200",roas:"2.9x",needsAttention:"ROAS below 3x target"},
+    {id:"glowup",name:"GlowUp Beauty",type:"Skincare",package:"$5,000/mo",reach:"2.4M",leads:"1,847",adSpend:"$8,200",roas:"4.2x",needsAttention:null},
+    {id:"dataforge",name:"DataForge AI",type:"Data/AI",package:"$3,000/mo",reach:"340K",leads:"127",adSpend:"$4,500",roas:"3.8x",needsAttention:null},
   ],
   totals:{clients:6,totalRevenue:"$24,000",totalAdManaged:"$29,400",avgRoas:"3.7x"},
   team:[
@@ -568,13 +595,14 @@ const BW_EMPLOYEES = [
 
 // Admin: all accounts (direct + agency)
 const ADMIN_ACCOUNTS = [
-  {key:'b2c',name:'GlowUp Beauty',type:'Direct — B2C',package:'$5,000/mo'},
-  {key:'b2b',name:'DataForge AI',type:'Direct — B2B',package:'$3,000/mo'},
+  {key:'b2c',name:'GlowUp Beauty',type:'Direct',package:'$5,000/mo'},
+  {key:'b2b',name:'DataForge AI',type:'Direct',package:'$3,000/mo'},
   {key:'agency_momentum',name:'Momentum Digital',type:'Agency (6 clients)',package:'$24,000/mo'},
 ];
 
 let currentMode='client',currentClient='b2c',currentSection='briefing',agencyDrillClient=null,adminClient='b2c',previewSubTab=null;
 let editingInvoiceIdx=null,editingActivityKey=null;
+let onboardingStep=1,onboardingData={};
 let commentThreads={};
 function initComments(){Object.keys(CLIENTS).forEach(k=>{commentThreads[k]={};if(CLIENTS[k].comments)Object.keys(CLIENTS[k].comments).forEach(s=>{commentThreads[k][s]=[...CLIENTS[k].comments[s]]})});}
 initComments();
@@ -585,7 +613,7 @@ function buildClientSelect(){
   const lbl=document.getElementById('switcherLabel');
   if(currentMode==='client'){
     lbl.textContent='Client';
-    sel.innerHTML='<option value="b2c">GlowUp Beauty (B2C)</option><option value="b2b">DataForge AI (B2B)</option>';
+    sel.innerHTML=Object.keys(CLIENTS).map(k=>`<option value="${k}">${CLIENTS[k].name}</option>`).join('');
     sel.value=currentClient;
   } else if(currentMode==='admin'){
     lbl.textContent='Customer Account';
@@ -598,24 +626,15 @@ function onClientSelectChange(){
   const v=document.getElementById('clientSelect').value;
   if(currentMode==='client'){currentClient=v;currentSection='briefing';}
   else if(currentMode==='admin'){adminClient=v;currentSection='adm_briefing';}
-  renderNav();renderMain();
+  updateSidebarLogo();renderNav();renderMain();
 }
 
 // ============ NAV ============
 const NAV={
-  client_b2c:[
+  client:[
     {id:'briefing',icon:'📋',label:"This Week's Briefing",group:'Your Dashboard'},
     {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
     {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
-    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
-    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
-    {id:'account',icon:'⚙️',label:'Account',group:'Settings'},
-  ],
-  client_b2b:[
-    {id:'briefing',icon:'📋',label:"This Week's Briefing",group:'Your Dashboard'},
-    {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
-    {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
-    {id:'linkedin',icon:'📎',label:'LinkedIn Growth Report',group:'Your Dashboard'},
     {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
     {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
     {id:'account',icon:'⚙️',label:'Account',group:'Settings'},
@@ -624,7 +643,7 @@ const NAV={
     {id:'portfolio',icon:'🏢',label:'Client Portfolio',group:'Agency'},
     {id:'billing',icon:'💳',label:'Billing & Revenue',group:'Agency'},
     {id:'team',icon:'👥',label:'Team & Access',group:'Agency'},
-    {id:'settings',icon:'⚙️',label:'White-Label Settings',group:'Agency'},
+    {id:'settings',icon:'⚙️',label:'Account',group:'Agency'},
   ],
   agency_drill:[
     {id:'briefing',icon:'📋',label:"Briefing",group:'Client View'},
@@ -637,6 +656,7 @@ const NAV={
     {id:'adm_briefing',icon:'✍️',label:'Update Briefing',group:'Dashboard Updates'},
     {id:'adm_content',icon:'🎬',label:'Update Content',group:'Dashboard Updates'},
     {id:'adm_metrics',icon:'📈',label:'Update Impact',group:'Dashboard Updates'},
+    {id:'adm_onboarding',icon:'🆕',label:'Onboard New Client',group:'Setup'},
     {id:'adm_billing',icon:'💳',label:'Billing & Payments',group:'Account'},
     {id:'adm_team',icon:'👥',label:'BW Team Assignment',group:'Account'},
     {id:'adm_preview',icon:'👁️',label:'Preview Client View',group:'Account'},
@@ -653,9 +673,8 @@ function switchMode(mode){
   document.querySelectorAll('.view-tab').forEach(t=>{t.classList.remove('active','admin-active')});
   document.getElementById(mode==='client'?'modeClient':mode==='agency'?'modeAgency':'modeAdmin').classList.add(mode==='admin'?'admin-active':'active');
   document.getElementById('sidebar').classList.toggle('admin-mode',mode==='admin');
-  document.getElementById('brandSubtitle').textContent=mode==='admin'?'Admin Console':mode==='agency'?'Agency Dashboard':'Client Dashboard';
   currentSection=mode==='client'?'briefing':mode==='agency'?'portfolio':'adm_briefing';
-  buildClientSelect();renderNav();renderMain();
+  updateSidebarLogo();buildClientSelect();renderNav();renderMain();
 }
 
 function navTo(s){currentSection=s;previewSubTab=null;document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));document.querySelector(`[data-section="${s}"]`)?.classList.add('active');renderMain();}
@@ -667,7 +686,7 @@ function renderNav(){
   if(currentMode==='admin'){key=adminClient.startsWith('agency')?'admin_agency':'admin_client';}
   else if(currentMode==='agency'&&agencyDrillClient){key='agency_drill';}
   else if(currentMode==='agency'){key='agency';}
-  else{key=`client_${currentClient}`;}
+  else{key='client';}
   items=NAV[key]||[];
   let html='',lastG='';
   if(currentMode==='agency'&&agencyDrillClient){
@@ -722,7 +741,7 @@ function renderMain(){
   const d=CLIENTS[currentClient];
   switch(currentSection){
     case 'briefing':renderBriefing(main,d);break;case 'content':renderContent(main,d);break;
-    case 'impact':renderImpact(main,d);break;case 'linkedin':renderLinkedIn(main,d);break;
+    case 'impact':renderImpact(main,d);break;
     case 'next':renderBriefing(main,d);break;case 'messages':renderMessages(main,d);break;case 'reports':renderReports(main,d);break;case 'account':renderAccount(main,d);break;
     default:renderBriefing(main,d);
   }
@@ -735,28 +754,57 @@ function renderBriefing(el,d,drill){
     <div class="topbar"><div><h2>This Week's Briefing</h2><span style="font-size:13px;color:var(--muted)">${d.name} • ${b.weekOf}</span><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div>
     </div>
     ${b.needsYou.length?`<div style="margin-bottom:24px">${b.needsYou.map(i=>`<div class="highlight-card attention"><div class="hl-title">⚠️ Needs Your Input</div><div class="hl-text"><strong>${i.title}</strong><br>${i.detail}</div></div>`).join('')}</div>`:''}
+    ${d.whatsNext.recommendations.length?`<div class="card"><h3>💡 Our Recommendations</h3>${d.whatsNext.recommendations.map(r=>`<div class="highlight-card action"><div class="hl-title">💡 Recommendation</div><div class="hl-text"><strong>${r.title}</strong><br>${r.reason}</div></div>`).join('')}</div>`:''}
     <div class="card"><h3>✅ Completed This Week</h3>${b.completed.map(i=>`<div class="activity-item"><div class="activity-icon done">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag green">Done</span></div></div>`).join('')}</div>
     <div class="card"><h3>🔄 In Progress</h3>${b.inProgress.map(i=>`<div class="activity-item"><div class="activity-icon progress">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag blue">In Progress</span></div></div>`).join('')}</div>
-    <div class="card"><h3>📅 What's Next</h3>${d.whatsNext.planned.map(i=>`<div class="activity-item"><div class="activity-icon planned">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div></div>`).join('')}</div>
-    ${d.whatsNext.recommendations.length?`<div class="card"><h3>💡 Our Recommendations</h3>${d.whatsNext.recommendations.map(r=>`<div class="highlight-card action"><div class="hl-title">💡 Recommendation</div><div class="hl-text"><strong>${r.title}</strong><br>${r.reason}</div></div>`).join('')}</div>`:''}`;
+    <div class="card"><h3>📅 What's Next</h3>${d.whatsNext.planned.map(i=>`<div class="activity-item"><div class="activity-icon planned">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div></div>`).join('')}</div>`;
 }
 function renderContent(el,d,drill){
-  const c=d.content,st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue'};
-  el.innerHTML=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
-    <div class="topbar"><div><h2>Content & Production</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>
-    <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Videos</div><div class="kpi-value">${c.summary.videosDelivered}</div></div><div class="kpi-card"><div class="kpi-label">Blogs</div><div class="kpi-value">${c.summary.blogsDelivered}</div></div><div class="kpi-card"><div class="kpi-label">Social</div><div class="kpi-value">${c.summary.socialPosts}</div></div><div class="kpi-card"><div class="kpi-label">Influencer</div><div class="kpi-value">${c.summary.influencerPosts}</div></div></div>
-    <div class="card"><h3>Video Pipeline <span class="badge live">Live</span></h3><table><thead><tr><th>Video</th><th>Status</th><th>Platforms</th><th>Result</th><th>Date</th></tr></thead><tbody>${c.videos.map(v=>`<tr><td>${v.title}</td><td><span class="status-dot ${st[v.status]||'blue'}"></span>${v.status}</td><td>${v.platform}</td><td><strong>${v.result}</strong></td><td>${v.date}</td></tr>`).join('')}</tbody></table></div>
-    <div class="card"><h3>Blog Posts</h3><table><thead><tr><th>Title</th><th>Status</th><th>Keyword</th><th>Result</th></tr></thead><tbody>${c.blogs.map(b=>`<tr><td>${b.title}</td><td><span class="tag ${st[b.status]||'blue'}">${b.status}</span></td><td>${b.keyword}</td><td>${b.result}</td></tr>`).join('')}</tbody></table></div>`;
+  const c=d.content;
+  const st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue'};
+  let html=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
+    <div class="topbar"><div><h2>Content & Production</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>`;
+  if(c.commitments&&Object.keys(c.commitments).length>0){
+    html+=`<div class="card"><h3>Commitments Progress</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">`;
+    Object.keys(c.commitments).forEach(type=>{
+      const ct=c.commitments[type];
+      const pct=commitPct(ct.committed,ct.delivered);
+      const col=commitColor(pct);
+      html+=`<div style="padding:12px;border:1px solid var(--border);border-radius:8px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px">${getTypeIcon(type)} ${getTypeLabel(type)}</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:8px">${ct.delivered} of ${ct.committed}</div>
+        <div class="progress-bar"><div class="fill" style="width:${pct}%;background:${col}"></div></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:right">${pct}%</div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  }
+  html+=`<div class="card"><h3>Production Pipeline</h3><table><thead><tr><th>Type</th><th>Title</th><th>Status</th><th>Result</th><th>Date</th></tr></thead><tbody>`;
+  if(c.items&&c.items.length>0){
+    html+=c.items.map(item=>`<tr><td style="font-size:18px">${getTypeIcon(item.type)}</td><td>${item.title}</td><td><span class="tag ${st[item.status]||'blue'}">${item.status}</span></td><td>${item.result}</td><td>${item.date}</td></tr>`).join('');
+  }
+  html+=`</tbody></table></div>`;
+  el.innerHTML=html;
 }
 function renderImpact(el,d,drill){
   const im=d.impact;
-  el.innerHTML=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
+  const li=d.linkedin;
+  let html=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
     <div class="topbar"><div><h2>Business Impact</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>
     <div class="kpi-row">${im.kpis.map(k=>`<div class="kpi-card"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}</div><div class="kpi-change up">↑ ${k.change}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${k.context}</div></div>`).join('')}</div>
     <div class="card"><h3>🏆 Biggest Wins</h3><table><thead><tr><th>Content</th><th>Metric</th><th>Why It Matters</th></tr></thead><tbody>${im.topWins.map(w=>`<tr><td><strong>${w.content}</strong></td><td><span class="tag green">${w.metric}</span></td><td>${w.impact}</td></tr>`).join('')}</tbody></table></div>
     <div class="grid-2"><div class="card"><h3>Channel Growth</h3><table><thead><tr><th>Channel</th><th>Current</th><th>Growth</th><th>Key</th></tr></thead><tbody>${im.channels.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.metric}</td><td style="color:var(--green)">${c.growth}</td><td>${c.engagement}</td></tr>`).join('')}</tbody></table></div>
     <div class="card"><h3>Ad Efficiency</h3><table><thead><tr><th>Campaign</th><th>Spend</th><th>ROAS</th><th>CPA</th></tr></thead><tbody>${im.adBreakdown.map(a=>`<tr><td>${a.campaign}</td><td>${a.spend}</td><td><strong>${a.roas}</strong></td><td>${a.cpa}</td></tr>`).join('')}</tbody></table></div></div>
-    <div class="grid-2"><div class="card"><h3>Reach (6mo)</h3><div class="chart-container"><canvas id="reachChart"></canvas></div></div><div class="card"><h3>${currentClient==='b2b'?'Lead':'Customer'} Growth</h3><div class="chart-container"><canvas id="leadsChart"></canvas></div></div></div>`;
+    <div class="grid-2"><div class="card"><h3>Reach (6mo)</h3><div class="chart-container"><canvas id="reachChart"></canvas></div></div><div class="card"><h3>Growth</h3><div class="chart-container"><canvas id="leadsChart"></canvas></div></div></div>`;
+  if(li){
+    html+=`<div class="card"><h3>LinkedIn Performance</h3>
+      <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Profile Views</div><div class="kpi-value">${li.profileViews}</div><div class="kpi-change up">↑ ${li.profileViewsChange}</div></div><div class="kpi-card"><div class="kpi-label">Post Impressions</div><div class="kpi-value">${li.postImpressions}</div><div class="kpi-change up">↑ ${li.postImpressionsChange}</div></div><div class="kpi-card"><div class="kpi-label">Engagement Rate</div><div class="kpi-value">${li.engagementRate}</div><div class="kpi-change up">↑ ${li.engagementRateChange}</div></div><div class="kpi-card"><div class="kpi-label">Inbound DMs</div><div class="kpi-value">${li.inboundDMs}</div><div class="kpi-change up">↑ ${li.inboundDMsChange}</div></div></div>`;
+    if(li.topPosts&&li.topPosts.length>0){
+      html+=`<div style="margin-top:16px"><h4 style="font-size:13px;font-weight:600;margin-bottom:10px">Top Posts</h4><table><thead><tr><th>Post</th><th>Impressions</th><th>Engagement</th></tr></thead><tbody>${li.topPosts.map(p=>`<tr><td style="max-width:300px">${p.title}</td><td>${p.impressions}</td><td><strong>${p.engagement}</strong></td></tr>`).join('')}</tbody></table></div>`;
+    }
+    html+=`</div>`;
+  }
+  el.innerHTML=html;
   setTimeout(()=>{const mo=['Sep','Oct','Nov','Dec','Jan','Feb'];const rc=document.getElementById('reachChart'),lc=document.getElementById('leadsChart');if(rc)new Chart(rc,{type:'line',data:{labels:mo,datasets:[{data:im.reachTrend,borderColor:'#2E86C1',backgroundColor:'rgba(46,134,193,.1)',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});if(lc)new Chart(lc,{type:'bar',data:{labels:mo,datasets:[{data:im.leadsTrend,backgroundColor:'#27AE60',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}})},100);
 }
 function renderLinkedIn(el,d){
@@ -866,7 +914,25 @@ function renderAccount(el,d){
   el.innerHTML=`<div class="topbar"><h2>Account</h2></div>
     <div class="grid-2"><div class="card"><h3>Organization</h3><table><tr><td style="width:40%"><strong>Company</strong></td><td>${d.name}</td></tr><tr><td><strong>Package</strong></td><td><span class="tag blue">${d.package}</span></td></tr><tr><td><strong>Admin</strong></td><td>${d.account.admin}</td></tr><tr><td><strong>Email</strong></td><td>${d.account.email}</td></tr></table></div>
     <div class="card"><h3>Login</h3><div class="alert-row info" style="margin-bottom:12px">🔒 One login per org.</div><table><tr><td style="width:40%"><strong>Email</strong></td><td>${d.account.email}</td></tr><tr><td><strong>Password</strong></td><td>••••••••</td></tr></table><div style="margin-top:12px"><button class="btn-primary" onclick="openModal('passwordModal')">🔑 Change</button></div></div></div>
-    <div class="card"><h3>Team</h3><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>${t.map(u=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td></tr>`).join('')}</tbody></table>`;
+    <div class="card"><h3>Team Members</h3><div class="alert-row info" style="margin-bottom:12px">Manage who can view this dashboard. The account admin has full access; viewers have read-only access.</div><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>${t.map((u,idx)=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td><td>${u.role==='Admin'?'—':`<button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeClientTeamMember(${idx})">Remove</button>`}</td></tr>`).join('')}</tbody></table>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Viewer</div><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="clientNewUserName" placeholder="Full name" style="padding:6px;width:150px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="clientNewUserEmail" placeholder="email@company.com" style="padding:6px;width:180px"></div><button class="btn-primary" onclick="addClientTeamMember()">Add Viewer</button></div></div></div>`;
+}
+function removeClientTeamMember(idx){
+  const d=CLIENTS[currentClient];
+  if(d.account.team[idx]&&d.account.team[idx].role!=='Admin'){
+    d.account.team.splice(idx,1);renderMain();showToast('User removed');
+  }
+}
+function addClientTeamMember(){
+  const d=CLIENTS[currentClient];
+  const name=document.getElementById('clientNewUserName').value.trim();
+  const email=document.getElementById('clientNewUserEmail').value.trim();
+  if(!name||!email){showToast('Name and email required');return;}
+  if(d.account.team.find(u=>u.email===email)){showToast('User already exists');return;}
+  d.account.team.push({name,email,role:'Viewer',status:'Invited'});
+  document.getElementById('clientNewUserName').value='';
+  document.getElementById('clientNewUserEmail').value='';
+  renderMain();showToast(name+' invited as viewer!');
 }
 
 function addUser(){
@@ -936,21 +1002,17 @@ function agInvRowHtml(x,idx){
 }
 
 function renderAgBilling(el){
-  const b2cCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2C')).length;
-  const b2bCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2B')).length;
-  const b2cRev=b2cCount*5000;
-  const b2bRev=b2bCount*3000;
+  const clientRevenue=AGENCY.agencyClients.reduce((s,c)=>{const amt=parseInt(c.package.replace(/[^0-9]/g,''));return s+(isNaN(amt)?0:amt)},0);
   const inv=AGENCY.invoices||[];
   const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
   const outstanding=inv.filter(x=>x.status!=='Paid').length;
   el.innerHTML=`<div class="topbar"><h2>Billing & Revenue</h2></div>
     <div class="kpi-row">
       <div class="kpi-card"><div class="kpi-label">Total Revenue</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div>
-      <div class="kpi-card"><div class="kpi-label">B2C Revenue</div><div class="kpi-value">$${b2cRev.toLocaleString()}</div><div class="kpi-change">${b2cCount} × $5,000</div></div>
-      <div class="kpi-card"><div class="kpi-label">B2B Revenue</div><div class="kpi-value">$${b2bRev.toLocaleString()}</div><div class="kpi-change">${b2bCount} × $3,000</div></div>
+      <div class="kpi-card"><div class="kpi-label">Client Revenue</div><div class="kpi-value">$${clientRevenue.toLocaleString()}</div></div>
       <div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${totalCollected.toLocaleString()}</div></div>
     </div>
-    <div class="card"><h3>Client Billing Summary</h3><table><thead><tr><th>Client</th><th>Package</th><th>Monthly Fee</th><th>Status</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package.includes('B2C')?'$5,000':'$3,000'}</td><td><span class="tag green">Active</span></td></tr>`).join('')}</tbody></table></div>
+    <div class="card"><h3>Client Billing Summary</h3><table><thead><tr><th>Client</th><th>Package</th><th>Monthly Fee</th><th>Status</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package}</td><td><span class="tag green">Active</span></td></tr>`).join('')}</tbody></table></div>
     <div class="card"><h3>Invoice History</h3>
       <div style="margin-bottom:8px"><span class="tag ${outstanding?'orange':'green'}">${outstanding?outstanding+' Outstanding':'All Paid'}</span></div>
       <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Detail</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead><tbody>${inv.map((x,idx)=>agInvRowHtml(x,idx)).join('')}</tbody></table>
@@ -968,15 +1030,72 @@ function renderAgBilling(el){
       </div>
     </div>`;
 }
+let agEditTeamIdx=null;
 function renderAgTeam(el){
-  el.innerHTML=`<div class="topbar"><h2>Team & Access</h2><div class="meta"><button class="btn-primary" onclick="document.getElementById('addUserTitle').textContent='Add Member';document.getElementById('clientAccessSection').style.display='none';openModal('addUserModal')">+ Add</button></div></div>
-    <div class="card"><h3>Team</h3><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Access</th><th>Status</th></tr></thead><tbody>${AGENCY.team.map(t=>`<tr><td><strong>${t.name}</strong></td><td>${t.email}</td><td><span class="tag ${t.role==='Admin'?'blue':'green'}">${t.role}</span></td><td>${t.clients}</td><td><span class="tag ${t.status==='Active'?'green':'orange'}">${t.status}</span></td></tr>`).join('')}</tbody></table></div>`;
+  const team=AGENCY.team;
+  let html=`<div class="topbar"><h2>Team & Access</h2></div>
+    <div class="card"><h3>Team Members</h3><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Client Access</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+  html+=team.map((t,idx)=>{
+    if(agEditTeamIdx===idx){
+      return `<tr style="background:var(--bg)"><td><input type="text" id="agEditName" value="${t.name}" style="width:120px;padding:4px"></td><td><input type="text" id="agEditEmail" value="${t.email}" style="width:170px;padding:4px"></td><td><select id="agEditRole" style="padding:4px"><option ${t.role==='Admin'?'selected':''}>Admin</option><option ${t.role==='Viewer'?'selected':''}>Viewer</option></select></td><td><input type="text" id="agEditClients" value="${t.clients}" style="width:130px;padding:4px"></td><td><select id="agEditStatus" style="padding:4px"><option ${t.status==='Active'?'selected':''}>Active</option><option ${t.status==='Invited'?'selected':''}>Invited</option><option ${t.status==='Disabled'?'selected':''}>Disabled</option></select></td><td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="agSaveTeam(${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="agEditTeamIdx=null;renderMain()">Cancel</button></td></tr>`;
+    }
+    return `<tr><td><strong>${t.name}</strong></td><td>${t.email}</td><td><span class="tag ${t.role==='Admin'?'blue':'green'}">${t.role}</span></td><td>${t.clients}</td><td><span class="tag ${t.status==='Active'?'green':t.status==='Invited'?'orange':'red'}">${t.status}</span></td><td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="agEditTeamIdx=${idx};renderMain()">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="agRemoveTeam(${idx})">Remove</button></td></tr>`;
+  }).join('');
+  html+=`</tbody></table>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Team Member</div><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="agNewName" placeholder="Full name" style="padding:6px;width:130px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="agNewEmail" placeholder="email@agency.com" style="padding:6px;width:170px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Role</label><select id="agNewRole" style="padding:6px"><option>Admin</option><option>Viewer</option></select></div><div><label style="font-size:11px;color:var(--muted);display:block">Client Access</label><input type="text" id="agNewClients" placeholder="All or client names" style="padding:6px;width:130px"></div><button class="btn-primary" onclick="agAddTeam()">Add</button></div></div></div>`;
+  el.innerHTML=html;
+}
+function agSaveTeam(idx){
+  const t=AGENCY.team[idx];if(!t)return;
+  t.name=document.getElementById('agEditName')?.value||t.name;
+  t.email=document.getElementById('agEditEmail')?.value||t.email;
+  t.role=document.getElementById('agEditRole')?.value||t.role;
+  t.clients=document.getElementById('agEditClients')?.value||t.clients;
+  t.status=document.getElementById('agEditStatus')?.value||t.status;
+  agEditTeamIdx=null;renderMain();showToast('Updated!');
+}
+function agRemoveTeam(idx){
+  AGENCY.team.splice(idx,1);renderMain();showToast('Member removed');
+}
+function agAddTeam(){
+  const name=document.getElementById('agNewName').value.trim();
+  const email=document.getElementById('agNewEmail').value.trim();
+  if(!name||!email){showToast('Name and email required');return;}
+  AGENCY.team.push({name,email,role:document.getElementById('agNewRole').value,clients:document.getElementById('agNewClients').value.trim()||'TBD',status:'Invited'});
+  document.getElementById('agNewName').value='';document.getElementById('agNewEmail').value='';document.getElementById('agNewClients').value='';
+  renderMain();showToast(name+' invited!');
 }
 function renderAgSettings(el){
-  el.innerHTML=`<div class="topbar"><h2>White-Label Settings</h2></div>
-    <div class="wl-banner"><div><h3>Full White-Label Active</h3><p>Clients see your brand only.</p></div><button class="btn">Customize</button></div>
-    <div class="grid-2"><div class="card"><h3>Brand</h3><table><tr><td style="width:40%"><strong>Name</strong></td><td>Momentum Digital</td></tr><tr><td><strong>Domain</strong></td><td>dashboard.momentumdigital.com</td></tr><tr><td><strong>Email</strong></td><td>reports@momentumdigital.com</td></tr></table></div>
-    <div class="card"><h3>Controls</h3><table><tr><td style="width:40%"><strong>PDF Export</strong></td><td><span class="tag green">On</span></td></tr><tr><td><strong>Auto Reports</strong></td><td><span class="tag green">On</span></td></tr><tr><td><strong>BW Branding</strong></td><td><span class="tag red">Hidden</span></td></tr></table></div></div>`;
+  const logoPreview=AGENCY.logo?`<img src="${AGENCY.logo}" style="max-height:60px;max-width:200px;object-fit:contain;border-radius:6px">`:`<div style="width:200px;height:60px;border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px">No logo uploaded</div>`;
+  el.innerHTML=`<div class="topbar"><h2>Account</h2></div>
+    <div class="wl-banner"><div><h3>White-Label Branding</h3><p>Clients see your brand only.</p></div></div>
+    <div class="grid-2"><div class="card"><h3>Agency Logo</h3><div style="margin:12px 0">${logoPreview}</div><div style="margin-top:12px"><label class="btn-primary" style="cursor:pointer;display:inline-block;padding:8px 16px"><input type="file" accept="image/*" onchange="handleLogoUpload(this)" style="display:none">Upload Logo</label>${AGENCY.logo?` <button style="background:none;border:1px solid var(--border);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer" onclick="AGENCY.logo=null;updateSidebarLogo();renderMain()">Remove</button>`:''}</div><div style="font-size:11px;color:var(--muted);margin-top:8px">Recommended: PNG or SVG, max 200px wide. Shown in sidebar for agency and client views.</div></div>
+    <div class="card"><h3>Brand Details</h3><table><tr><td style="width:40%"><strong>Name</strong></td><td><input type="text" value="${AGENCY.name}" onchange="AGENCY.name=this.value" style="padding:4px;width:180px"></td></tr><tr><td><strong>Domain</strong></td><td>dashboard.momentumdigital.com</td></tr><tr><td><strong>Email</strong></td><td>reports@momentumdigital.com</td></tr></table></div></div>
+    <div class="card"><h3>Display Controls</h3><table><tr><td style="width:40%"><strong>PDF Export</strong></td><td><span class="tag green">On</span></td></tr><tr><td><strong>Auto Reports</strong></td><td><span class="tag green">On</span></td></tr><tr><td><strong>BW Branding</strong></td><td><span class="tag red">Hidden</span></td></tr></table></div>`;
+}
+function handleLogoUpload(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){AGENCY.logo=e.target.result;updateSidebarLogo();renderMain();showToast('Logo uploaded!');};
+  reader.readAsDataURL(file);
+}
+function updateSidebarLogo(){
+  const el=document.getElementById('sidebarLogoArea');
+  const sub=document.getElementById('brandSubtitle');
+  if(!el)return;
+  const isAgencyView=currentMode==='agency';
+  const isAgencyClient=currentMode==='client'&&CLIENTS[currentClient]?.billing==='agency';
+  if(isAgencyView||isAgencyClient){
+    if(AGENCY.logo){
+      el.innerHTML=`<img src="${AGENCY.logo}" style="max-height:36px;max-width:160px;object-fit:contain">`;
+    } else {
+      el.innerHTML=AGENCY.name||'Agency';
+    }
+    if(sub) sub.textContent=isAgencyView?'Agency Dashboard':'Client Dashboard';
+  } else {
+    el.innerHTML='BOSSWALLAH';
+    if(sub) sub.textContent=currentMode==='admin'?'Admin Console':'Client Dashboard';
+  }
 }
 
 // ============ ADMIN ============
@@ -1130,6 +1249,84 @@ function exitPreview(){previewSubTab=null;currentSection=adminClient.startsWith(
 function previewClientTab(tab){previewSubTab=tab;renderMain();}
 function previewAgencyTab(tab){previewSubTab=tab;renderMain();}
 
+function renderAdmOnboarding(el){
+  const step=onboardingStep;
+  const data=onboardingData;
+  let html='<div class="card"><h3>Onboard New Client</h3>';
+  html+=`<div style="display:flex;gap:8px;margin-bottom:24px;justify-content:center">`;
+  for(let i=1;i<=3;i++){html+=`<div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;background:${i<=step?'var(--accent)':'var(--border)'};color:${i<=step?'#fff':'var(--muted)'}">${i}</div>`;}
+  html+=`</div>`;
+  if(step===1){
+    html+=`<div style="display:grid;gap:12px"><label>Company Name</label><input type="text" id="onb_name" placeholder="e.g. TechStartup Co" style="padding:8px">
+    <label>Industry / Vertical</label><input type="text" id="onb_type" placeholder="e.g. Skincare, Fintech, SaaS" style="padding:8px">
+    <label>Monthly Package</label><input type="text" id="onb_pkg" placeholder="e.g. $5,000/mo" style="padding:8px">
+    <label>Billing Type</label><div class="check-row"><input type="radio" name="onb_billing" value="direct" onchange="onboardingData.billing=this.value"> Direct</div>
+    <div class="check-row"><input type="radio" name="onb_billing" value="agency" onchange="onboardingData.billing=this.value"> Agency</div>
+    <label>Contact Name</label><input type="text" id="onb_contact" placeholder="e.g. John Smith" style="padding:8px">
+    <label>Contact Email</label><input type="text" id="onb_email" placeholder="john@company.com" style="padding:8px">
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button class="btn-primary" onclick="onboardingStep=2;onboardingData.name=document.getElementById('onb_name').value;onboardingData.type=document.getElementById('onb_type').value;onboardingData.package=document.getElementById('onb_pkg').value;onboardingData.contact=document.getElementById('onb_contact').value;onboardingData.email=document.getElementById('onb_email').value;renderMain()">Next</button>
+    </div></div>`;
+  } else if(step===2){
+    const types=Object.keys(CONTENT_TYPES);
+    const cats={};
+    types.forEach(t=>{const cat=CONTENT_TYPES[t].cat;if(!cats[cat])cats[cat]=[];cats[cat].push(t);});
+    const defaultQty={instagramReels:20,instagramCarousels:12,instagramStories:30,youtubeLongForm:4,youtubeShorts:15,facebookPosts:15,linkedinPosts:20,blogArticles:20,twitterPosts:10,podcastEpisodes:1,newsletterEmails:1,caseStudies:2,instagramPosts:5,facebookReels:5,pillarContent:1,webinars:1,websiteEnhancements:1,designAssets:8,communityMgmt:1,strategicReports:1};
+    const selCount=(data.selectedTypes||[]).length;
+    const totalQty=(data.selectedTypes||[]).reduce((s,t)=>{return s+(data.quantities?.[t]||defaultQty[t]||1)},0);
+    html+=`<div style="display:grid;gap:20px"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:14px;font-weight:600">Select Commitments</div><div style="font-size:12px;color:var(--muted)">${selCount} types &middot; ${totalQty}/mo</div></div>`;
+    Object.keys(cats).forEach(cat=>{
+      html+=`<div style="background:var(--bg);border-radius:10px;padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:10px">${cat}</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px">`;
+      cats[cat].forEach(t=>{
+        const checked=(data.selectedTypes||[]).includes(t);
+        const qty=data.quantities?.[t]||defaultQty[t]||1;
+        html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1.5px solid ${checked?'var(--accent)':'var(--border)'};background:${checked?'rgba(46,134,193,.05)':'#fff'};transition:all .15s"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0;white-space:nowrap"><input type="checkbox" ${checked?'checked':''} onchange="if(!onboardingData.selectedTypes)onboardingData.selectedTypes=[];if(!onboardingData.quantities)onboardingData.quantities={};if(this.checked){if(!onboardingData.selectedTypes.includes('${t}'))onboardingData.selectedTypes.push('${t}');if(!onboardingData.quantities['${t}'])onboardingData.quantities['${t}']=${defaultQty[t]||1}}else{onboardingData.selectedTypes=onboardingData.selectedTypes.filter(x=>x!=='${t}');delete onboardingData.quantities['${t}']};renderMain()" style="width:15px;height:15px"><span style="font-size:15px">${getTypeIcon(t)}</span><span style="font-size:12.5px;font-weight:${checked?'600':'400'};color:${checked?'var(--text)':'var(--muted)'}">${getTypeLabel(t)}</span></label>${checked?`<div style="display:flex;align-items:center;gap:3px;margin-left:auto"><input type="number" value="${qty}" min="1" onchange="if(!onboardingData.quantities)onboardingData.quantities={};onboardingData.quantities['${t}']=parseInt(this.value)" style="width:46px;padding:4px 2px;text-align:center;border:1px solid var(--border);border-radius:5px;font-size:12px;font-weight:600"><span style="font-size:10px;color:var(--muted)">/mo</span></div>`:''}</div>`;
+      });
+      html+=`</div></div>`;
+    });
+    html+=`<div style="display:flex;gap:8px;justify-content:space-between;margin-top:8px"><button class="btn-outline" onclick="onboardingStep=1;renderMain()">Back</button><button class="btn-primary" onclick="onboardingStep=3;renderMain()">Next &rarr; Review</button></div></div>`;
+  } else if(step===3){
+    const commitments={};
+    (data.selectedTypes||[]).forEach(t=>{commitments[t]={committed:data.quantities?.[t]||1,delivered:0};});
+    const total=Object.values(commitments).reduce((s,c)=>s+c.committed,0);
+    html+=`<div style="display:grid;gap:12px"><h4 style="font-weight:600">Review & Create</h4>
+    <table style="width:100%"><tr><td>Company</td><td><strong>${data.name||'—'}</strong></td></tr>
+    <tr><td>Type</td><td><strong>${data.type||'—'}</strong></td></tr>
+    <tr><td>Package</td><td><strong>${data.package||'—'}</strong></td></tr>
+    <tr><td>Total Monthly Items</td><td><strong>${total}</strong></td></tr></table>
+    <div style="background:var(--bg);padding:12px;border-radius:8px;margin:8px 0"><div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">COMMITMENTS</div>
+    <table style="width:100%;font-size:12px"><thead><tr><th>Type</th><th>Monthly</th></tr></thead><tbody>`;
+    Object.keys(commitments).forEach(t=>{html+=`<tr><td>${getTypeLabel(t)}</td><td>${commitments[t].committed}</td></tr>`;});
+    html+=`</tbody></table></div>
+    <div style="display:flex;gap:8px;justify-content:space-between;margin-top:16px"><button class="btn-outline" onclick="onboardingStep=2;renderMain()">Back</button><button class="btn-admin" onclick="completeOnboarding('${JSON.stringify(commitments).replace(/'/g,"\\'")}')">Create Client</button></div></div>`;
+  }
+  html+=`</div>`;
+  el.innerHTML=html;
+}
+function completeOnboarding(commitStr){
+  const data=onboardingData;
+  if(!data.name||!data.type||!data.package){showToast('Fill all fields');return;}
+  const key=data.name.toLowerCase().replace(/\s+/g,'');
+  const commitments=JSON.parse(commitStr);
+  CLIENTS[key]={
+    name:data.name,type:data.type||'Startup',package:data.package,billing:data.billing||'direct',
+    lastUpdated:new Date().toLocaleDateString()+' · '+new Date().toLocaleTimeString(),
+    briefing:{weekOf:'',completed:[],inProgress:[],needsYou:[]},
+    content:{commitments,items:[]},
+    impact:{kpis:[],channels:[],topWins:[],adBreakdown:[],reachTrend:[],leadsTrend:[]},
+    linkedin:{profileViews:'0',profileViewsChange:'+0%',connections:'0',connectionsChange:'+0',icpPercent:'—',postImpressions:'0',postImpressionsChange:'+0%',engagementRate:'0%',engagementRateChange:'+0%',inboundDMs:'0',inboundDMsChange:'+0',topPosts:[],competitors:[]},
+    whatsNext:{planned:[],recommendations:[]},
+    account:{admin:data.contact||'—',email:data.email||'—',team:[{name:data.contact||'—',email:data.email||'—',role:'Admin',status:'Active'}]},
+    comments:{},invoices:[],bwTeam:{owner:{name:'TBD',role:'Account Owner'},viewers:[]}
+  };
+  initComments();
+  ADMIN_ACCOUNTS.push({key,name:data.name,type:data.billing==='agency'?'Agency':'Direct',package:data.package});
+  onboardingStep=1;onboardingData={};
+  adminClient=key;currentSection='adm_briefing';
+  buildClientSelect();renderNav();renderMain();
+  showToast('Client onboarded!');
+}
+
 function renderAdmin(el){
   if(adminClient.startsWith('agency')){
     switch(currentSection){
@@ -1139,16 +1336,20 @@ function renderAdmin(el){
       default:renderAdmAgencyBilling(el);
     }
   } else {
-    const d=CLIENTS[adminClient];
     switch(currentSection){
-      case 'adm_briefing':renderAdmBriefing(el,d);break;
-      case 'adm_content':renderAdmContent(el,d);break;
-      case 'adm_metrics':renderAdmMetrics(el,d);break;
-      case 'adm_next':renderAdmBriefing(el,d);break;
-      case 'adm_billing':renderAdmBilling(el,d);break;
-      case 'adm_team':renderAdmTeam(el,d);break;
-      case 'adm_preview':renderAdmClientPreview(el,d);break;
-      default:renderAdmBriefing(el,d);
+      case 'adm_onboarding':renderAdmOnboarding(el);break;
+      default:
+        const d=CLIENTS[adminClient];
+        switch(currentSection){
+          case 'adm_briefing':renderAdmBriefing(el,d);break;
+          case 'adm_content':renderAdmContent(el,d);break;
+          case 'adm_metrics':renderAdmMetrics(el,d);break;
+          case 'adm_next':renderAdmBriefing(el,d);break;
+          case 'adm_billing':renderAdmBilling(el,d);break;
+          case 'adm_team':renderAdmTeam(el,d);break;
+          case 'adm_preview':renderAdmClientPreview(el,d);break;
+          default:renderAdmBriefing(el,d);
+        }
     }
   }
 }
@@ -1159,9 +1360,6 @@ function renderAdmClientPreview(el,d){
     {id:'briefing',icon:'📋',label:'Briefing'},
     {id:'content',icon:'🎬',label:'Content'},
     {id:'impact',icon:'📈',label:'Impact'},
-    {id:'messages',icon:'💬',label:'Messages'},
-    {id:'reports',icon:'📄',label:'Reports'},
-    {id:'account',icon:'⚙️',label:'Account'},
   ];
   const bar=previewTabBar(tabs,previewSubTab,'previewClientTab');
   const wrap=document.createElement('div');
@@ -1172,9 +1370,6 @@ function renderAdmClientPreview(el,d){
     case 'briefing':renderBriefing(wrap,d);break;
     case 'content':renderContent(wrap,d);break;
     case 'impact':renderImpact(wrap,d);break;
-    case 'messages':renderMessages(wrap,d);break;
-    case 'reports':renderReports(wrap,d);break;
-    case 'account':renderAccount(wrap,d);break;
     default:renderBriefing(wrap,d);
   }
 }
@@ -1185,7 +1380,6 @@ function renderAdmAgencyPreview(el){
     {id:'portfolio',icon:'🏢',label:'Portfolio'},
     {id:'billing',icon:'💳',label:'Billing'},
     {id:'team',icon:'👥',label:'Team'},
-    {id:'settings',icon:'⚙️',label:'White-Label'},
   ];
   const bar=previewTabBar(tabs,previewSubTab,'previewAgencyTab');
   const wrap=document.createElement('div');
@@ -1195,7 +1389,6 @@ function renderAdmAgencyPreview(el){
     case 'portfolio':renderPortfolio(wrap);break;
     case 'billing':renderAgBilling(wrap);break;
     case 'team':renderAgTeam(wrap);break;
-    case 'settings':renderAgSettings(wrap);break;
     default:renderPortfolio(wrap);
   }
 }
@@ -1235,140 +1428,142 @@ function renderAdmBriefing(el,d){
   el.innerHTML=`${admCtx()}
     <div class="topbar"><h2>Update Briefing</h2><button class="btn-admin" onclick="openModal('addActivityModal')" style="margin-left:auto">+ Add Activity</button></div>
     <div class="card"><h3>⚠️ Needs Client Input</h3>${actItemHtml('briefing','needsYou',b.needsYou,'review')}</div>
+    <div class="card"><h3>💡 Recommendations</h3>${actItemHtml('whatsNext','recommendations',n.recommendations,'')}</div>
     <div class="card"><h3>✅ Completed</h3>${actItemHtml('briefing','completed',b.completed,'done')}</div>
     <div class="card"><h3>🔄 In Progress</h3>${actItemHtml('briefing','inProgress',b.inProgress,'progress')}</div>
-    <div class="card"><h3>📅 What's Next — Planned</h3>${actItemHtml('whatsNext','planned',n.planned,'planned')}</div>
-    <div class="card"><h3>💡 What's Next — Recommendations</h3>${actItemHtml('whatsNext','recommendations',n.recommendations,'')}</div>`;
+    <div class="card"><h3>📅 What's Next — Planned</h3>${actItemHtml('whatsNext','planned',n.planned,'planned')}</div>`;
 }
 
-function removeContentItem(type,idx){
-  const d=CLIENTS[adminClient];
-  if(d.content[type]){d.content[type].splice(idx,1);renderMain();showToast('Item removed');}
-}
-function addContentItem(type){
-  const d=CLIENTS[adminClient];
-  if(type==='videos'){
-    const title=document.getElementById('newVidTitle').value.trim();
-    const status=document.getElementById('newVidStatus').value;
-    const platform=document.getElementById('newVidPlatform').value.trim();
-    const result=document.getElementById('newVidResult').value.trim()||'—';
-    const date=document.getElementById('newVidDate').value.trim();
-    if(!title){showToast('Title required');return;}
-    d.content.videos.push({title,status,platform,result,date});
-    renderMain();showToast('Video added!');
-  } else {
-    const title=document.getElementById('newBlogTitle').value.trim();
-    const status=document.getElementById('newBlogStatus').value;
-    const keyword=document.getElementById('newBlogKeyword').value.trim();
-    const result=document.getElementById('newBlogResult').value.trim()||'—';
-    if(!title){showToast('Title required');return;}
-    d.content.blogs.push({title,status,keyword,result});
-    renderMain();showToast('Blog added!');
-  }
-}
 let editingContentKey=null;
 function editContentItem(key){editingContentKey=key;renderMain();}
 function cancelEditContent(){editingContentKey=null;renderMain();}
-function saveContentItem(type,idx){
-  const d=CLIENTS[adminClient];
-  const item=d.content[type][idx];
-  if(!item) return;
-  if(type==='videos'){
-    item.title=document.getElementById('editCTitle')?.value||item.title;
-    item.status=document.getElementById('editCStatus')?.value||item.status;
-    item.platform=document.getElementById('editCPlatform')?.value||item.platform;
-    item.result=document.getElementById('editCResult')?.value||item.result;
-    item.date=document.getElementById('editCDate')?.value||item.date;
-  } else {
-    item.title=document.getElementById('editCTitle')?.value||item.title;
-    item.status=document.getElementById('editCStatus')?.value||item.status;
-    item.keyword=document.getElementById('editCKeyword')?.value||item.keyword;
-    item.result=document.getElementById('editCResult')?.value||item.result;
-  }
-  editingContentKey=null;renderMain();showToast('Updated!');
-}
-function saveSummary(){
-  const d=CLIENTS[adminClient];
-  d.content.summary.videosDelivered=document.getElementById('sumVid')?.value||d.content.summary.videosDelivered;
-  d.content.summary.blogsDelivered=document.getElementById('sumBlog')?.value||d.content.summary.blogsDelivered;
-  d.content.summary.socialPosts=document.getElementById('sumSocial')?.value||d.content.summary.socialPosts;
-  d.content.summary.influencerPosts=document.getElementById('sumInfluencer')?.value||d.content.summary.influencerPosts;
-  showToast('Summary updated!');renderMain();
-}
 
 function renderAdmContent(el,d){
   const c=d.content;
   const statusOpts=['Published','In Editing','Needs Approval','Needs Review','Scripting','Planned'];
   const st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue','Planned':'purple'};
-  el.innerHTML=`${admCtx()}
-    <div class="topbar"><h2>Update Content</h2></div>
-    <div class="card"><h3>Summary Counts</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
-        <div><label style="font-size:11px;color:var(--muted);display:block">Videos</label><input type="text" id="sumVid" value="${c.summary.videosDelivered}" style="width:100%;padding:6px"></div>
-        <div><label style="font-size:11px;color:var(--muted);display:block">Blogs</label><input type="text" id="sumBlog" value="${c.summary.blogsDelivered}" style="width:100%;padding:6px"></div>
-        <div><label style="font-size:11px;color:var(--muted);display:block">Social Posts</label><input type="text" id="sumSocial" value="${c.summary.socialPosts}" style="width:100%;padding:6px"></div>
-        <div><label style="font-size:11px;color:var(--muted);display:block">Influencer</label><input type="text" id="sumInfluencer" value="${c.summary.influencerPosts}" style="width:100%;padding:6px"></div>
-      </div>
-      <button class="btn-admin" style="margin-top:12px" onclick="saveSummary()">Save Summary</button>
-    </div>
-    <div class="card"><h3>Video Pipeline</h3>
-      <table><thead><tr><th>Video</th><th>Status</th><th>Platforms</th><th>Result</th><th>Date</th><th>Actions</th></tr></thead><tbody>${c.videos.map((v,idx)=>{
-        const key='vid_'+idx;
-        if(editingContentKey===key) return `<tr style="background:var(--bg)">
-          <td><input type="text" id="editCTitle" value="${v.title}" style="width:160px;padding:4px"></td>
-          <td><select id="editCStatus" style="padding:4px">${statusOpts.map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
-          <td><input type="text" id="editCPlatform" value="${v.platform}" style="width:130px;padding:4px"></td>
-          <td><input type="text" id="editCResult" value="${v.result}" style="width:90px;padding:4px"></td>
-          <td><input type="text" id="editCDate" value="${v.date}" style="width:70px;padding:4px"></td>
-          <td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="saveContentItem('videos',${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="cancelEditContent()">Cancel</button></td>
+  let html=`${admCtx()}<div class="topbar"><h2>Update Content</h2></div>`;
+  if(c.commitments&&Object.keys(c.commitments).length>0){
+    html+=`<div class="card"><h3>Commitments Summary</h3><table><thead><tr><th>Content Type</th><th>Committed</th><th>Delivered</th><th>Status</th></tr></thead><tbody>`;
+    Object.keys(c.commitments).forEach(type=>{
+      const ct=c.commitments[type];
+      const pct=commitPct(ct.committed,ct.delivered);
+      html+=`<tr><td>${getTypeLabel(type)}</td><td>${ct.committed}</td><td><input type="number" value="${ct.delivered}" onchange="CLIENTS['${adminClient}'].content.commitments['${type}'].delivered=parseInt(this.value);renderMain()" style="width:60px"></td><td><span class="tag ${pct>=90?'green':pct>=70?'orange':'red'}">${pct}%</span></td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+  html+=`<div class="card"><h3>Production Items</h3><table><thead><tr><th>Type</th><th>Title</th><th>Status</th><th>Result</th><th>Date</th><th>Actions</th></tr></thead><tbody>`;
+  if(c.items&&c.items.length>0){
+    html+=c.items.map((item,idx)=>{
+      const key='item_'+idx;
+      if(editingContentKey===key){
+        return `<tr style="background:var(--bg)">
+          <td><select id="editCType" style="padding:4px">${Object.keys(CONTENT_TYPES).map(t=>`<option value="${t}" ${item.type===t?'selected':''}>${getTypeLabel(t)}</option>`).join('')}</select></td>
+          <td><input type="text" id="editCTitle" value="${item.title}" style="width:150px;padding:4px"></td>
+          <td><select id="editCStatus" style="padding:4px">${statusOpts.map(s=>`<option ${item.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+          <td><input type="text" id="editCResult" value="${item.result}" style="width:100px;padding:4px"></td>
+          <td><input type="text" id="editCDate" value="${item.date}" style="width:70px;padding:4px"></td>
+          <td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="saveAdmContentItem(${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="cancelEditContent()">Cancel</button></td>
         </tr>`;
-        return `<tr><td>${v.title}</td><td><span class="tag ${st[v.status]||'blue'}">${v.status}</span></td><td>${v.platform}</td><td>${v.result}</td><td>${v.date}</td>
-          <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="editContentItem('${key}')">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeContentItem('videos',${idx})">Remove</button></td></tr>`;
-      }).join('')}</tbody></table>
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Video</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
-          <div><label style="font-size:11px;color:var(--muted);display:block">Title</label><input type="text" id="newVidTitle" placeholder="Video title" style="padding:6px;width:160px"></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newVidStatus" style="padding:6px">${statusOpts.map(s=>`<option>${s}</option>`).join('')}</select></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Platforms</label><input type="text" id="newVidPlatform" placeholder="TikTok, Reels" style="padding:6px;width:130px"></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Result</label><input type="text" id="newVidResult" placeholder="—" style="padding:6px;width:90px"></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newVidDate" placeholder="Mar 3" style="padding:6px;width:70px"></div>
-          <button class="btn-admin" onclick="addContentItem('videos')">Add</button>
-        </div>
-      </div>
+      }
+      return `<tr><td>${getTypeIcon(item.type)}</td><td>${item.title}</td><td><span class="tag ${st[item.status]||'blue'}">${item.status}</span></td><td>${item.result}</td><td>${item.date}</td>
+        <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="editContentItem('${key}')">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeAdmContentItem(${idx})">Remove</button></td></tr>`;
+    }).join('');
+  }
+  html+=`</tbody></table><div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+    <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Item</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+      <div><label style="font-size:11px;color:var(--muted);display:block">Type</label><select id="newItemType" style="padding:6px">${Object.keys(CONTENT_TYPES).map(t=>`<option value="${t}">${getTypeLabel(t)}</option>`).join('')}</select></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Title</label><input type="text" id="newItemTitle" placeholder="Content title" style="padding:6px;width:150px"></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newItemStatus" style="padding:6px">${statusOpts.map(s=>`<option>${s}</option>`).join('')}</select></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Result</label><input type="text" id="newItemResult" placeholder="e.g. 50K views" style="padding:6px;width:100px"></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newItemDate" placeholder="Mar 1" style="padding:6px;width:70px"></div>
+      <button class="btn-admin" onclick="addAdmContentItem()">Add</button>
     </div>
-    <div class="card"><h3>Blog Posts</h3>
-      <table><thead><tr><th>Title</th><th>Status</th><th>Keyword</th><th>Result</th><th>Actions</th></tr></thead><tbody>${c.blogs.map((b,idx)=>{
-        const key='blog_'+idx;
-        if(editingContentKey===key) return `<tr style="background:var(--bg)">
-          <td><input type="text" id="editCTitle" value="${b.title}" style="width:180px;padding:4px"></td>
-          <td><select id="editCStatus" style="padding:4px">${statusOpts.map(s=>`<option ${b.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
-          <td><input type="text" id="editCKeyword" value="${b.keyword}" style="width:140px;padding:4px"></td>
-          <td><input type="text" id="editCResult" value="${b.result}" style="width:100px;padding:4px"></td>
-          <td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="saveContentItem('blogs',${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="cancelEditContent()">Cancel</button></td>
-        </tr>`;
-        return `<tr><td>${b.title}</td><td><span class="tag ${st[b.status]||'blue'}">${b.status}</span></td><td>${b.keyword}</td><td>${b.result}</td>
-          <td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="editContentItem('${key}')">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeContentItem('blogs',${idx})">Remove</button></td></tr>`;
-      }).join('')}</tbody></table>
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-        <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Blog Post</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
-          <div><label style="font-size:11px;color:var(--muted);display:block">Title</label><input type="text" id="newBlogTitle" placeholder="Blog title" style="padding:6px;width:180px"></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newBlogStatus" style="padding:6px">${statusOpts.map(s=>`<option>${s}</option>`).join('')}</select></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Keyword</label><input type="text" id="newBlogKeyword" placeholder="target keyword" style="padding:6px;width:140px"></div>
-          <div><label style="font-size:11px;color:var(--muted);display:block">Result</label><input type="text" id="newBlogResult" placeholder="—" style="padding:6px;width:100px"></div>
-          <button class="btn-admin" onclick="addContentItem('blogs')">Add</button>
-        </div>
-      </div>
-    </div>`;
+  </div></div>`;
+  el.innerHTML=html;
+}
+function saveAdmContentItem(idx){
+  const d=CLIENTS[adminClient];
+  const item=d.content.items[idx];
+  if(!item) return;
+  item.type=document.getElementById('editCType').value;
+  item.title=document.getElementById('editCTitle')?.value||item.title;
+  item.status=document.getElementById('editCStatus')?.value||item.status;
+  item.result=document.getElementById('editCResult')?.value||item.result;
+  item.date=document.getElementById('editCDate')?.value||item.date;
+  editingContentKey=null;renderMain();showToast('Updated!');
+}
+function removeAdmContentItem(idx){
+  const d=CLIENTS[adminClient];
+  if(d.content.items){d.content.items.splice(idx,1);renderMain();showToast('Item removed');}
+}
+function addAdmContentItem(){
+  const d=CLIENTS[adminClient];
+  const type=document.getElementById('newItemType').value;
+  const title=document.getElementById('newItemTitle').value.trim();
+  const status=document.getElementById('newItemStatus').value;
+  const result=document.getElementById('newItemResult').value.trim()||'—';
+  const date=document.getElementById('newItemDate').value.trim();
+  if(!title||!type){showToast('Type and title required');return;}
+  if(!d.content.items) d.content.items=[];
+  d.content.items.push({type,title,status,result,date});
+  document.getElementById('newItemTitle').value='';
+  document.getElementById('newItemResult').value='';
+  document.getElementById('newItemDate').value='';
+  renderMain();showToast('Item added!');
 }
 
 function renderAdmMetrics(el,d){
   const im=d.impact;
-  el.innerHTML=`${admCtx()}
-    <div class="topbar"><h2>Update Metrics</h2><button class="btn-admin" style="margin-left:auto" onclick="saveAdmMetrics()">Save All Changes</button></div>
-    <div class="card"><h3>KPI Values</h3><table><thead><tr><th>Label</th><th>Value</th><th>Change</th><th>Context</th></tr></thead><tbody>${im.kpis.map((k,idx)=>`<tr><td>${k.label}</td><td><input type="text" value="${k.value}" onchange="CLIENTS['${adminClient}'].impact.kpis[${idx}].value=this.value" style="width:80px"></td><td><input type="text" value="${k.change}" onchange="CLIENTS['${adminClient}'].impact.kpis[${idx}].change=this.value" style="width:80px"></td><td><input type="text" value="${k.context}" onchange="CLIENTS['${adminClient}'].impact.kpis[${idx}].context=this.value" style="width:200px"></td></tr>`).join('')}</tbody></table></div>
-    <div class="card"><h3>Top Wins</h3><table><thead><tr><th>Content</th><th>Metric</th><th>Impact</th></tr></thead><tbody>${im.topWins.map((w,idx)=>`<tr><td><input type="text" value="${w.content}" onchange="CLIENTS['${adminClient}'].impact.topWins[${idx}].content=this.value" style="width:200px"></td><td><input type="text" value="${w.metric}" onchange="CLIENTS['${adminClient}'].impact.topWins[${idx}].metric=this.value" style="width:100px"></td><td><input type="text" value="${w.impact}" onchange="CLIENTS['${adminClient}'].impact.topWins[${idx}].impact=this.value" style="width:200px"></td></tr>`).join('')}</tbody></table></div>`;
+  const li=d.linkedin;
+  const ac=adminClient;
+  const months=['Sep','Oct','Nov','Dec','Jan','Feb'];
+  let html=`${admCtx()}<div class="topbar"><h2>Update Impact</h2></div>`;
+
+  // 1. KPIs — editable with Add/Remove
+  html+=`<div class="card"><h3>KPI Values</h3><table><thead><tr><th>Label</th><th>Value</th><th>Change</th><th>Context</th><th>Actions</th></tr></thead><tbody>`;
+  html+=im.kpis.map((k,idx)=>`<tr><td><input type="text" value="${k.label}" onchange="CLIENTS['${ac}'].impact.kpis[${idx}].label=this.value" style="width:120px;padding:4px"></td><td><input type="text" value="${k.value}" onchange="CLIENTS['${ac}'].impact.kpis[${idx}].value=this.value" style="width:80px;padding:4px"></td><td><input type="text" value="${k.change}" onchange="CLIENTS['${ac}'].impact.kpis[${idx}].change=this.value" style="width:80px;padding:4px"></td><td><input type="text" value="${k.context}" onchange="CLIENTS['${ac}'].impact.kpis[${idx}].context=this.value" style="width:180px;padding:4px"></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${ac}'].impact.kpis.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('');
+  html+=`</tbody></table><div style="margin-top:12px;display:flex;gap:8px;align-items:end"><div><label style="font-size:11px;color:var(--muted);display:block">Label</label><input type="text" id="newKpiLabel" placeholder="e.g. Email Signups" style="padding:6px;width:120px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Value</label><input type="text" id="newKpiValue" placeholder="e.g. 1,200" style="padding:6px;width:80px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Change</label><input type="text" id="newKpiChange" placeholder="+15%" style="padding:6px;width:80px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Context</label><input type="text" id="newKpiCtx" placeholder="Description" style="padding:6px;width:150px"></div><button class="btn-admin" onclick="CLIENTS['${ac}'].impact.kpis.push({label:document.getElementById('newKpiLabel').value,value:document.getElementById('newKpiValue').value,change:document.getElementById('newKpiChange').value,context:document.getElementById('newKpiCtx').value});renderMain();showToast('KPI added')">Add</button></div></div>`;
+
+  // 2. Biggest Wins — editable with Add/Remove
+  html+=`<div class="card"><h3>Biggest Wins</h3><table><thead><tr><th>Content</th><th>Metric</th><th>Why It Matters</th><th>Actions</th></tr></thead><tbody>`;
+  html+=im.topWins.map((w,idx)=>`<tr><td><input type="text" value="${w.content}" onchange="CLIENTS['${ac}'].impact.topWins[${idx}].content=this.value" style="width:180px;padding:4px"></td><td><input type="text" value="${w.metric}" onchange="CLIENTS['${ac}'].impact.topWins[${idx}].metric=this.value" style="width:100px;padding:4px"></td><td><input type="text" value="${w.impact}" onchange="CLIENTS['${ac}'].impact.topWins[${idx}].impact=this.value" style="width:200px;padding:4px"></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${ac}'].impact.topWins.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('');
+  html+=`</tbody></table><div style="margin-top:12px;display:flex;gap:8px;align-items:end"><div><label style="font-size:11px;color:var(--muted);display:block">Content</label><input type="text" id="newWinContent" placeholder="e.g. TikTok video" style="padding:6px;width:160px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Metric</label><input type="text" id="newWinMetric" placeholder="e.g. 200K views" style="padding:6px;width:100px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Why It Matters</label><input type="text" id="newWinImpact" placeholder="Impact description" style="padding:6px;width:180px"></div><button class="btn-admin" onclick="CLIENTS['${ac}'].impact.topWins.push({content:document.getElementById('newWinContent').value,metric:document.getElementById('newWinMetric').value,impact:document.getElementById('newWinImpact').value});renderMain();showToast('Win added')">Add</button></div></div>`;
+
+  // 3. Channel Growth — editable with Add/Remove
+  html+=`<div class="card"><h3>Channel Growth</h3><table><thead><tr><th>Channel</th><th>Current</th><th>Growth</th><th>Key Metric</th><th>Actions</th></tr></thead><tbody>`;
+  html+=im.channels.map((c,idx)=>`<tr><td><input type="text" value="${c.name}" onchange="CLIENTS['${ac}'].impact.channels[${idx}].name=this.value" style="width:120px;padding:4px"></td><td><input type="text" value="${c.metric}" onchange="CLIENTS['${ac}'].impact.channels[${idx}].metric=this.value" style="width:100px;padding:4px"></td><td><input type="text" value="${c.growth}" onchange="CLIENTS['${ac}'].impact.channels[${idx}].growth=this.value" style="width:80px;padding:4px"></td><td><input type="text" value="${c.engagement}" onchange="CLIENTS['${ac}'].impact.channels[${idx}].engagement=this.value" style="width:100px;padding:4px"></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${ac}'].impact.channels.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('');
+  html+=`</tbody></table><div style="margin-top:12px;display:flex;gap:8px;align-items:end"><div><label style="font-size:11px;color:var(--muted);display:block">Channel</label><input type="text" id="newChName" placeholder="e.g. TikTok" style="padding:6px;width:110px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Current</label><input type="text" id="newChMetric" placeholder="e.g. 15K" style="padding:6px;width:80px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Growth</label><input type="text" id="newChGrowth" placeholder="+1,200" style="padding:6px;width:80px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Key</label><input type="text" id="newChEng" placeholder="e.g. 5.2%" style="padding:6px;width:80px"></div><button class="btn-admin" onclick="CLIENTS['${ac}'].impact.channels.push({name:document.getElementById('newChName').value,metric:document.getElementById('newChMetric').value,growth:document.getElementById('newChGrowth').value,engagement:document.getElementById('newChEng').value});renderMain();showToast('Channel added')">Add</button></div></div>`;
+
+  // 4. Ad Efficiency — editable with Add/Remove
+  html+=`<div class="card"><h3>Ad Efficiency</h3><table><thead><tr><th>Campaign</th><th>Platform</th><th>Spend</th><th>ROAS</th><th>CPA</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+  html+=im.adBreakdown.map((a,idx)=>`<tr><td><input type="text" value="${a.campaign}" onchange="CLIENTS['${ac}'].impact.adBreakdown[${idx}].campaign=this.value" style="width:130px;padding:4px"></td><td><input type="text" value="${a.platform||''}" onchange="CLIENTS['${ac}'].impact.adBreakdown[${idx}].platform=this.value" style="width:70px;padding:4px"></td><td><input type="text" value="${a.spend}" onchange="CLIENTS['${ac}'].impact.adBreakdown[${idx}].spend=this.value" style="width:70px;padding:4px"></td><td><input type="text" value="${a.roas}" onchange="CLIENTS['${ac}'].impact.adBreakdown[${idx}].roas=this.value" style="width:60px;padding:4px"></td><td><input type="text" value="${a.cpa}" onchange="CLIENTS['${ac}'].impact.adBreakdown[${idx}].cpa=this.value" style="width:70px;padding:4px"></td><td><input type="text" value="${a.status||''}" onchange="CLIENTS['${ac}'].impact.adBreakdown[${idx}].status=this.value" style="width:70px;padding:4px"></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${ac}'].impact.adBreakdown.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('');
+  html+=`</tbody></table><div style="margin-top:12px;display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Campaign</label><input type="text" id="newAdCamp" placeholder="Campaign name" style="padding:6px;width:120px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Platform</label><input type="text" id="newAdPlat" placeholder="e.g. Meta" style="padding:6px;width:70px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Spend</label><input type="text" id="newAdSpend" placeholder="$1,000" style="padding:6px;width:70px"></div><div><label style="font-size:11px;color:var(--muted);display:block">ROAS</label><input type="text" id="newAdRoas" placeholder="4.2x" style="padding:6px;width:60px"></div><div><label style="font-size:11px;color:var(--muted);display:block">CPA</label><input type="text" id="newAdCpa" placeholder="$12" style="padding:6px;width:60px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Status</label><input type="text" id="newAdStat" placeholder="Active" style="padding:6px;width:70px"></div><button class="btn-admin" onclick="CLIENTS['${ac}'].impact.adBreakdown.push({campaign:document.getElementById('newAdCamp').value,platform:document.getElementById('newAdPlat').value,spend:document.getElementById('newAdSpend').value,roas:document.getElementById('newAdRoas').value,cpa:document.getElementById('newAdCpa').value,status:document.getElementById('newAdStat').value});renderMain();showToast('Ad added')">Add</button></div></div>`;
+
+  // 5. Trend Data — editable (6 months)
+  html+=`<div class="grid-2"><div class="card"><h3>Reach Trend (6mo)</h3><table><thead><tr>${months.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody><tr>${(im.reachTrend||[0,0,0,0,0,0]).map((v,idx)=>`<td><input type="number" value="${v}" onchange="CLIENTS['${ac}'].impact.reachTrend[${idx}]=parseInt(this.value)||0" style="width:70px;padding:4px"></td>`).join('')}</tr></tbody></table></div>`;
+  html+=`<div class="card"><h3>Leads/Customer Trend (6mo)</h3><table><thead><tr>${months.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody><tr>${(im.leadsTrend||[0,0,0,0,0,0]).map((v,idx)=>`<td><input type="number" value="${v}" onchange="CLIENTS['${ac}'].impact.leadsTrend[${idx}]=parseInt(this.value)||0" style="width:70px;padding:4px"></td>`).join('')}</tr></tbody></table></div></div>`;
+
+  // 6. LinkedIn Performance — editable
+  if(li){
+    html+=`<div class="card"><h3>LinkedIn Performance</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">`;
+    const liFields=[{key:'profileViews',label:'Profile Views',chKey:'profileViewsChange'},{key:'postImpressions',label:'Post Impressions',chKey:'postImpressionsChange'},{key:'engagementRate',label:'Engagement Rate',chKey:'engagementRateChange'},{key:'inboundDMs',label:'Inbound DMs',chKey:'inboundDMsChange'},{key:'connections',label:'Connections',chKey:'connectionsChange'},{key:'icpPercent',label:'ICP %',chKey:null}];
+    liFields.forEach(f=>{
+      html+=`<div style="padding:8px;border:1px solid var(--border);border-radius:6px"><label style="font-size:11px;color:var(--muted);display:block;margin-bottom:4px">${f.label}</label><input type="text" value="${li[f.key]||''}" onchange="CLIENTS['${ac}'].linkedin['${f.key}']=this.value" style="width:100%;padding:4px;box-sizing:border-box">`;
+      if(f.chKey){html+=`<label style="font-size:10px;color:var(--muted);display:block;margin-top:4px">Change</label><input type="text" value="${li[f.chKey]||''}" onchange="CLIENTS['${ac}'].linkedin['${f.chKey}']=this.value" style="width:100%;padding:4px;box-sizing:border-box">`;}
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+    // LinkedIn Top Posts — editable with Add/Remove
+    html+=`<div style="margin-top:16px"><h4 style="font-size:13px;font-weight:600;margin-bottom:10px">Top Posts</h4><table><thead><tr><th>Post</th><th>Impressions</th><th>Engagement</th><th>Actions</th></tr></thead><tbody>`;
+    if(li.topPosts&&li.topPosts.length>0){
+      html+=li.topPosts.map((p,idx)=>`<tr><td><input type="text" value="${p.title||p.text||''}" onchange="CLIENTS['${ac}'].linkedin.topPosts[${idx}].title=this.value" style="width:220px;padding:4px"></td><td><input type="text" value="${p.impressions||''}" onchange="CLIENTS['${ac}'].linkedin.topPosts[${idx}].impressions=this.value" style="width:80px;padding:4px"></td><td><input type="text" value="${p.engagement||''}" onchange="CLIENTS['${ac}'].linkedin.topPosts[${idx}].engagement=this.value" style="width:80px;padding:4px"></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${ac}'].linkedin.topPosts.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('');
+    }
+    html+=`</tbody></table><div style="margin-top:12px;display:flex;gap:8px;align-items:end"><div><label style="font-size:11px;color:var(--muted);display:block">Post</label><input type="text" id="newLiPost" placeholder="Post title" style="padding:6px;width:200px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Impressions</label><input type="text" id="newLiImp" placeholder="e.g. 5,200" style="padding:6px;width:80px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Engagement</label><input type="text" id="newLiEng" placeholder="e.g. 6.1%" style="padding:6px;width:80px"></div><button class="btn-admin" onclick="if(!CLIENTS['${ac}'].linkedin.topPosts)CLIENTS['${ac}'].linkedin.topPosts=[];CLIENTS['${ac}'].linkedin.topPosts.push({title:document.getElementById('newLiPost').value,impressions:document.getElementById('newLiImp').value,engagement:document.getElementById('newLiEng').value});renderMain();showToast('Post added')">Add</button></div></div></div>`;
+  }
+
+  el.innerHTML=html;
 }
 
 // renderAdmNext merged into renderAdmBriefing
@@ -1463,10 +1658,7 @@ function renderAdmTeam(el,d){
 }
 
 function renderAdmAgencyBilling(el){
-  const b2cCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2C')).length;
-  const b2bCount=AGENCY.agencyClients.filter(c=>c.type.includes('B2B')).length;
-  const b2cRev=b2cCount*5000;
-  const b2bRev=b2bCount*3000;
+  const clientRevenue=AGENCY.agencyClients.reduce((s,c)=>{const amt=parseInt(c.package.replace(/[^0-9]/g,''));return s+(isNaN(amt)?0:amt)},0);
   const inv=AGENCY.invoices||[];
   const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
   const outstanding=inv.filter(x=>x.status!=='Paid').length;
@@ -1476,10 +1668,9 @@ function renderAdmAgencyBilling(el){
     <div class="kpi-row">
       <div class="kpi-card"><div class="kpi-label">Monthly Invoice</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div>
       <div class="kpi-card"><div class="kpi-label">Clients Managed</div><div class="kpi-value">${AGENCY.totals.clients}</div></div>
-      <div class="kpi-card"><div class="kpi-label">B2C Revenue</div><div class="kpi-value">$${b2cRev.toLocaleString()}</div><div class="kpi-change">${b2cCount} × $5,000</div></div>
-      <div class="kpi-card"><div class="kpi-label">B2B Revenue</div><div class="kpi-value">$${b2bRev.toLocaleString()}</div><div class="kpi-change">${b2bCount} × $3,000</div></div>
+      <div class="kpi-card"><div class="kpi-label">Client Revenue</div><div class="kpi-value">$${clientRevenue.toLocaleString()}</div></div>
     </div>
-    <div class="card"><h3>Revenue by Client</h3><table><thead><tr><th>Client</th><th>Package</th><th>BW Fee</th><th>Note</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package.includes('B2C')?'$5,000':'$3,000'}</td><td style="color:var(--muted)">Agency billed</td></tr>`).join('')}</tbody></table></div>
+    <div class="card"><h3>Revenue by Client</h3><table><thead><tr><th>Client</th><th>Package</th><th>BW Fee</th><th>Note</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package}</td><td style="color:var(--muted)">Agency billed</td></tr>`).join('')}</tbody></table></div>
     <div class="card"><h3>Invoice History (BW → Momentum Digital)</h3>
       <div style="margin-bottom:8px"><span class="tag ${outstanding?'orange':'green'}">${outstanding?outstanding+' Outstanding':'All Paid'}</span> <span style="font-size:12px;color:var(--muted);margin-left:8px">Total collected: $${totalCollected.toLocaleString()}</span></div>
       <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Detail</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
@@ -1501,9 +1692,8 @@ function renderAdmAgencyBilling(el){
 
 function recalcAgencyTotals(){
   AGENCY.totals.clients=AGENCY.agencyClients.length;
-  const b2cRevenue=AGENCY.agencyClients.filter(c=>c.type.includes('B2C')).length*5000;
-  const b2bRevenue=AGENCY.agencyClients.filter(c=>c.type.includes('B2B')).length*3000;
-  AGENCY.totals.totalRevenue='$'+(b2cRevenue+b2bRevenue).toLocaleString();
+  const clientRevenue=AGENCY.agencyClients.reduce((s,c)=>{const amt=parseInt(c.package.replace(/[^0-9]/g,''));return s+(isNaN(amt)?0:amt)},0);
+  AGENCY.totals.totalRevenue='$'+clientRevenue.toLocaleString();
   AGENCY.totals.totalAdManaged='$'+AGENCY.agencyClients.reduce((s,c)=>s+parseInt(c.adSpend.replace(/[^0-9]/g,'')),0).toLocaleString();
   const avgRoas=AGENCY.agencyClients.reduce((s,c)=>s+parseFloat(c.roas),0)/AGENCY.agencyClients.length;
   AGENCY.totals.avgRoas=avgRoas.toFixed(1)+'x';
@@ -1530,10 +1720,10 @@ function addAgencyClient(){
   if(!name){showToast('Please enter client name');return;}
 
   const id=name.toLowerCase().replace(/\s+/g,'');
-  const pkg=type==='B2C'?'B2C $5K':'B2B $3K';
+  const pkg=document.getElementById('newClientPackage')?.value.trim()||'$3,000/mo';
 
   AGENCY.agencyClients.push({
-    id,name,type:`B2${type.slice(-1)} — ${name}`,package:pkg,reach,leads,adSpend,roas,needsAttention:null
+    id,name,type:type||name,package:pkg,reach,leads,adSpend,roas,needsAttention:null
   });
 
   recalcAgencyTotals();
@@ -1614,11 +1804,12 @@ function renderAdmAgencyClients(el){
           <input type="text" id="newClientName" placeholder="e.g. TechStartup">
         </div>
         <div>
-          <label>Type</label>
-          <select id="newClientType">
-            <option value="B2C">B2C</option>
-            <option value="B2B">B2B</option>
-          </select>
+          <label>Industry</label>
+          <input type="text" id="newClientType" placeholder="e.g. Fintech, SaaS">
+        </div>
+        <div>
+          <label>Package</label>
+          <input type="text" id="newClientPackage" placeholder="e.g. $5,000/mo">
         </div>
         <div>
           <label>Reach</label>
