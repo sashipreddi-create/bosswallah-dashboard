@@ -156,13 +156,21 @@ table tr:last-child td{border-bottom:none}
     <label id="switcherLabel">Client</label>
     <select id="clientSelect" onchange="onClientSelectChange()"></select>
   </div>
+  <div class="client-switcher" id="agencyClientSwitcher" style="display:none;margin-top:-6px">
+    <label id="agencyClientLabel" style="font-size:10px;opacity:.7">Agency Client</label>
+    <select id="agencyClientSelect" onchange="onAgencyClientSelectChange()"></select>
+  </div>
   <nav id="navMenu"></nav>
   <div class="view-switcher">
     <label>Dashboard Mode</label>
     <div class="view-tabs">
       <button class="view-tab active" onclick="switchMode('client')" id="modeClient">Client</button>
       <button class="view-tab" onclick="switchMode('agency')" id="modeAgency">Agency</button>
-      <button class="view-tab" onclick="switchMode('admin')" id="modeAdmin">Admin</button>
+      <button class="view-tab" onclick="switchMode('admin')" id="modeAdmin">Boss Wallah</button>
+    </div>
+    <div id="roleSwitcher" style="margin-top:10px">
+      <label style="font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.5;display:block;margin-bottom:4px">Logged in as</label>
+      <select id="roleSelect" onchange="onRoleChange()" style="width:100%;padding:6px 8px;border-radius:4px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:11px;cursor:pointer"></select>
     </div>
   </div>
 </div>
@@ -217,7 +225,7 @@ table tr:last-child td{border-bottom:none}
 // ============ DATA ============
 const CLIENTS = {
   b2c: {
-    name:"GlowUp Beauty",type:"Startup",package:"$5,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 3:45 PM",
+    name:"GlowUp Beauty",type:"Startup",package:"$5,000/mo",billing:"direct",lastUpdated:"2026-02-28T20:45:00Z",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: “Morning routine reveal” video",detail:"TikTok, Reels, Shorts — 142K views, 8.2% engagement.",date:"Feb 24"},
@@ -281,7 +289,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"}]},
   },
   b2b: {
-    name:"DataForge AI",type:"Startup",package:"$3,000/mo",billing:"direct",lastUpdated:"Feb 28, 2026 · 2:15 PM",
+    name:"DataForge AI",type:"Startup",package:"$3,000/mo",billing:"direct",lastUpdated:"2026-02-28T19:15:00Z",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: ETL post went viral",detail:"12.4K impressions, 7.2% eng, 47 ICP comments.",date:"Feb 23"},
@@ -346,7 +354,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Anita Mehta",role:"Account Owner"},viewers:[{name:"Raj Kumar",role:"Video Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"},{name:"Vikram Patel",role:"Ads Lead"}]},
   },
   freshbowl: {
-    name:"FreshBowl",type:"Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 4:10 PM",
+    name:"FreshBowl",type:"Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"2026-02-27T21:10:00Z",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: 'Meal prep in 10 min' video",detail:"TikTok, Reels — 89K views, 6.8% engagement.",date:"Feb 25"},
@@ -393,7 +401,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"}]},
   },
   novapay: {
-    name:"NovaPay",type:"Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 1:30 PM",
+    name:"NovaPay",type:"Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"2026-02-27T18:30:00Z",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: Fintech regulation post",detail:"8.2K impressions, 5.8% engagement, 28 ICP comments.",date:"Feb 24"},
@@ -438,7 +446,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Deepa Lakshmi",role:"Account Owner"},viewers:[{name:"Vikram Patel",role:"Ads Lead"},{name:"Anita Mehta",role:"Social Lead"}]},
   },
   petvibe: {
-    name:"PetVibe",type:"Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"Feb 27, 2026 · 5:20 PM",
+    name:"PetVibe",type:"Startup",package:"$5,000/mo",billing:"agency",lastUpdated:"2026-02-27T22:20:00Z",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"🎬",type:"done",title:"Published: 'Dog vs. cat taste test' video",detail:"TikTok, Reels — 118K views, 9.1% engagement.",date:"Feb 25"},
@@ -485,7 +493,7 @@ const CLIENTS = {
     bwTeam:{owner:{name:"Raj Kumar",role:"Account Owner"},viewers:[{name:"Anita Mehta",role:"Social Lead"},{name:"Vikram Patel",role:"Ads Lead"},{name:"Deepa Lakshmi",role:"SEO Lead"}]},
   },
   cloudhr: {
-    name:"CloudHR",type:"Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"Feb 26, 2026 · 11:45 AM",
+    name:"CloudHR",type:"Startup",package:"$3,000/mo",billing:"agency",lastUpdated:"2026-02-26T16:45:00Z",
     briefing:{weekOf:"Feb 22 – 28, 2026",
       completed:[
         {icon:"📎",type:"done",title:"LinkedIn: Remote work policy post",detail:"6.4K impressions, 4.2% engagement.",date:"Feb 24"},
@@ -571,11 +579,37 @@ const AGENCY = {
   ],
   totals:{clients:6,totalRevenue:"$24,000",totalAdManaged:"$29,400",avgRoas:"3.7x"},
   team:[
-    {name:"Alex Rivera",email:"alex@momentumdigital.com",role:"Admin",clients:"All",status:"Active"},
-    {name:"Jamie Patel",email:"jamie@momentumdigital.com",role:"Viewer",clients:"FreshBowl, PetVibe",status:"Active"},
-    {name:"Morgan Liu",email:"morgan@momentumdigital.com",role:"Admin",clients:"NovaPay, CloudHR",status:"Active"},
-    {name:"Dana Kim",email:"dana@momentumdigital.com",role:"Viewer",clients:"All",status:"Invited"},
+    {name:"Alex Rivera",email:"alex@momentumdigital.com",role:"Admin",clients:"All",status:"Active",canPublish:true},
+    {name:"Jamie Patel",email:"jamie@momentumdigital.com",role:"Viewer",clients:"FreshBowl, PetVibe",status:"Active",canPublish:false},
+    {name:"Morgan Liu",email:"morgan@momentumdigital.com",role:"Admin",clients:"NovaPay, CloudHR",status:"Active",canPublish:true},
+    {name:"Dana Kim",email:"dana@momentumdigital.com",role:"Viewer",clients:"All",status:"Invited",canPublish:false},
   ],
+  clientTeams:{
+    freshbowl:[
+      {name:"Alex Rivera",access:"admin"},
+      {name:"Jamie Patel",access:"view"},
+    ],
+    novapay:[
+      {name:"Morgan Liu",access:"admin"},
+      {name:"Dana Kim",access:"view"},
+    ],
+    petvibe:[
+      {name:"Alex Rivera",access:"admin"},
+      {name:"Jamie Patel",access:"view"},
+    ],
+    cloudhr:[
+      {name:"Morgan Liu",access:"admin"},
+      {name:"Dana Kim",access:"view"},
+    ],
+    glowup:[
+      {name:"Alex Rivera",access:"admin"},
+      {name:"Morgan Liu",access:"edit"},
+    ],
+    dataforge:[
+      {name:"Morgan Liu",access:"admin"},
+      {name:"Alex Rivera",access:"edit"},
+    ],
+  },
   invoices:[
     {id:"AG-2026-006",date:"Feb 1, 2026",amount:"$24,000",detail:"6 clients (3×$5K + 3×$3K)",status:"Paid",paidDate:"Feb 5, 2026"},
     {id:"AG-2026-005",date:"Jan 1, 2026",amount:"$24,000",detail:"6 clients",status:"Paid",paidDate:"Jan 4, 2026"},
@@ -600,8 +634,84 @@ const ADMIN_ACCOUNTS = [
   {key:'agency_momentum',name:'Momentum Digital',type:'Agency (6 clients)',package:'$24,000/mo'},
 ];
 
-let currentMode='client',currentClient='b2c',currentSection='briefing',agencyDrillClient=null,adminClient='b2c',previewSubTab=null;
-let editingInvoiceIdx=null,editingActivityKey=null;
+let currentMode='client',currentClient='b2c',currentSection='briefing',agencyDrillClient=null,adminClient='b2c',adminAgencyClient=null;
+let currentRole='viewer';
+let editingActivityKey=null;
+
+
+// Format a stored UTC timestamp for display in the viewer's local timezone
+function formatLocalTime(isoStr){
+  if(!isoStr) return '';
+  const d=new Date(isoStr);
+  if(isNaN(d.getTime())) return isoStr; // fallback for legacy strings
+  const opts={month:'short',day:'numeric',year:'numeric'};
+  const date=d.toLocaleDateString(undefined,opts);
+  const time=d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit',hour12:true});
+  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+  const short=tz.split('/').pop().replace(/_/g,' ');
+  return date+' · '+time+(short?' ('+short+')':'');
+}
+
+// Inline comments on "Needs Input" items for direct client feedback
+// Structure: { clientKey: { "needsYou_0": [{name,time,text,role},...] } }
+let itemComments={};
+function initItemComments(){
+  Object.keys(CLIENTS).forEach(k=>{if(!itemComments[k])itemComments[k]={};});
+  // Seed sample comments
+  itemComments['b2c']={
+    'needsYou_0':[{name:'Sarah Chen',time:'2 days ago',text:'We can approve the $500 shift to Instagram if the ROAS projections hold. Can you share the data?',role:'client'},
+      {name:'Raj Kumar',time:'1 day ago',text:'Sharing the ROAS comparison now — Instagram is 3.4x vs Facebook 2.1x over last 30 days.',role:'bw'}],
+  };
+  itemComments['freshbowl']={
+    'needsYou_0':[{name:'FreshBowl Team',time:'3 days ago',text:'We like the spring launch concept. Let us review the mood board by Friday.',role:'client'}],
+  };
+}
+initItemComments();
+function addItemComment(clientKey,itemKey){
+  if(!itemComments[clientKey])itemComments[clientKey]={};
+  if(!itemComments[clientKey][itemKey])itemComments[clientKey][itemKey]=[];
+  const inp=document.getElementById('ic_'+clientKey+'_'+itemKey);
+  const txt=inp?.value.trim();if(!txt)return;
+  let name='You',role='client';
+  if(currentMode==='admin'){name='BW Team';role='bw';}
+  else if(currentMode==='agency'){name='Agency';role='agency';}
+  itemComments[clientKey][itemKey].push({name,time:'Just now',text:txt,role});
+  inp.value='';renderMain();
+}
+function itemCommentsHtml(clientKey,itemKey){
+  const comments=(itemComments[clientKey]&&itemComments[clientKey][itemKey])||[];
+  const inputId='ic_'+clientKey+'_'+itemKey;
+  const avatarColor={'client':'#2E86C1','bw':'#E67E22','agency':'#27AE60'};
+  let html=`<div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)">`;
+  if(comments.length>0){
+    html+=comments.map(c=>`<div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+      <div style="width:24px;height:24px;border-radius:50%;background:${avatarColor[c.role]||'#7F8C8D'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${c.name.charAt(0)}</div>
+      <div style="flex:1"><div style="font-size:11px;color:var(--muted)"><strong style="color:var(--text)">${c.name}</strong> · ${c.time}</div><div style="font-size:12px;margin-top:2px">${c.text}</div></div>
+    </div>`).join('');
+  }
+  html+=`<div style="display:flex;gap:6px;margin-top:4px">
+    <input id="${inputId}" placeholder="Add a comment..." style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px" onkeypress="if(event.key==='Enter')addItemComment('${clientKey}','${itemKey}')">
+    <button onclick="addItemComment('${clientKey}','${itemKey}')" style="background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">Reply</button>
+  </div></div>`;
+  return html;
+}
+
+// Role definitions per mode (simplified to Viewer/Owner for each)
+const ROLES={
+  client:[
+    {id:'viewer',label:'Viewer',desc:'Read-only dashboard access'},
+    {id:'owner',label:'Owner',desc:'Can edit and manage account'},
+  ],
+  agency:[
+    {id:'viewer',label:'Viewer',desc:'Read-only access to assigned clients'},
+    {id:'owner',label:'Owner',desc:'Edits client dashboards, publishes updates'},
+  ],
+  admin:[
+    {id:'viewer',label:'Viewer',desc:'Read-only view of assigned clients'},
+    {id:'owner',label:'Owner',desc:'Edits dashboards, manages clients & billing'},
+    {id:'admin',label:'Admin',desc:'Assigns account owners, manages payments'},
+  ],
+};
 let onboardingStep=1,onboardingData={};
 let commentThreads={};
 function initComments(){Object.keys(CLIENTS).forEach(k=>{commentThreads[k]={};if(CLIENTS[k].comments)Object.keys(CLIENTS[k].comments).forEach(s=>{commentThreads[k][s]=[...CLIENTS[k].comments[s]]})});}
@@ -611,88 +721,188 @@ initComments();
 function buildClientSelect(){
   const sel=document.getElementById('clientSelect');
   const lbl=document.getElementById('switcherLabel');
+  const agSub=document.getElementById('agencyClientSwitcher');
+  const agSel=document.getElementById('agencyClientSelect');
   if(currentMode==='client'){
     lbl.textContent='Client';
     sel.innerHTML=Object.keys(CLIENTS).map(k=>`<option value="${k}">${CLIENTS[k].name}</option>`).join('');
     sel.value=currentClient;
+    agSub.style.display='none';
   } else if(currentMode==='admin'){
     lbl.textContent='Customer Account';
     sel.innerHTML=ADMIN_ACCOUNTS.map(a=>`<option value="${a.key}">${a.name}</option>`).join('');
     sel.value=adminClient;
+    // Show agency client sub-dropdown when an agency is selected
+    if(adminClient.startsWith('agency')&&currentRole!=='admin'){
+      agSub.style.display='block';
+      agSel.innerHTML=AGENCY.agencyClients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+      agSel.value=adminAgencyClient||AGENCY.agencyClients[0]?.id;
+      if(!adminAgencyClient){adminAgencyClient=AGENCY.agencyClients[0]?.id||null;}
+    } else {
+      agSub.style.display='none';
+    }
+  } else if(currentMode==='agency'){
+    lbl.textContent='Client';
+    sel.innerHTML=AGENCY.agencyClients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+    sel.value=agencyDrillClient||AGENCY.agencyClients[0]?.id;
+    agSub.style.display='none';
   }
-  document.getElementById('clientSwitcher').style.display=(currentMode==='client'||currentMode==='admin')?'block':'none';
+  document.getElementById('clientSwitcher').style.display='block';
+  // Hide top-level dropdown for admin role (they see the owner assignment page)
+  if(currentMode==='admin'&&currentRole==='admin'){
+    document.getElementById('clientSwitcher').style.display='none';
+    agSub.style.display='none';
+  }
 }
 function onClientSelectChange(){
   const v=document.getElementById('clientSelect').value;
-  if(currentMode==='client'){currentClient=v;currentSection='briefing';}
-  else if(currentMode==='admin'){adminClient=v;currentSection='adm_briefing';}
-  updateSidebarLogo();renderNav();renderMain();
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  if(currentMode==='client'){
+    currentClient=v;currentSection='briefing';
+  } else if(currentMode==='admin'){
+    adminClient=v;adminAgencyClient=null;
+    // When switching to an agency account, auto-select the first agency client
+    if(v.startsWith('agency')&&currentRole!=='admin'){
+      adminAgencyClient=AGENCY.agencyClients[0]?.id||null;
+    }
+    currentSection=currentRole==='viewer'?'adm_view_briefing':(currentRole==='admin'?'adm_owners':'adm_briefing');
+  } else if(currentMode==='agency'){
+    agencyDrillClient=v;adminClient=agMap[v]||v;
+    currentSection=currentRole==='viewer'?'ag_view_briefing':'ag_briefing';
+  }
+  buildClientSelect();updateSidebarLogo();renderNav();renderMain();
+}
+function onAgencyClientSelectChange(){
+  const v=document.getElementById('agencyClientSelect').value;
+  adminAgencyClient=v;
+  renderMain();
 }
 
-// ============ NAV ============
-const NAV={
-  client:[
-    {id:'briefing',icon:'📋',label:"This Week's Briefing",group:'Your Dashboard'},
-    {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
-    {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
-    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
-    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
-    {id:'account',icon:'⚙️',label:'Account',group:'Settings'},
-  ],
-  agency:[
-    {id:'portfolio',icon:'🏢',label:'Client Portfolio',group:'Agency'},
-    {id:'billing',icon:'💳',label:'Billing & Revenue',group:'Agency'},
-    {id:'team',icon:'👥',label:'Team & Access',group:'Agency'},
-    {id:'settings',icon:'⚙️',label:'Account',group:'Agency'},
-  ],
-  agency_drill:[
-    {id:'briefing',icon:'📋',label:"Briefing",group:'Client View'},
-    {id:'content',icon:'🎬',label:'Content',group:'Client View'},
-    {id:'impact',icon:'📈',label:'Impact',group:'Client View'},
-    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
-    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
-  ],
-  admin_client:[
-    {id:'adm_briefing',icon:'✍️',label:'Update Briefing',group:'Dashboard Updates'},
-    {id:'adm_content',icon:'🎬',label:'Update Content',group:'Dashboard Updates'},
-    {id:'adm_metrics',icon:'📈',label:'Update Impact',group:'Dashboard Updates'},
-    {id:'adm_onboarding',icon:'🆕',label:'Onboard New Client',group:'Setup'},
-    {id:'adm_billing',icon:'💳',label:'Billing & Payments',group:'Account'},
-    {id:'adm_team',icon:'👥',label:'BW Team Assignment',group:'Account'},
-    {id:'adm_preview',icon:'👁️',label:'Preview Client View',group:'Account'},
-  ],
-  admin_agency:[
-    {id:'adm_agency_billing',icon:'💳',label:'Agency Billing',group:'Agency Account'},
-    {id:'adm_agency_clients',icon:'🏢',label:'Manage Clients',group:'Agency Account'},
-    {id:'adm_agency_preview',icon:'👁️',label:'Preview Agency View',group:'Agency Account'},
-  ],
-};
+// ============ NAV (dynamic based on role) ============
+function getNav(){
+  if(currentMode==='client'){
+    const items=[
+      {id:'briefing',icon:'📋',label:"This Week's Briefing",group:'Your Dashboard'},
+      {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
+      {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
+      {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
+      {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
+      {id:'profile',icon:'🔑',label:'Profile',group:'Settings'},
+    ];
+    if(currentRole==='owner') items.push({id:'account',icon:'⚙️',label:'Account',group:'Settings'});
+    return items;
+  }
+  if(currentMode==='agency'){
+    if(currentRole==='viewer'){
+      // Viewer: read-only client views
+      return [
+        {id:'ag_view_briefing',icon:'📋',label:'Briefing',group:'Client View'},
+        {id:'ag_view_content',icon:'🎬',label:'Content',group:'Client View'},
+        {id:'ag_view_impact',icon:'📈',label:'Impact',group:'Client View'},
+        {id:'ag_messages',icon:'💬',label:'Messages',group:'Communication'},
+        {id:'ag_reports',icon:'📄',label:'Reports',group:'Communication'},
+      ];
+    }
+    if(currentRole==='owner'){
+      // Owner: edits client dashboards
+      return [
+        {id:'ag_briefing',icon:'✍️',label:'Update Briefing',group:'Client Work'},
+        {id:'ag_content',icon:'🎬',label:'Update Content',group:'Client Work'},
+        {id:'ag_metrics',icon:'📈',label:'Update Impact',group:'Client Work'},
+        {id:'ag_team',icon:'👥',label:'Client Team',group:'Client Work'},
+        {id:'ag_messages',icon:'💬',label:'Messages',group:'Communication'},
+        {id:'ag_reports',icon:'📄',label:'Reports',group:'Communication'},
+      ];
+    }
+    return [];
+  }
+  if(currentMode==='admin'){
+    if(currentRole==='viewer'){
+      // BW viewer: read-only views
+      return [
+        {id:'adm_view_briefing',icon:'📋',label:'Briefing',group:'Client View'},
+        {id:'adm_view_content',icon:'🎬',label:'Content',group:'Client View'},
+        {id:'adm_view_impact',icon:'📈',label:'Impact',group:'Client View'},
+      ];
+    }
+    if(currentRole==='owner'){
+      // BW owner: edits both direct and agency clients
+      return [
+        {id:'adm_briefing',icon:'✍️',label:'Update Briefing',group:'Client Work'},
+        {id:'adm_content',icon:'🎬',label:'Update Content',group:'Client Work'},
+        {id:'adm_metrics',icon:'📈',label:'Update Impact',group:'Client Work'},
+        {id:'adm_team',icon:'👥',label:'BW Team',group:'Client Work'},
+      ];
+    }
+    if(currentRole==='admin'){
+      // BW admin: assigns account owners, manages payments
+      return [
+        {id:'adm_owners',icon:'🔑',label:'Account Owners',group:'Operations'},
+        {id:'adm_billing',icon:'💳',label:'Billing',group:'Operations'},
+      ];
+    }
+  }
+  return [];
+}
 
+function buildRoleSelect(){
+  const sel=document.getElementById('roleSelect');
+  const roles=ROLES[currentMode]||[];
+  sel.innerHTML=roles.map(r=>`<option value="${r.id}">${r.label}</option>`).join('');
+  sel.value=currentRole;
+}
+function onRoleChange(){
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  currentRole=document.getElementById('roleSelect').value;
+  if(currentMode==='client'){
+    currentSection='briefing';
+  } else if(currentMode==='agency'){
+    if(currentRole==='viewer') currentSection='ag_view_briefing';
+    else currentSection='ag_briefing';
+    agencyDrillClient=agencyDrillClient||AGENCY.agencyClients[0]?.id;
+    adminClient=agMap[agencyDrillClient]||agencyDrillClient;
+  } else if(currentMode==='admin'){
+    if(currentRole==='viewer'){currentSection='adm_view_briefing';adminClient='b2c';}
+    else if(currentRole==='admin'){currentSection='adm_owners';}
+    else {adminClient='b2c';currentSection='adm_briefing';}
+  }
+  adminAgencyClient=null;
+  buildClientSelect();renderNav();renderMain();
+}
 function switchMode(mode){
-  currentMode=mode;agencyDrillClient=null;
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  currentMode=mode;adminAgencyClient=null;
+  // Default to viewer role for each mode
+  currentRole='viewer';
+  if(mode==='agency'){
+    agencyDrillClient=AGENCY.agencyClients[0]?.id||null;
+    adminClient=agMap[agencyDrillClient]||agencyDrillClient;
+  } else {
+    agencyDrillClient=null;
+    adminClient=mode==='admin'?'b2c':'b2c';
+  }
   document.querySelectorAll('.view-tab').forEach(t=>{t.classList.remove('active','admin-active')});
   document.getElementById(mode==='client'?'modeClient':mode==='agency'?'modeAgency':'modeAdmin').classList.add(mode==='admin'?'admin-active':'active');
   document.getElementById('sidebar').classList.toggle('admin-mode',mode==='admin');
-  currentSection=mode==='client'?'briefing':mode==='agency'?'portfolio':'adm_briefing';
-  updateSidebarLogo();buildClientSelect();renderNav();renderMain();
+  if(mode==='client') currentSection='briefing';
+  else if(mode==='agency') currentSection='ag_view_briefing';
+  else currentSection='adm_view_briefing';
+  buildRoleSelect();updateSidebarLogo();buildClientSelect();renderNav();renderMain();
 }
 
-function navTo(s){currentSection=s;previewSubTab=null;document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));document.querySelector(`[data-section="${s}"]`)?.classList.add('active');renderMain();}
-function drillIntoClient(cid){agencyDrillClient=cid;currentSection='briefing';renderNav();renderMain();}
-function backToPortfolio(){agencyDrillClient=null;currentSection='portfolio';renderNav();renderMain();}
+function navTo(s){currentSection=s;previewSubTab=null;document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));document.querySelector(`[data-section="${s}"]`)?.classList.add('active');buildClientSelect();renderMain();}
+function drillIntoClient(cid){
+  const map={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  agencyDrillClient=cid;
+  adminClient=map[cid]||cid;
+  currentSection=(currentRole==='standard')?'ag_view_briefing':'ag_briefing';
+  buildClientSelect();renderNav();renderMain();
+}
+function backToPortfolio(){currentSection='portfolio';renderNav();renderMain();}
 
 function renderNav(){
-  let key,items;
-  if(currentMode==='admin'){key=adminClient.startsWith('agency')?'admin_agency':'admin_client';}
-  else if(currentMode==='agency'&&agencyDrillClient){key='agency_drill';}
-  else if(currentMode==='agency'){key='agency';}
-  else{key='client';}
-  items=NAV[key]||[];
+  const items=getNav();
   let html='',lastG='';
-  if(currentMode==='agency'&&agencyDrillClient){
-    const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
-    html+=`<div style="padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.1)"><a onclick="backToPortfolio()" style="cursor:pointer;color:rgba(255,255,255,.5);font-size:12px;display:flex;align-items:center;gap:6px">← Portfolio</a><div style="color:#fff;font-weight:600;font-size:14px;margin-top:6px">${cl?cl.name:''}</div><div style="font-size:11px;opacity:.5">${cl?cl.type:''}</div></div>`;
-  }
   items.forEach(i=>{if(i.group!==lastG){html+=`<div class="section-label">${i.group}</div>`;lastG=i.group;}
     html+=`<a data-section="${i.id}" class="${i.id===currentSection?'active':''}" onclick="navTo('${i.id}')"><span class="icon">${i.icon}</span>${i.label}</a>`;
   });
@@ -724,25 +934,77 @@ function sendC(sk,tid,ck){
 // ============ RENDER ============
 function renderMain(){
   const main=document.getElementById('mainContent');
-  if(currentMode==='admin'){renderAdmin(main);return;}
-  if(currentMode==='agency'){
-    if(agencyDrillClient){
-      const map={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
-      if(map[agencyDrillClient]){const d=CLIENTS[map[agencyDrillClient]];currentClient=map[agencyDrillClient];
-        switch(currentSection){case 'briefing':renderBriefing(main,d,true);break;case 'content':renderContent(main,d,true);break;case 'impact':renderImpact(main,d,true);break;case 'messages':renderMessages(main,d,true);break;case 'reports':renderReports(main,d,true);break;default:renderBriefing(main,d,true);}
-      } else {
-        const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
-        main.innerHTML=`<button class="btn-back" onclick="backToPortfolio()">← Portfolio</button><div class="topbar"><h2>${cl?.name||''}</h2></div><div class="card"><h3>Dashboard</h3><p style="color:var(--muted)">Full data available for GlowUp Beauty and DataForge AI in this prototype.</p></div>`;
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+
+  // ── ADMIN MODE ──
+  if(currentMode==='admin'){
+    if(currentRole==='viewer'){
+      // BW Viewer: read-only client dashboards
+      const isAgency=adminClient.startsWith('agency');
+      let clientKey=adminClient;
+      if(isAgency){
+        clientKey=agMap[adminAgencyClient]||adminAgencyClient;
+      }
+      const d=clientKey?CLIENTS[clientKey]:null;
+      if(!d){main.innerHTML='<div class="card"><p>Select a client.</p></div>';return;}
+      switch(currentSection){
+        case 'adm_view_briefing':renderBriefing(main,d);break;
+        case 'adm_view_content':renderContent(main,d);break;
+        case 'adm_view_impact':renderImpact(main,d);break;
+        default:renderBriefing(main,d);
       }
       return;
     }
-    renderAgency(main);return;
+    renderAdmin(main);return;
   }
+
+  // ── AGENCY MODE ──
+  if(currentMode==='agency'){
+    // Agency sections (org-level)
+    const agencyAdminSections=['portfolio','billing','team','settings'];
+    if(agencyAdminSections.includes(currentSection)){
+      buildClientSelect();
+      renderAgency(main);
+      return;
+    }
+    // Client work — read-only for viewer, editable for owner
+    const mappedKey=agMap[agencyDrillClient];
+    if(mappedKey){
+      const d=CLIENTS[mappedKey];currentClient=mappedKey;adminClient=mappedKey;
+      if(currentRole==='viewer'){
+        // Agency viewer: read-only
+        switch(currentSection){
+          case 'ag_view_briefing':renderBriefing(main,d);break;
+          case 'ag_view_content':renderContent(main,d);break;
+          case 'ag_view_impact':renderImpact(main,d);break;
+          case 'ag_messages':renderMessages(main,d);break;
+          case 'ag_reports':renderReports(main,d);break;
+          default:renderBriefing(main,d);
+        }
+      } else {
+        // Agency owner: full edit
+        switch(currentSection){
+          case 'ag_briefing':renderAdmBriefing(main,d);break;
+          case 'ag_content':renderAdmContent(main,d);break;
+          case 'ag_metrics':renderAdmMetrics(main,d);break;
+          case 'ag_team':renderAgDrillTeam(main,d);break;
+          case 'ag_messages':renderMessages(main,d);break;
+          case 'ag_reports':renderReports(main,d);break;
+          default:renderAdmBriefing(main,d);
+        }
+      }
+    } else {
+      main.innerHTML=`<div class="card"><p style="color:var(--muted)">Full data available for GlowUp Beauty and DataForge AI in this prototype.</p></div>`;
+    }
+    return;
+  }
+
+  // ── CLIENT MODE ──
   const d=CLIENTS[currentClient];
   switch(currentSection){
     case 'briefing':renderBriefing(main,d);break;case 'content':renderContent(main,d);break;
     case 'impact':renderImpact(main,d);break;
-    case 'next':renderBriefing(main,d);break;case 'messages':renderMessages(main,d);break;case 'reports':renderReports(main,d);break;case 'account':renderAccount(main,d);break;
+    case 'messages':renderMessages(main,d);break;case 'reports':renderReports(main,d);break;case 'profile':renderProfile(main,d);break;case 'account':renderAccount(main,d);break;
     default:renderBriefing(main,d);
   }
 }
@@ -751,9 +1013,9 @@ function renderMain(){
 function renderBriefing(el,d,drill){
   const b=d.briefing;
   el.innerHTML=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Portfolio</button>':''}
-    <div class="topbar"><div><h2>This Week's Briefing</h2><span style="font-size:13px;color:var(--muted)">${d.name} • ${b.weekOf}</span><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div>
+    <div class="topbar"><div><h2>This Week's Briefing</h2><span style="font-size:13px;color:var(--muted)">${d.name} • ${b.weekOf}</span><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${formatLocalTime(d.lastUpdated)}</div></div>
     </div>
-    ${b.needsYou.length?`<div style="margin-bottom:24px">${b.needsYou.map(i=>`<div class="highlight-card attention"><div class="hl-title">⚠️ Needs Your Input</div><div class="hl-text"><strong>${i.title}</strong><br>${i.detail}</div></div>`).join('')}</div>`:''}
+    ${b.needsYou.length?`<div style="margin-bottom:24px">${b.needsYou.map((i,idx)=>{const ck=currentMode==='agency'?adminClient:currentClient;return `<div class="highlight-card attention"><div class="hl-title">⚠️ Needs Your Input</div><div class="hl-text"><strong>${i.title}</strong><br>${i.detail}</div>${itemCommentsHtml(ck,'needsYou_'+idx)}</div>`;}).join('')}</div>`:''}
     ${d.whatsNext.recommendations.length?`<div class="card"><h3>💡 Our Recommendations</h3>${d.whatsNext.recommendations.map(r=>`<div class="highlight-card action"><div class="hl-title">💡 Recommendation</div><div class="hl-text"><strong>${r.title}</strong><br>${r.reason}</div></div>`).join('')}</div>`:''}
     <div class="card"><h3>✅ Completed This Week</h3>${b.completed.map(i=>`<div class="activity-item"><div class="activity-icon done">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag green">Done</span></div></div>`).join('')}</div>
     <div class="card"><h3>🔄 In Progress</h3>${b.inProgress.map(i=>`<div class="activity-item"><div class="activity-icon progress">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div><div class="activity-meta"><div class="activity-date">${i.date}</div><span class="tag blue">In Progress</span></div></div>`).join('')}</div>
@@ -763,18 +1025,16 @@ function renderContent(el,d,drill){
   const c=d.content;
   const st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue'};
   let html=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
-    <div class="topbar"><div><h2>Content & Production</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>`;
+    <div class="topbar"><div><h2>Content & Production</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${formatLocalTime(d.lastUpdated)}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>`;
   if(c.commitments&&Object.keys(c.commitments).length>0){
-    html+=`<div class="card"><h3>Commitments Progress</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">`;
+    html+=`<div class="card"><h3>Monthly Commitments</h3><div style="display:grid;gap:8px">`;
     Object.keys(c.commitments).forEach(type=>{
       const ct=c.commitments[type];
-      const pct=commitPct(ct.committed,ct.delivered);
-      const col=commitColor(pct);
-      html+=`<div style="padding:12px;border:1px solid var(--border);border-radius:8px">
-        <div style="font-size:13px;font-weight:600;margin-bottom:6px">${getTypeIcon(type)} ${getTypeLabel(type)}</div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:8px">${ct.delivered} of ${ct.committed}</div>
-        <div class="progress-bar"><div class="fill" style="width:${pct}%;background:${col}"></div></div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;text-align:right">${pct}%</div>
+      const done=ct.delivered>=ct.committed;
+      html+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg);border-radius:6px">
+        <span style="font-size:16px">${done?'✅':'⬜'}</span>
+        <span style="flex:1;font-size:13px"><strong>${getTypeLabel(type)}</strong>: ${ct.delivered}/${ct.committed} delivered</span>
+        ${done?'<span class="tag green">Complete</span>':'<span class="tag orange">In Progress</span>'}
       </div>`;
     });
     html+=`</div></div>`;
@@ -790,7 +1050,7 @@ function renderImpact(el,d,drill){
   const im=d.impact;
   const li=d.linkedin;
   let html=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
-    <div class="topbar"><div><h2>Business Impact</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>
+    <div class="topbar"><div><h2>Business Impact</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${formatLocalTime(d.lastUpdated)}</div></div><div class="meta"><span class="date-range">February 2026</span></div></div>
     <div class="kpi-row">${im.kpis.map(k=>`<div class="kpi-card"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}</div><div class="kpi-change up">↑ ${k.change}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${k.context}</div></div>`).join('')}</div>
     <div class="card"><h3>🏆 Biggest Wins</h3><table><thead><tr><th>Content</th><th>Metric</th><th>Why It Matters</th></tr></thead><tbody>${im.topWins.map(w=>`<tr><td><strong>${w.content}</strong></td><td><span class="tag green">${w.metric}</span></td><td>${w.impact}</td></tr>`).join('')}</tbody></table></div>
     <div class="grid-2"><div class="card"><h3>Channel Growth</h3><table><thead><tr><th>Channel</th><th>Current</th><th>Growth</th><th>Key</th></tr></thead><tbody>${im.channels.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.metric}</td><td style="color:var(--green)">${c.growth}</td><td>${c.engagement}</td></tr>`).join('')}</tbody></table></div>
@@ -809,7 +1069,7 @@ function renderImpact(el,d,drill){
 }
 function renderLinkedIn(el,d){
   if(!d.linkedin)return;const li=d.linkedin;
-  el.innerHTML=`<div class="topbar"><div><h2>LinkedIn Growth Report</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="tag green">Founder: Sarah Chen</span></div></div>
+  el.innerHTML=`<div class="topbar"><div><h2>LinkedIn Growth Report</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${formatLocalTime(d.lastUpdated)}</div></div><div class="meta"><span class="tag green">Founder: Sarah Chen</span></div></div>
     <div class="kpi-row"><div class="kpi-card"><div class="kpi-label">Profile Views</div><div class="kpi-value">${li.profileViews}</div><div class="kpi-change up">↑ ${li.profileViewsChange}</div></div><div class="kpi-card"><div class="kpi-label">Connections</div><div class="kpi-value">${li.connections}</div><div class="kpi-change up">↑ ${li.connectionsChange}</div></div><div class="kpi-card"><div class="kpi-label">ICP %</div><div class="kpi-value">${li.icpPercent}</div></div><div class="kpi-card"><div class="kpi-label">Impressions</div><div class="kpi-value">${li.postImpressions}</div><div class="kpi-change up">↑ ${li.postImpressionsChange}</div></div><div class="kpi-card"><div class="kpi-label">Engagement</div><div class="kpi-value">${li.engagementRate}</div><div class="kpi-change up">↑ ${li.engagementRateChange}</div></div><div class="kpi-card"><div class="kpi-label">Inbound DMs</div><div class="kpi-value">${li.inboundDMs}</div><div class="kpi-change up">↑ ${li.inboundDMsChange}</div></div></div>
     <div class="grid-2"><div class="card"><h3>Top Posts</h3><table><thead><tr><th>Post</th><th>Imp</th><th>Eng</th><th>Comments</th></tr></thead><tbody>${li.topPosts.map(p=>`<tr><td style="max-width:250px">${p.text}</td><td>${p.impressions}</td><td><strong>${p.engagement}</strong></td><td>${p.comments}</td></tr>`).join('')}</tbody></table></div>
     <div class="card"><h3>vs. Competitors</h3><table><thead><tr><th>Profile</th><th>Followers</th><th>Eng</th><th>Freq</th></tr></thead><tbody>${li.competitors.map(c=>`<tr style="${c.name==='Your founder'?'background:#E8F8F0':''}"><td><strong>${c.name}</strong></td><td>${c.followers}</td><td>${c.engagement}</td><td>${c.postFreq}</td></tr>`).join('')}</tbody></table></div></div>
@@ -818,7 +1078,7 @@ function renderLinkedIn(el,d){
 function renderNext(el,d,drill){
   const n=d.whatsNext;
   el.innerHTML=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
-    <div class="topbar"><div><h2>What's Next</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div><div class="meta"><span class="date-range">March 2026</span></div></div>
+    <div class="topbar"><div><h2>What's Next</h2><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${formatLocalTime(d.lastUpdated)}</div></div><div class="meta"><span class="date-range">March 2026</span></div></div>
     <div class="card"><h3>📅 Upcoming Work</h3>${n.planned.map(i=>`<div class="activity-item"><div class="activity-icon planned">${i.icon}</div><div class="activity-body"><div class="activity-title">${i.title}</div><div class="activity-detail">${i.detail}</div></div></div>`).join('')}</div>
     <div class="card"><h3>💡 Our Recommendations</h3>${n.recommendations.map(r=>`<div class="highlight-card action"><div class="hl-title">💡 Recommendation</div><div class="hl-text"><strong>${r.title}</strong><br>${r.reason}</div></div>`).join('')}</div>`;
 }
@@ -838,7 +1098,7 @@ function renderMessages(el,d,drill){
   });
 
   el.innerHTML=`${drill?'<button class="btn-back" onclick="backToPortfolio()">← Back</button>':''}
-    <div class="topbar"><div><h2>Messages</h2><span style="font-size:13px;color:var(--muted)">${d.name}</span><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${d.lastUpdated}</div></div></div>
+    <div class="topbar"><div><h2>Messages</h2><span style="font-size:13px;color:var(--muted)">${d.name}</span><div style="font-size:12px;color:var(--muted);margin-top:4px">Last updated: ${formatLocalTime(d.lastUpdated)}</div></div></div>
     <div class="messages-container">
       <div class="message-thread">
         <div class="messages-list">
@@ -909,13 +1169,96 @@ function renderReports(el,d,drill){
     </div>`;
 }
 
+function renderProfile(el,d){
+  el.innerHTML=`<div class="topbar"><h2>Profile</h2></div>
+    <div class="grid-2">
+      <div class="card"><h3>Your Information</h3>
+        <table>
+          <tr><td style="width:40%"><strong>Name</strong></td><td>${d.account.admin}</td></tr>
+          <tr><td><strong>Email</strong></td><td>${d.account.email}</td></tr>
+          <tr><td><strong>Role</strong></td><td><span class="tag blue">Admin</span></td></tr>
+          <tr><td><strong>Company</strong></td><td>${d.name}</td></tr>
+        </table>
+      </div>
+      <div class="card"><h3>Security</h3>
+        <table>
+          <tr><td style="width:40%"><strong>Password</strong></td><td>••••••••</td></tr>
+          <tr><td><strong>Last Changed</strong></td><td style="color:var(--muted)">Jan 15, 2026</td></tr>
+        </table>
+        <div style="margin-top:16px"><button class="btn-primary" onclick="openModal('passwordModal')">🔑 Change Password</button></div>
+      </div>
+    </div>`;
+}
+
 function renderAccount(el,d){
   const t=d.account.team;
-  el.innerHTML=`<div class="topbar"><h2>Account</h2></div>
-    <div class="grid-2"><div class="card"><h3>Organization</h3><table><tr><td style="width:40%"><strong>Company</strong></td><td>${d.name}</td></tr><tr><td><strong>Package</strong></td><td><span class="tag blue">${d.package}</span></td></tr><tr><td><strong>Admin</strong></td><td>${d.account.admin}</td></tr><tr><td><strong>Email</strong></td><td>${d.account.email}</td></tr></table></div>
-    <div class="card"><h3>Login</h3><div class="alert-row info" style="margin-bottom:12px">🔒 One login per org.</div><table><tr><td style="width:40%"><strong>Email</strong></td><td>${d.account.email}</td></tr><tr><td><strong>Password</strong></td><td>••••••••</td></tr></table><div style="margin-top:12px"><button class="btn-primary" onclick="openModal('passwordModal')">🔑 Change</button></div></div></div>
-    <div class="card"><h3>Team Members</h3><div class="alert-row info" style="margin-bottom:12px">Manage who can view this dashboard. The account admin has full access; viewers have read-only access.</div><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>${t.map((u,idx)=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td><td>${u.role==='Admin'?'—':`<button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeClientTeamMember(${idx})">Remove</button>`}</td></tr>`).join('')}</tbody></table>
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Viewer</div><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="clientNewUserName" placeholder="Full name" style="padding:6px;width:150px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="clientNewUserEmail" placeholder="email@company.com" style="padding:6px;width:180px"></div><button class="btn-primary" onclick="addClientTeamMember()">Add Viewer</button></div></div></div>`;
+  const bw=d.bwTeam;
+  const inv=d.invoices||[];
+  const totalPaid=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+  const outstanding=inv.filter(x=>x.status!=='Paid').length;
+  const ads=d.impact?.adBreakdown||[];
+  const totalAdSpend=ads.reduce((s,a)=>s+parseFloat(a.spend.replace(/[^0-9.]/g,'')),0);
+
+  let html=`<div class="topbar"><h2>Account (Admin)</h2></div>`;
+
+  // Section 1: Team & Access
+  html+=`<div class="card" style="margin-bottom:16px"><h3>Team & Access</h3>
+    <div class="alert-row info" style="margin-bottom:12px">Manage who can view this dashboard.</div>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>${t.map((u,idx)=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td><td>${u.role==='Admin'?'—':`<button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeClientTeamMember(${idx})">Remove</button>`}</td></tr>`).join('')}</tbody></table>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="clientNewUserName" placeholder="Full name" style="padding:6px;width:150px"></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="clientNewUserEmail" placeholder="email@company.com" style="padding:6px;width:180px"></div>
+      <button class="btn-primary" onclick="addClientTeamMember()">Add Viewer</button>
+    </div>`;
+
+  // BW Team (read-only)
+  if(bw){
+    html+=`<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🔒 BossWallah Team <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:4px">Read Only</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="padding:12px;background:var(--bg);border-radius:8px">
+          <div style="font-size:12px;font-weight:600;margin-bottom:8px">Account Owner</div>
+          <div><strong>${bw.owner.name}</strong> <span style="color:var(--muted);font-size:11px">· ${bw.owner.role}</span></div>
+        </div>
+        <div style="padding:12px;background:var(--bg);border-radius:8px">
+          <div style="font-size:12px;font-weight:600;margin-bottom:8px">BW Viewers (${(bw.viewers||[]).length})</div>
+          ${(bw.viewers||[]).map(v=>`<div style="font-size:13px;margin-bottom:4px">${v.name} <span style="color:var(--muted);font-size:11px">· ${v.role}</span></div>`).join('')||'<div style="color:var(--muted);font-size:12px">None</div>'}
+        </div>
+      </div>
+    </div>`;
+  }
+  html+=`</div>`;
+
+  // Section 2: Payment History (read-only)
+  html+=`<div class="card" style="margin-bottom:16px"><h3>Payment History</h3>
+    <div class="kpi-row" style="margin-bottom:16px">
+      <div class="kpi-card"><div class="kpi-label">Monthly Fee</div><div class="kpi-value">${d.package}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Paid</div><div class="kpi-value">$${totalPaid.toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Outstanding</div><div class="kpi-value"><span class="tag ${outstanding?'orange':'green'}">${outstanding||'None'}</span></div></div>
+    </div>
+    <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th>Paid Date</th></tr></thead><tbody>`;
+  inv.forEach(x=>{
+    const sc=x.status==='Paid'?'green':x.status==='Pending'?'orange':'red';
+    html+=`<tr><td><strong>${x.id}</strong></td><td>${x.date}</td><td>${x.amount}</td><td><span class="tag ${sc}">${x.status}</span></td><td>${x.paidDate||'—'}</td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+
+  // Section 3: Marketing Spend
+  if(ads.length>0){
+    html+=`<div class="card"><h3>Marketing Spend</h3>
+      <div class="kpi-row" style="margin-bottom:16px">
+        <div class="kpi-card"><div class="kpi-label">Total Ad Spend</div><div class="kpi-value">$${totalAdSpend.toLocaleString()}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Active Campaigns</div><div class="kpi-value">${ads.filter(a=>a.status==='Active').length}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Avg ROAS</div><div class="kpi-value">${(ads.reduce((s,a)=>s+parseFloat(a.roas),0)/ads.length).toFixed(1)}x</div></div>
+      </div>
+      <table><thead><tr><th>Campaign</th><th>Platform</th><th>Spend</th><th>ROAS</th><th>CPA</th><th>Status</th></tr></thead><tbody>`;
+    ads.forEach(a=>{
+      html+=`<tr><td><strong>${a.campaign}</strong></td><td>${a.platform}</td><td>${a.spend}</td><td>${a.roas}</td><td>${a.cpa}</td><td><span class="tag ${a.status==='Active'?'green':'blue'}">${a.status}</span></td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+
+  el.innerHTML=html;
 }
 function removeClientTeamMember(idx){
   const d=CLIENTS[currentClient];
@@ -1030,40 +1373,159 @@ function renderAgBilling(el){
       </div>
     </div>`;
 }
-let agEditTeamIdx=null;
 function renderAgTeam(el){
-  const team=AGENCY.team;
+  const clients=AGENCY.agencyClients;
+  if(!AGENCY.clientTeams) AGENCY.clientTeams={};
+
   let html=`<div class="topbar"><h2>Team & Access</h2></div>
-    <div class="card"><h3>Team Members</h3><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Client Access</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
-  html+=team.map((t,idx)=>{
-    if(agEditTeamIdx===idx){
-      return `<tr style="background:var(--bg)"><td><input type="text" id="agEditName" value="${t.name}" style="width:120px;padding:4px"></td><td><input type="text" id="agEditEmail" value="${t.email}" style="width:170px;padding:4px"></td><td><select id="agEditRole" style="padding:4px"><option ${t.role==='Admin'?'selected':''}>Admin</option><option ${t.role==='Viewer'?'selected':''}>Viewer</option></select></td><td><input type="text" id="agEditClients" value="${t.clients}" style="width:130px;padding:4px"></td><td><select id="agEditStatus" style="padding:4px"><option ${t.status==='Active'?'selected':''}>Active</option><option ${t.status==='Invited'?'selected':''}>Invited</option><option ${t.status==='Disabled'?'selected':''}>Disabled</option></select></td><td style="white-space:nowrap"><button class="btn-admin" style="padding:3px 8px;font-size:11px" onclick="agSaveTeam(${idx})">Save</button> <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" onclick="agEditTeamIdx=null;renderMain()">Cancel</button></td></tr>`;
+    <div class="alert-row info" style="margin-bottom:20px">👥 Manage your team assignments per client. Each client has one designated Admin who can preview and publish updates.</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Total Team Members</div><div class="kpi-value">${AGENCY.team.length}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Clients Managed</div><div class="kpi-value">${clients.length}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Active Assignments</div><div class="kpi-value">${Object.values(AGENCY.clientTeams).reduce((s,a)=>s+a.length,0)}</div></div>
+    </div>`;
+
+  clients.forEach(c=>{
+    const cId=c.id;
+    const clientData=CLIENTS[cId];
+    const bwTeam=clientData?.bwTeam;
+    const agencyTeam=AGENCY.clientTeams[cId]||[];
+
+    html+=`<div class="card" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div><h3 style="margin:0">${c.name}</h3><span style="font-size:12px;color:var(--muted)">${c.type} • ${c.package}</span></div>
+        <span class="tag blue">${agencyTeam.length} agency assigned</span>
+      </div>`;
+
+    // BW Team section (READ-ONLY for agency) — matches admin layout style
+    if(bwTeam){
+      html+=`<div style="margin-bottom:20px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🔒 BossWallah Team <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:4px">Read Only</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="padding:12px;background:var(--bg);border-radius:8px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:8px">Account Owner</div>
+            <div><strong>${bwTeam.owner.name}</strong> <span style="color:var(--muted);font-size:11px">· ${bwTeam.owner.role}</span></div>
+          </div>
+          <div style="padding:12px;background:var(--bg);border-radius:8px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:8px">Viewers (${(bwTeam.viewers||[]).length})</div>
+            <table style="width:100%"><tbody>${(bwTeam.viewers||[]).map(v=>`<tr><td style="font-size:13px">${v.name} <span style="color:var(--muted);font-size:11px">· ${v.role}</span></td></tr>`).join('')||'<tr><td style="font-size:12px;color:var(--muted)">None</td></tr>'}</tbody></table>
+          </div>
+        </div>
+      </div>`;
     }
-    return `<tr><td><strong>${t.name}</strong></td><td>${t.email}</td><td><span class="tag ${t.role==='Admin'?'blue':'green'}">${t.role}</span></td><td>${t.clients}</td><td><span class="tag ${t.status==='Active'?'green':t.status==='Invited'?'orange':'red'}">${t.status}</span></td><td style="white-space:nowrap"><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="agEditTeamIdx=${idx};renderMain()">Edit</button> <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="agRemoveTeam(${idx})">Remove</button></td></tr>`;
-  }).join('');
+
+    // Agency Team section (EDITABLE) — matches admin layout style
+    html+=`<div style="padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🏢 ${AGENCY.name} Team <span style="font-size:10px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Editable</span></div>`;
+
+    if(agencyTeam.length===0){
+      html+=`<div style="padding:12px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed var(--border);border-radius:6px">No agency members assigned yet</div>`;
+    } else {
+      html+=`<table style="width:100%"><thead><tr><th>Name</th><th>Role</th><th>Permissions</th><th>Actions</th></tr></thead><tbody>`;
+      agencyTeam.forEach((m,idx)=>{
+        const isAdmin=m.access==='admin';
+        const isEdit=m.access==='edit';
+        const tagClass=isAdmin?'blue':isEdit?'green':'orange';
+        const tagLabel=isAdmin?'★ Client Admin':isEdit?'Editor':'Viewer';
+        const permText=isAdmin?'Can Preview & Publish':isEdit?'Can Edit Content':'View Only';
+        html+=`<tr>
+          <td><strong>${m.name}</strong>${isAdmin?' <span style="color:var(--accent);font-size:10px">★</span>':''}</td>
+          <td><span class="tag ${tagClass}">${tagLabel}</span></td>
+          <td style="font-size:12px;color:var(--muted)">${permText}</td>
+          <td style="white-space:nowrap">
+            <select onchange="changeAgClientRole('${cId}',${idx},this.value)" style="padding:3px 6px;font-size:11px;border:1px solid var(--border);border-radius:4px">
+              <option value="admin" ${isAdmin?'selected':''}>Admin</option>
+              <option value="edit" ${isEdit?'selected':''}>Editor</option>
+              <option value="view" ${m.access==='view'?'selected':''}>Viewer</option>
+            </select>
+            <button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px;margin-left:4px" onclick="removeAgClientMember('${cId}',${idx})">Remove</button>
+          </td>
+        </tr>`;
+      });
+      html+=`</tbody></table>`;
+    }
+
+    // Add member to this client
+    const available=AGENCY.team.filter(t=>t.status!=='Disabled'&&!agencyTeam.find(a=>a.name===t.name));
+    if(available.length>0){
+      html+=`<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+        <div><label style="font-size:11px;color:var(--muted);display:block">Add Member</label>
+          <select id="agAddMember_${cId}" style="padding:6px;min-width:140px">
+            ${available.map(t=>`<option value="${t.name}">${t.name}</option>`).join('')}
+          </select>
+        </div>
+        <div><label style="font-size:11px;color:var(--muted);display:block">Access</label>
+          <select id="agAddRole_${cId}" style="padding:6px">
+            <option value="edit">Editor</option>
+            <option value="view">Viewer</option>
+            ${agencyTeam.find(a=>a.access==='admin')?'':'<option value="admin">Admin</option>'}
+          </select>
+        </div>
+        <button class="btn-primary" onclick="addAgClientMember('${cId}')">Add</button>
+      </div>`;
+    }
+
+    html+=`</div></div>`;
+  });
+
+  // Agency Roster section
+  html+=`<div class="card"><h3>Agency Roster</h3><p style="font-size:12px;color:var(--muted);margin-bottom:12px">All agency team members. Add people here first, then assign them to clients above.</p>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Assigned To</th></tr></thead><tbody>`;
+  AGENCY.team.forEach(t=>{
+    const assignments=[];
+    Object.entries(AGENCY.clientTeams||{}).forEach(([cId,arr])=>{
+      const match=arr.find(a=>a.name===t.name);
+      if(match){
+        const clientName=AGENCY.agencyClients.find(c=>c.id===cId)?.name||cId;
+        assignments.push(clientName+(match.access==='admin'?' ★':''));
+      }
+    });
+    html+=`<tr><td><strong>${t.name}</strong></td><td>${t.email}</td><td><span class="tag ${t.status==='Active'?'green':t.status==='Invited'?'orange':'red'}">${t.status}</span></td><td style="font-size:12px">${assignments.length?assignments.join(', '):'<span style="color:var(--muted)">Unassigned</span>'}</td></tr>`;
+  });
   html+=`</tbody></table>
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Team Member</div><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="agNewName" placeholder="Full name" style="padding:6px;width:130px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="agNewEmail" placeholder="email@agency.com" style="padding:6px;width:170px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Role</label><select id="agNewRole" style="padding:6px"><option>Admin</option><option>Viewer</option></select></div><div><label style="font-size:11px;color:var(--muted);display:block">Client Access</label><input type="text" id="agNewClients" placeholder="All or client names" style="padding:6px;width:130px"></div><button class="btn-primary" onclick="agAddTeam()">Add</button></div></div></div>`;
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Team Member</div><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="agNewName" placeholder="Full name" style="padding:6px;width:130px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="agNewEmail" placeholder="email@agency.com" style="padding:6px;width:170px"></div><button class="btn-primary" onclick="agAddTeam()">Add</button></div></div></div>`;
+
   el.innerHTML=html;
 }
-function agSaveTeam(idx){
-  const t=AGENCY.team[idx];if(!t)return;
-  t.name=document.getElementById('agEditName')?.value||t.name;
-  t.email=document.getElementById('agEditEmail')?.value||t.email;
-  t.role=document.getElementById('agEditRole')?.value||t.role;
-  t.clients=document.getElementById('agEditClients')?.value||t.clients;
-  t.status=document.getElementById('agEditStatus')?.value||t.status;
-  agEditTeamIdx=null;renderMain();showToast('Updated!');
+function changeAgClientRole(clientId,idx,newRole){
+  if(!AGENCY.clientTeams[clientId])return;
+  const team=AGENCY.clientTeams[clientId];
+  // If setting as admin, demote current admin to edit
+  if(newRole==='admin'){
+    team.forEach(m=>{if(m.access==='admin')m.access='edit';});
+  }
+  team[idx].access=newRole;
+  renderMain();
+  showToast('Role updated');
 }
-function agRemoveTeam(idx){
-  AGENCY.team.splice(idx,1);renderMain();showToast('Member removed');
+function removeAgClientMember(clientId,idx){
+  if(!AGENCY.clientTeams[clientId])return;
+  AGENCY.clientTeams[clientId].splice(idx,1);
+  renderMain();
+  showToast('Member removed from client');
+}
+function addAgClientMember(clientId){
+  const nameEl=document.getElementById('agAddMember_'+clientId);
+  const roleEl=document.getElementById('agAddRole_'+clientId);
+  if(!nameEl||!roleEl)return;
+  const name=nameEl.value;
+  const access=roleEl.value;
+  if(!AGENCY.clientTeams[clientId])AGENCY.clientTeams[clientId]=[];
+  // If setting as admin, demote current admin
+  if(access==='admin'){
+    AGENCY.clientTeams[clientId].forEach(m=>{if(m.access==='admin')m.access='edit';});
+  }
+  AGENCY.clientTeams[clientId].push({name,access});
+  renderMain();
+  showToast(name+' added to '+clientId);
 }
 function agAddTeam(){
   const name=document.getElementById('agNewName').value.trim();
   const email=document.getElementById('agNewEmail').value.trim();
   if(!name||!email){showToast('Name and email required');return;}
-  AGENCY.team.push({name,email,role:document.getElementById('agNewRole').value,clients:document.getElementById('agNewClients').value.trim()||'TBD',status:'Invited'});
-  document.getElementById('agNewName').value='';document.getElementById('agNewEmail').value='';document.getElementById('agNewClients').value='';
-  renderMain();showToast(name+' invited!');
+  AGENCY.team.push({name,email,role:'Member',clients:'TBD',status:'Invited',canPublish:false});
+  document.getElementById('agNewName').value='';document.getElementById('agNewEmail').value='';
+  renderMain();showToast(name+' added to roster!');
 }
 function renderAgSettings(el){
   const logoPreview=AGENCY.logo?`<img src="${AGENCY.logo}" style="max-height:60px;max-width:200px;object-fit:contain;border-radius:6px">`:`<div style="width:200px;height:60px;border:2px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px">No logo uploaded</div>`;
@@ -1091,24 +1553,42 @@ function updateSidebarLogo(){
     } else {
       el.innerHTML=AGENCY.name||'Agency';
     }
-    if(sub) sub.textContent=isAgencyView?'Agency Dashboard':'Client Dashboard';
+    const roleLabel=ROLES[currentMode]?.find(r=>r.id===currentRole)?.label||'';
+    if(sub) sub.textContent=roleLabel||'Agency Dashboard';
   } else {
     el.innerHTML='BOSSWALLAH';
-    if(sub) sub.textContent=currentMode==='admin'?'Admin Console':'Client Dashboard';
+    const roleLabel=ROLES[currentMode]?.find(r=>r.id===currentRole)?.label||'';
+    if(sub) sub.textContent=roleLabel||(currentMode==='admin'?'Admin Console':'Client Dashboard');
   }
 }
 
 // ============ ADMIN ============
 function admCtx(){
-  const a=ADMIN_ACCOUNTS.find(x=>x.key===adminClient);
-  return `<div class="admin-context-bar"><div><span class="admin-badge">Updating</span> &nbsp;<strong>${a?.name||''}</strong></div><div style="display:flex;align-items:center;gap:12px"><span>${a?.type||''} • ${a?.package||''}</span><button onclick="markUpdated()" style="background:#fff;color:var(--adm-acc);border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">✓ Mark Updated</button></div></div>`;
+  // Agency drill mode — agency user editing a specific client
+  if(currentMode==='agency'&&agencyDrillClient){
+    const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
+    const d=CLIENTS[adminClient];
+    const lastUp=d?d.lastUpdated:'';
+    const updatedHtml=lastUp?`<div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">Last published: ${formatLocalTime(lastUp)}</div>`:'';
+    return `<div class="admin-context-bar" style="background:var(--accent)"><div><span class="admin-badge" style="background:rgba(255,255,255,.2)">Agency</span> &nbsp;<div style="display:inline-block"><strong>${cl?.name||''}</strong>${updatedHtml}</div></div><div style="display:flex;align-items:center;gap:12px"><span>${cl?.type||''} • ${cl?.package||''}</span></div></div>`;
+  }
+  // Figure out the actual client being edited
+  const origAdminClient=adminClient;
+  const isAgencyAcct=origAdminClient.startsWith('agency')||(currentMode==='admin'&&adminAgencyClient);
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  const actualClientKey=isAgencyAcct?(agMap[adminAgencyClient]||adminAgencyClient||adminClient):adminClient;
+  const d=CLIENTS[actualClientKey];
+  const lastUp=d?d.lastUpdated:'';
+  const updatedHtml=lastUp?`<div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">Last published: ${formatLocalTime(lastUp)}</div>`:'';
+  const agInfo=adminAgencyClient?AGENCY.agencyClients.find(c=>c.id===adminAgencyClient):null;
+  const a=ADMIN_ACCOUNTS.find(x=>x.key===origAdminClient);
+  const nameHtml=agInfo?`${a?.name||'Agency'} › <strong>${agInfo.name}</strong>`:`<strong>${d?d.name:(a?.name||'')}</strong>`;
+  return `<div class="admin-context-bar"><div><span class="admin-badge">Updating</span> &nbsp;<div style="display:inline-block">${nameHtml}${updatedHtml}</div></div><div style="display:flex;align-items:center;gap:12px"><span>${a?.type||''} • ${a?.package||''}</span></div></div>`;
 }
 function markUpdated(){
-  if(CLIENTS[adminClient]){
-    const now=new Date();
-    const opts={month:'short',day:'numeric',year:'numeric'};
-    const time=now.toLocaleString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
-    CLIENTS[adminClient].lastUpdated=now.toLocaleDateString('en-US',opts)+' · '+time;
+  const key = adminAgencyClient || adminClient;
+  if(CLIENTS[key]){
+    CLIENTS[key].lastUpdated=new Date().toISOString();
     showToast('Timestamp updated!');
     renderMain();
   }
@@ -1216,15 +1696,16 @@ function saveInvoice(clientKey,idx){
   editingInvoiceIdx=null;renderMain();showToast('Invoice updated');
 }
 
+function getAdmClientKey(){return adminAgencyClient||adminClient;}
 function removeViewer(idx){
-  const d=CLIENTS[adminClient];
+  const d=CLIENTS[getAdmClientKey()];
   if(d.bwTeam.viewers){
     d.bwTeam.viewers.splice(idx,1);
   }
 }
 
 function addViewer(){
-  const d=CLIENTS[adminClient];
+  const d=CLIENTS[getAdmClientKey()];
   const sel=document.getElementById('addViewerSelect');
   const name=sel.value;
   if(name&&d.bwTeam.viewers){
@@ -1238,166 +1719,174 @@ function addViewer(){
   }
 }
 
-function previewTabBar(tabs,active,onclick){
-  return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-    <button class="btn-admin" onclick="exitPreview()" style="margin-right:8px">← Exit Preview</button>
-    <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--adm-acc);font-weight:700;background:rgba(230,126,34,.12);padding:4px 10px;border-radius:4px">Preview Mode</span>
-    <div style="display:flex;gap:4px;margin-left:auto">${tabs.map(t=>`<button onclick="${onclick}('${t.id}')" style="padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid ${t.id===active?'var(--adm-acc)':'var(--border)'};background:${t.id===active?'var(--adm-acc)':'#fff'};color:${t.id===active?'#fff':'var(--text)'}">${t.icon} ${t.label}</button>`).join('')}</div>
-  </div>`;
-}
-function exitPreview(){previewSubTab=null;currentSection=adminClient.startsWith('agency')?'adm_agency_billing':'adm_briefing';renderNav();renderMain();}
-function previewClientTab(tab){previewSubTab=tab;renderMain();}
-function previewAgencyTab(tab){previewSubTab=tab;renderMain();}
-
-function renderAdmOnboarding(el){
-  const step=onboardingStep;
-  const data=onboardingData;
-  let html='<div class="card"><h3>Onboard New Client</h3>';
-  html+=`<div style="display:flex;gap:8px;margin-bottom:24px;justify-content:center">`;
-  for(let i=1;i<=3;i++){html+=`<div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;background:${i<=step?'var(--accent)':'var(--border)'};color:${i<=step?'#fff':'var(--muted)'}">${i}</div>`;}
-  html+=`</div>`;
-  if(step===1){
-    html+=`<div style="display:grid;gap:12px"><label>Company Name</label><input type="text" id="onb_name" placeholder="e.g. TechStartup Co" style="padding:8px">
-    <label>Industry / Vertical</label><input type="text" id="onb_type" placeholder="e.g. Skincare, Fintech, SaaS" style="padding:8px">
-    <label>Monthly Package</label><input type="text" id="onb_pkg" placeholder="e.g. $5,000/mo" style="padding:8px">
-    <label>Billing Type</label><div class="check-row"><input type="radio" name="onb_billing" value="direct" onchange="onboardingData.billing=this.value"> Direct</div>
-    <div class="check-row"><input type="radio" name="onb_billing" value="agency" onchange="onboardingData.billing=this.value"> Agency</div>
-    <label>Contact Name</label><input type="text" id="onb_contact" placeholder="e.g. John Smith" style="padding:8px">
-    <label>Contact Email</label><input type="text" id="onb_email" placeholder="john@company.com" style="padding:8px">
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
-      <button class="btn-primary" onclick="onboardingStep=2;onboardingData.name=document.getElementById('onb_name').value;onboardingData.type=document.getElementById('onb_type').value;onboardingData.package=document.getElementById('onb_pkg').value;onboardingData.contact=document.getElementById('onb_contact').value;onboardingData.email=document.getElementById('onb_email').value;renderMain()">Next</button>
-    </div></div>`;
-  } else if(step===2){
-    const types=Object.keys(CONTENT_TYPES);
-    const cats={};
-    types.forEach(t=>{const cat=CONTENT_TYPES[t].cat;if(!cats[cat])cats[cat]=[];cats[cat].push(t);});
-    const defaultQty={instagramReels:20,instagramCarousels:12,instagramStories:30,youtubeLongForm:4,youtubeShorts:15,facebookPosts:15,linkedinPosts:20,blogArticles:20,twitterPosts:10,podcastEpisodes:1,newsletterEmails:1,caseStudies:2,instagramPosts:5,facebookReels:5,pillarContent:1,webinars:1,websiteEnhancements:1,designAssets:8,communityMgmt:1,strategicReports:1};
-    const selCount=(data.selectedTypes||[]).length;
-    const totalQty=(data.selectedTypes||[]).reduce((s,t)=>{return s+(data.quantities?.[t]||defaultQty[t]||1)},0);
-    html+=`<div style="display:grid;gap:20px"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:14px;font-weight:600">Select Commitments</div><div style="font-size:12px;color:var(--muted)">${selCount} types &middot; ${totalQty}/mo</div></div>`;
-    Object.keys(cats).forEach(cat=>{
-      html+=`<div style="background:var(--bg);border-radius:10px;padding:16px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:10px">${cat}</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px">`;
-      cats[cat].forEach(t=>{
-        const checked=(data.selectedTypes||[]).includes(t);
-        const qty=data.quantities?.[t]||defaultQty[t]||1;
-        html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1.5px solid ${checked?'var(--accent)':'var(--border)'};background:${checked?'rgba(46,134,193,.05)':'#fff'};transition:all .15s"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0;white-space:nowrap"><input type="checkbox" ${checked?'checked':''} onchange="if(!onboardingData.selectedTypes)onboardingData.selectedTypes=[];if(!onboardingData.quantities)onboardingData.quantities={};if(this.checked){if(!onboardingData.selectedTypes.includes('${t}'))onboardingData.selectedTypes.push('${t}');if(!onboardingData.quantities['${t}'])onboardingData.quantities['${t}']=${defaultQty[t]||1}}else{onboardingData.selectedTypes=onboardingData.selectedTypes.filter(x=>x!=='${t}');delete onboardingData.quantities['${t}']};renderMain()" style="width:15px;height:15px"><span style="font-size:15px">${getTypeIcon(t)}</span><span style="font-size:12.5px;font-weight:${checked?'600':'400'};color:${checked?'var(--text)':'var(--muted)'}">${getTypeLabel(t)}</span></label>${checked?`<div style="display:flex;align-items:center;gap:3px;margin-left:auto"><input type="number" value="${qty}" min="1" onchange="if(!onboardingData.quantities)onboardingData.quantities={};onboardingData.quantities['${t}']=parseInt(this.value)" style="width:46px;padding:4px 2px;text-align:center;border:1px solid var(--border);border-radius:5px;font-size:12px;font-weight:600"><span style="font-size:10px;color:var(--muted)">/mo</span></div>`:''}</div>`;
-      });
-      html+=`</div></div>`;
-    });
-    html+=`<div style="display:flex;gap:8px;justify-content:space-between;margin-top:8px"><button class="btn-outline" onclick="onboardingStep=1;renderMain()">Back</button><button class="btn-primary" onclick="onboardingStep=3;renderMain()">Next &rarr; Review</button></div></div>`;
-  } else if(step===3){
-    const commitments={};
-    (data.selectedTypes||[]).forEach(t=>{commitments[t]={committed:data.quantities?.[t]||1,delivered:0};});
-    const total=Object.values(commitments).reduce((s,c)=>s+c.committed,0);
-    html+=`<div style="display:grid;gap:12px"><h4 style="font-weight:600">Review & Create</h4>
-    <table style="width:100%"><tr><td>Company</td><td><strong>${data.name||'—'}</strong></td></tr>
-    <tr><td>Type</td><td><strong>${data.type||'—'}</strong></td></tr>
-    <tr><td>Package</td><td><strong>${data.package||'—'}</strong></td></tr>
-    <tr><td>Total Monthly Items</td><td><strong>${total}</strong></td></tr></table>
-    <div style="background:var(--bg);padding:12px;border-radius:8px;margin:8px 0"><div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">COMMITMENTS</div>
-    <table style="width:100%;font-size:12px"><thead><tr><th>Type</th><th>Monthly</th></tr></thead><tbody>`;
-    Object.keys(commitments).forEach(t=>{html+=`<tr><td>${getTypeLabel(t)}</td><td>${commitments[t].committed}</td></tr>`;});
-    html+=`</tbody></table></div>
-    <div style="display:flex;gap:8px;justify-content:space-between;margin-top:16px"><button class="btn-outline" onclick="onboardingStep=2;renderMain()">Back</button><button class="btn-admin" onclick="completeOnboarding('${JSON.stringify(commitments).replace(/'/g,"\\'")}')">Create Client</button></div></div>`;
+function pushLiveBtn(){
+  // BW owner editing agency client → notify agency; otherwise → push live directly
+  const isAgencyAcct=(currentMode==='admin'&&adminAgencyClient);
+  if(isAgencyAcct){
+    return `<button onclick="notifyAgencyOwner()" style="background:#E67E22;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">📩 Notify Agency to Publish</button>`;
   }
-  html+=`</div>`;
+  return `<button onclick="publishUpdate()" style="background:#27ae60;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">✓ Push Live</button>`;
+}
+function publishUpdate(){
+  const key=adminAgencyClient||adminClient;
+  if(CLIENTS[key]){
+    CLIENTS[key].lastUpdated=new Date().toISOString();
+    showToast('Published! '+CLIENTS[key].name+' dashboard is now live.');
+  } else {
+    showToast('Published! Dashboard updates are now live.');
+  }
+}
+function notifyAgencyOwner(){
+  // BW agency_client_owner notifies the agency's account owner to preview & publish
+  const acctKey=adminClient;
+  // Find which agency client this maps to
+  const reverseAgMap={b2c:'glowup',b2b:'dataforge',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  const agClientId=reverseAgMap[acctKey];
+  const agClient=AGENCY.agencyClients.find(c=>c.id===agClientId);
+  const clientName=agClient?agClient.name:(CLIENTS[acctKey]?CLIENTS[acctKey].name:'the client');
+  // Find the agency account owner from clientTeams
+  const team=(agClientId&&AGENCY.clientTeams&&AGENCY.clientTeams[agClientId])||[];
+  const owner=team.find(m=>m.access==='admin');
+  const ownerName=owner?owner.name:'the agency account owner';
+  showToast('📩 Notification sent to '+ownerName+' — please preview and publish updates for '+clientName+'.');
+}
+
+// ============ AGENCY DRILL: TEAM MANAGEMENT ============
+function renderAgDrillTeam(el,d){
+  const cId=agencyDrillClient;
+  const cl=AGENCY.agencyClients.find(c=>c.id===cId);
+  if(!AGENCY.clientTeams) AGENCY.clientTeams={};
+  const bwTeam=d?.bwTeam;
+  const agencyTeam=AGENCY.clientTeams[cId]||[];
+
+  let html=`${admCtx()}
+    <div class="topbar"><h2>Agency Team — ${cl?.name||''}</h2></div>
+    <div class="alert-row info" style="margin-bottom:20px">👥 Manage your agency team for this client. BossWallah team is shown read-only.</div>
+    <div class="card" style="margin-bottom:16px">`;
+
+  // BW Team section (READ-ONLY for agency)
+  if(bwTeam){
+    html+=`<div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🔒 BossWallah Team <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:4px">Read Only</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="padding:12px;background:var(--bg);border-radius:8px">
+          <div style="font-size:12px;font-weight:600;margin-bottom:8px">Account Owner</div>
+          <div><strong>${bwTeam.owner.name}</strong> <span style="color:var(--muted);font-size:11px">· ${bwTeam.owner.role}</span></div>
+        </div>
+        <div style="padding:12px;background:var(--bg);border-radius:8px">
+          <div style="font-size:12px;font-weight:600;margin-bottom:8px">Viewers (${(bwTeam.viewers||[]).length})</div>
+          <table style="width:100%"><tbody>${(bwTeam.viewers||[]).map(v=>`<tr><td style="font-size:13px">${v.name} <span style="color:var(--muted);font-size:11px">· ${v.role}</span></td></tr>`).join('')||'<tr><td style="font-size:12px;color:var(--muted)">None</td></tr>'}</tbody></table>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Agency Team section (EDITABLE)
+  html+=`<div style="padding-top:16px;border-top:1px solid var(--border)">
+    <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🏢 ${AGENCY.name} Team <span style="font-size:10px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Editable</span></div>`;
+
+  if(agencyTeam.length===0){
+    html+=`<div style="padding:12px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed var(--border);border-radius:6px">No agency members assigned yet</div>`;
+  } else {
+    html+=`<table style="width:100%"><thead><tr><th>Name</th><th>Actions</th></tr></thead><tbody>`;
+    agencyTeam.forEach((m,idx)=>{
+      html+=`<tr><td><strong>${m.name}</strong></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeAgClientMember('${cId}',${idx})">Remove</button></td></tr>`;
+    });
+    html+=`</tbody></table>`;
+  }
+
+  // Add member
+  const available=AGENCY.team.filter(t=>t.status!=='Disabled'&&!agencyTeam.find(a=>a.name===t.name));
+  if(available.length>0){
+    html+=`<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <div><label style="font-size:11px;color:var(--muted);display:block">Add Member</label>
+        <select id="agAddMember_${cId}" style="padding:6px;min-width:140px">
+          ${available.map(t=>`<option value="${t.name}">${t.name}</option>`).join('')}
+        </select>
+      </div>
+      <button class="btn-primary" onclick="addAgClientMember('${cId}')">Add</button>
+    </div>`;
+  }
+
+  html+=`</div></div>`;
+
+  // Client Users (READ-ONLY for agency)
+  if(d?.account?.team){
+    html+=`<div class="card"><h3>🔒 Client Users <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:4px">Read Only</span></h3>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>`;
+    d.account.team.forEach(t=>{
+      html+=`<tr><td>${t.name}</td><td>${t.email}</td><td><span class="tag ${t.role==='Admin'?'blue':'green'}">${t.role}</span></td><td><span class="tag green">${t.status}</span></td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+
   el.innerHTML=html;
 }
-function completeOnboarding(commitStr){
-  const data=onboardingData;
-  if(!data.name||!data.type||!data.package){showToast('Fill all fields');return;}
-  const key=data.name.toLowerCase().replace(/\s+/g,'');
-  const commitments=JSON.parse(commitStr);
-  CLIENTS[key]={
-    name:data.name,type:data.type||'Startup',package:data.package,billing:data.billing||'direct',
-    lastUpdated:new Date().toLocaleDateString()+' · '+new Date().toLocaleTimeString(),
-    briefing:{weekOf:'',completed:[],inProgress:[],needsYou:[]},
-    content:{commitments,items:[]},
-    impact:{kpis:[],channels:[],topWins:[],adBreakdown:[],reachTrend:[],leadsTrend:[]},
-    linkedin:{profileViews:'0',profileViewsChange:'+0%',connections:'0',connectionsChange:'+0',icpPercent:'—',postImpressions:'0',postImpressionsChange:'+0%',engagementRate:'0%',engagementRateChange:'+0%',inboundDMs:'0',inboundDMsChange:'+0',topPosts:[],competitors:[]},
-    whatsNext:{planned:[],recommendations:[]},
-    account:{admin:data.contact||'—',email:data.email||'—',team:[{name:data.contact||'—',email:data.email||'—',role:'Admin',status:'Active'}]},
-    comments:{},invoices:[],bwTeam:{owner:{name:'TBD',role:'Account Owner'},viewers:[]}
-  };
-  initComments();
-  ADMIN_ACCOUNTS.push({key,name:data.name,type:data.billing==='agency'?'Agency':'Direct',package:data.package});
-  onboardingStep=1;onboardingData={};
-  adminClient=key;currentSection='adm_briefing';
-  buildClientSelect();renderNav();renderMain();
-  showToast('Client onboarded!');
+
+
+
+function renderAgencyClientPicker(el, sectionLabel){
+  const a=ADMIN_ACCOUNTS.find(x=>x.key===adminClient);
+  el.innerHTML=`${admCtx()}
+    <div class="topbar"><h2>${sectionLabel}</h2></div>
+    <div class="alert-row info" style="margin-bottom:20px">📋 Select which ${a?.name||'agency'} client to work on.</div>
+    <div class="agency-client-grid">${AGENCY.agencyClients.map(c=>{
+      const cKey=c.id;
+      const hasData=!!CLIENTS[cKey];
+      return `<div class="agency-client-card" onclick="adminAgencyClient='${cKey}';renderMain()">
+        <div class="client-header"><div><div class="client-name">${c.name}</div><div class="client-type">${c.type} • ${c.package}</div></div></div>
+        <div class="mini-kpis"><div class="mini-kpi">Reach<span class="val">${c.reach}</span></div><div class="mini-kpi">Leads<span class="val">${c.leads}</span></div><div class="mini-kpi">Ad Spend<span class="val">${c.adSpend}</span></div><div class="mini-kpi">ROAS<span class="val">${c.roas}</span></div></div>
+        ${c.needsAttention?`<div class="needs-attention">⚠️ ${c.needsAttention}</div>`:''}
+      </div>`;
+    }).join('')}</div>`;
 }
 
 function renderAdmin(el){
-  if(adminClient.startsWith('agency')){
-    switch(currentSection){
-      case 'adm_agency_billing':renderAdmAgencyBilling(el);break;
-      case 'adm_agency_clients':renderAdmAgencyClients(el);break;
-      case 'adm_agency_preview':renderAdmAgencyPreview(el);break;
-      default:renderAdmAgencyBilling(el);
-    }
+  const isAgency=adminClient.startsWith('agency');
+
+  // Admin role: show owner assignment page
+  if(currentRole==='admin'){
+    if(currentSection==='adm_owners') renderAdmOwners(el);
+    else if(currentSection==='adm_billing') renderAdmPaymentsAll(el);
+    else renderAdmOwners(el);
+    return;
+  }
+
+  // Get client data - for agency, use sub-dropdown; for direct, use main dropdown
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  let clientKey;
+  if(isAgency){
+    clientKey=agMap[adminAgencyClient]||adminAgencyClient;
   } else {
-    switch(currentSection){
-      case 'adm_onboarding':renderAdmOnboarding(el);break;
-      default:
-        const d=CLIENTS[adminClient];
-        switch(currentSection){
-          case 'adm_briefing':renderAdmBriefing(el,d);break;
-          case 'adm_content':renderAdmContent(el,d);break;
-          case 'adm_metrics':renderAdmMetrics(el,d);break;
-          case 'adm_next':renderAdmBriefing(el,d);break;
-          case 'adm_billing':renderAdmBilling(el,d);break;
-          case 'adm_team':renderAdmTeam(el,d);break;
-          case 'adm_preview':renderAdmClientPreview(el,d);break;
-          default:renderAdmBriefing(el,d);
-        }
-    }
+    clientKey=adminClient;
   }
+  const d = clientKey ? CLIENTS[clientKey] : null;
+  // Set adminClient to the mapped key so edit functions work
+  if(isAgency&&clientKey) adminClient=clientKey;
+
+  switch(currentSection){
+    case 'adm_view_briefing': renderBriefing(el,d||CLIENTS.b2c);break;
+    case 'adm_view_content': renderContent(el,d||CLIENTS.b2c);break;
+    case 'adm_view_impact': renderImpact(el,d||CLIENTS.b2c);break;
+    case 'adm_briefing': renderAdmBriefing(el,d||CLIENTS.b2c);break;
+    case 'adm_content': renderAdmContent(el,d||CLIENTS.b2c);break;
+    case 'adm_metrics': renderAdmMetrics(el,d||CLIENTS.b2c);break;
+    case 'adm_team': d ? renderAdmBwTeam(el,d,isAgency) : el.innerHTML='';break;
+    case 'adm_billing': renderAdmPaymentsAll(el);break;
+    default: renderAdmBriefing(el,d||CLIENTS.b2c);
+  }
+  // Restore adminClient to the agency key for state consistency
+  if(isAgency) adminClient='agency_momentum';
 }
 
-function renderAdmClientPreview(el,d){
-  if(!previewSubTab) previewSubTab='briefing';
-  const tabs=[
-    {id:'briefing',icon:'📋',label:'Briefing'},
-    {id:'content',icon:'🎬',label:'Content'},
-    {id:'impact',icon:'📈',label:'Impact'},
-  ];
-  const bar=previewTabBar(tabs,previewSubTab,'previewClientTab');
-  const wrap=document.createElement('div');
-  el.innerHTML=bar;
-  el.appendChild(wrap);
-  currentClient=adminClient;
-  switch(previewSubTab){
-    case 'briefing':renderBriefing(wrap,d);break;
-    case 'content':renderContent(wrap,d);break;
-    case 'impact':renderImpact(wrap,d);break;
-    default:renderBriefing(wrap,d);
-  }
-}
-
-function renderAdmAgencyPreview(el){
-  if(!previewSubTab) previewSubTab='portfolio';
-  const tabs=[
-    {id:'portfolio',icon:'🏢',label:'Portfolio'},
-    {id:'billing',icon:'💳',label:'Billing'},
-    {id:'team',icon:'👥',label:'Team'},
-  ];
-  const bar=previewTabBar(tabs,previewSubTab,'previewAgencyTab');
-  const wrap=document.createElement('div');
-  el.innerHTML=bar;
-  el.appendChild(wrap);
-  switch(previewSubTab){
-    case 'portfolio':renderPortfolio(wrap);break;
-    case 'billing':renderAgBilling(wrap);break;
-    case 'team':renderAgTeam(wrap);break;
-    default:renderPortfolio(wrap);
-  }
-}
 
 function actItemHtml(section,category,items,iconClass){
+  const showComments=(category==='needsYou');
   return items.map((i,idx)=>{
     const key=`${section}_${category}_${idx}`;
     const isEditing=editingActivityKey===key;
     const detailField=category==='recommendations'?i.reason:i.detail;
+    const commentBlock=showComments?itemCommentsHtml(adminClient,category+'_'+idx):'';
     if(isEditing){
       return `<div class="activity-item" style="background:var(--bg);border-radius:8px;padding:12px;margin:4px 0">
         ${i.icon?`<div class="activity-icon ${iconClass}">${i.icon}</div>`:''}
@@ -1409,7 +1898,7 @@ function actItemHtml(section,category,items,iconClass){
           <button class="btn-admin" style="padding:4px 10px;font-size:11px" onclick="saveActivity('${section}','${category}',${idx})">Save</button>
           <button style="background:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer" onclick="cancelEditActivity()">Cancel</button>
         </div>
-      </div>`;
+      </div>${commentBlock}`;
     }
     return `<div class="activity-item">
       ${i.icon?`<div class="activity-icon ${iconClass}">${i.icon}</div>`:''}
@@ -1418,7 +1907,7 @@ function actItemHtml(section,category,items,iconClass){
         <button style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;font-weight:600" onclick="editActivity('${key}')">Edit</button>
         <button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;font-weight:600" onclick="${section==='briefing'?`removeActivity('briefing','${category}',${idx})`:`removeNextItem('${category}',${idx})`}">Remove</button>
       </div>
-    </div>`;
+    </div>${commentBlock}`;
   }).join('');
 }
 
@@ -1426,7 +1915,7 @@ function renderAdmBriefing(el,d){
   const b=d.briefing;
   const n=d.whatsNext;
   el.innerHTML=`${admCtx()}
-    <div class="topbar"><h2>Update Briefing</h2><button class="btn-admin" onclick="openModal('addActivityModal')" style="margin-left:auto">+ Add Activity</button></div>
+    <div class="topbar"><h2>Update Briefing</h2><div style="margin-left:auto;display:flex;gap:8px"><button class="btn-admin" onclick="openModal('addActivityModal')">+ Add Activity</button>${pushLiveBtn()}</div></div>
     <div class="card"><h3>⚠️ Needs Client Input</h3>${actItemHtml('briefing','needsYou',b.needsYou,'review')}</div>
     <div class="card"><h3>💡 Recommendations</h3>${actItemHtml('whatsNext','recommendations',n.recommendations,'')}</div>
     <div class="card"><h3>✅ Completed</h3>${actItemHtml('briefing','completed',b.completed,'done')}</div>
@@ -1442,7 +1931,7 @@ function renderAdmContent(el,d){
   const c=d.content;
   const statusOpts=['Published','In Editing','Needs Approval','Needs Review','Scripting','Planned'];
   const st={'Published':'green','In Editing':'orange','Needs Approval':'red','Needs Review':'red','Scripting':'blue','Planned':'purple'};
-  let html=`${admCtx()}<div class="topbar"><h2>Update Content</h2></div>`;
+  let html=`${admCtx()}<div class="topbar"><h2>Update Content</h2><div style="margin-left:auto">${pushLiveBtn()}</div></div>`;
   if(c.commitments&&Object.keys(c.commitments).length>0){
     html+=`<div class="card"><h3>Commitments Summary</h3><table><thead><tr><th>Content Type</th><th>Committed</th><th>Delivered</th><th>Status</th></tr></thead><tbody>`;
     Object.keys(c.commitments).forEach(type=>{
@@ -1519,7 +2008,7 @@ function renderAdmMetrics(el,d){
   const li=d.linkedin;
   const ac=adminClient;
   const months=['Sep','Oct','Nov','Dec','Jan','Feb'];
-  let html=`${admCtx()}<div class="topbar"><h2>Update Impact</h2></div>`;
+  let html=`${admCtx()}<div class="topbar"><h2>Update Impact</h2><div style="margin-left:auto">${pushLiveBtn()}</div></div>`;
 
   // 1. KPIs — editable with Add/Remove
   html+=`<div class="card"><h3>KPI Values</h3><table><thead><tr><th>Label</th><th>Value</th><th>Change</th><th>Context</th><th>Actions</th></tr></thead><tbody>`;
@@ -1646,14 +2135,203 @@ function renderAdmBilling(el,d){
 }
 
 function renderAdmTeam(el,d){
+  const clientKey=getAdmClientKey();
   const owner=d.bwTeam.owner;
   const viewers=d.bwTeam.viewers||[];
-  el.innerHTML=`${admCtx()}
-    <div class="topbar"><h2>BossWallah Team Assignment</h2></div>
-    <div class="alert-row info" style="margin-bottom:20px">ℹ️ One owner per customer.</div>
+  const isAgency=adminClient.startsWith('agency');
+  const agencyTeam=isAgency?(AGENCY.clientTeams[clientKey]||[]):[];
+  const clientInfo=isAgency?AGENCY.agencyClients.find(c=>c.id===clientKey):null;
+
+  let html=`${admCtx()}
+    <div class="topbar"><h2>Team Assignment${clientInfo?' — '+clientInfo.name:''}</h2></div>
+    <div class="alert-row info" style="margin-bottom:20px">ℹ️ Manage the full team working on this client. BW team is editable${isAgency?'; agency team is shown read-only.':'.'}.</div>
+    <div class="card" style="margin-bottom:16px">`;
+
+  // BW Team section (EDITABLE)
+  html+=`<div style="margin-bottom:20px">
+    <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🟢 BossWallah Team <span style="font-size:10px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Editable</span></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div class="card"><h3>Account Owner</h3><div style="margin:12px 0"><div style="font-size:12px;color:var(--muted);margin-bottom:6px">Current Owner</div><div style="margin-bottom:12px"><strong>${owner.name}</strong></div><select id="ownerSelect" onchange="CLIENTS['${adminClient}'].bwTeam.owner.name=this.options[this.selectedIndex].text;renderMain()" style="padding:8px;width:100%"><option>${owner.name}</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name).map(e=>`<option>${e.name}</option>`).join('')}</select></div></div>
-      <div class="card"><h3>Viewers</h3><div style="margin:12px 0"><table style="width:100%"><thead><tr><th>Name</th><th>Action</th></tr></thead><tbody>${viewers.map((v,idx)=>`<tr><td>${v.name}</td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeViewer(${idx});renderMain()">Remove</button></td></tr>`).join('')}</tbody></table><div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)"><select id="addViewerSelect" style="padding:8px;width:100%;margin-bottom:8px"><option value="">Add viewer...</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name&&!viewers.find(v=>v.name===e.name)).map(e=>`<option value="${e.name}">${e.name}</option>`).join('')}</select><button class="btn-admin" onclick="addViewer()" style="width:100%">Add</button></div></div></div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:12px;font-weight:600;margin-bottom:8px">Account Owner</div>
+        <div style="margin-bottom:8px"><strong>${owner.name}</strong></div>
+        <select id="ownerSelect" onchange="CLIENTS['${clientKey}'].bwTeam.owner.name=this.options[this.selectedIndex].text;renderMain()" style="padding:6px;width:100%;border:1px solid var(--border);border-radius:4px">
+          <option>${owner.name}</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name).map(e=>`<option>${e.name}</option>`).join('')}
+        </select>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:12px;font-weight:600;margin-bottom:8px">Viewers (${viewers.length})</div>
+        <table style="width:100%"><tbody>${viewers.map((v,idx)=>`<tr><td style="font-size:13px">${v.name} <span style="color:var(--muted);font-size:11px">· ${v.role}</span></td><td style="text-align:right"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeViewer(${idx});renderMain()">Remove</button></td></tr>`).join('')}</tbody></table>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:6px">
+          <select id="addViewerSelect" style="padding:6px;flex:1;border:1px solid var(--border);border-radius:4px">
+            <option value="">Add viewer...</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name&&!viewers.find(v=>v.name===e.name)).map(e=>`<option value="${e.name}">${e.name}</option>`).join('')}
+          </select>
+          <button class="btn-admin" onclick="addViewer()" style="padding:6px 12px;font-size:11px">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  // Agency Team section (READ-ONLY) — only when dealing with an agency client
+  if(isAgency){
+    html+=`<div style="padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:12px">🏢 ${AGENCY.name} Team <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:4px">Read Only</span></div>`;
+    if(agencyTeam.length===0){
+      html+=`<div style="padding:12px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed var(--border);border-radius:6px">No agency members assigned to this client</div>`;
+    } else {
+      html+=`<table style="width:100%"><thead><tr><th>Name</th><th>Role</th><th>Permissions</th></tr></thead><tbody>`;
+      agencyTeam.forEach(m=>{
+        const isAdmin=m.access==='admin';
+        const isEdit=m.access==='edit';
+        const tagClass=isAdmin?'blue':isEdit?'green':'orange';
+        const tagLabel=isAdmin?'★ Client Admin':isEdit?'Editor':'Viewer';
+        const permText=isAdmin?'Can Preview & Publish':isEdit?'Can Edit Content':'View Only';
+        html+=`<tr><td><strong>${m.name}</strong>${isAdmin?' <span style="color:var(--accent);font-size:10px">★</span>':''}</td><td><span class="tag ${tagClass}">${tagLabel}</span></td><td style="font-size:12px;color:var(--muted)">${permText}</td></tr>`;
+      });
+      html+=`</tbody></table>`;
+    }
+    html+=`</div>`;
+  }
+
+  html+=`</div>`;
+  el.innerHTML=html;
+}
+
+// Account owner view: manage BW team for this specific client
+function renderAdmBwTeam(el,d,isAgency){
+  const clientKey=getAdmClientKey();
+  const cd=clientKey?CLIENTS[clientKey]:d;
+  if(!cd){el.innerHTML=`${admCtx()}<div class="card"><p>Select a client.</p></div>`;return;}
+  const bw=cd.bwTeam;
+  const owner=bw.owner;
+  const viewers=bw.viewers||[];
+  const agencyTeam=isAgency?(AGENCY.clientTeams[clientKey]||[]):[];
+
+  let html=`${admCtx()}
+    <div class="topbar"><h2>BW Team — ${cd.name}</h2></div>
+    <div class="alert-row info" style="margin-bottom:16px">👥 Manage BossWallah team members working on this client.</div>
+    <div class="card" style="margin-bottom:16px">
+      <h3>Owner</h3>
+      <div style="padding:12px;background:var(--bg);border-radius:8px;margin-top:12px">
+        <div><strong>${owner.name}</strong> <span style="color:var(--muted);font-size:12px">· ${owner.role}</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h3>Team Members (${viewers.length})</h3>
+      ${viewers.length===0?'<div style="padding:12px;text-align:center;color:var(--muted);font-size:12px">No additional team members assigned</div>':'<table style="width:100%;margin-top:12px"><thead><tr><th>Name</th><th>Actions</th></tr></thead><tbody>'+viewers.map((v,idx)=>`<tr><td><strong>${v.name}</strong></td><td><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${clientKey}'].bwTeam.viewers.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('')+'</tbody></table>'}
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:6px;align-items:end">
+        <div style="flex:1"><label style="font-size:11px;color:var(--muted);display:block">Add Team Member</label>
+          <select id="addBwViewer_${clientKey}" style="padding:6px;width:100%;border:1px solid var(--border);border-radius:4px">
+            <option value="">Select employee...</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name&&!viewers.find(v=>v.name===e.name)).map(e=>`<option value="${e.name}">${e.name} — ${e.title}</option>`).join('')}
+          </select>
+        </div>
+        <button class="btn-admin" onclick="var s=document.getElementById('addBwViewer_${clientKey}');var n=s.value;if(n){var emp=BW_EMPLOYEES.find(e=>e.name===n);if(emp){CLIENTS['${clientKey}'].bwTeam.viewers.push({name:emp.name,role:emp.title});renderMain();showToast(emp.name+' added')}}" style="padding:6px 14px;font-size:12px">Add</button>
+      </div>
+    </div>`;
+
+  // Show client users (read-only for BW account owner)
+  const team=cd.account?.team||[];
+  html+=`<div class="card" style="margin-bottom:16px">
+    <h3>Client Users <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:6px">Read Only</span></h3>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Client users are managed by the client admin.</div>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>`;
+  team.forEach(u=>{
+    html+=`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+
+  // Agency team (read-only) if applicable
+  if(isAgency&&agencyTeam.length>0){
+    html+=`<div class="card"><h3>${AGENCY.name} Team <span style="font-size:10px;background:var(--border);padding:2px 6px;border-radius:4px;margin-left:6px">Read Only</span></h3>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Agency team is managed by the agency.</div>
+      <table><thead><tr><th>Name</th></tr></thead><tbody>`;
+    agencyTeam.forEach(m=>{
+      html+=`<tr><td><strong>${m.name}</strong></td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+  el.innerHTML=html;
+}
+
+// BW Admin: Assign account owners to all client accounts
+function renderAdmOwners(el){
+  let html=`<div class="topbar"><h2>Account Owners</h2></div>
+    <div class="alert-row info" style="margin-bottom:20px">🔑 Assign a BW account owner to each client account. The owner is responsible for editing and managing that client's dashboard.</div>`;
+
+  // Direct clients
+  html+=`<div class="card" style="margin-bottom:16px"><h3>Direct Clients</h3>
+    <table style="width:100%"><thead><tr><th>Client</th><th>Package</th><th>Account Owner</th></tr></thead><tbody>`;
+  ADMIN_ACCOUNTS.filter(a=>!a.key.startsWith('agency')).forEach(a=>{
+    const d=CLIENTS[a.key];
+    const owner=d?.bwTeam?.owner;
+    html+=`<tr><td><strong>${a.name}</strong></td><td>${a.package}</td>
+      <td><select onchange="setAdmOwner('${a.key}',this.value)" style="padding:6px;border:1px solid var(--border);border-radius:4px;min-width:160px">
+        ${BW_EMPLOYEES.map(e=>`<option value="${e.name}" ${owner&&owner.name===e.name?'selected':''}>${e.name} — ${e.title}</option>`).join('')}
+      </select></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+
+  // Agency clients (grouped under their agency)
+  html+=`<div class="card"><h3>Agency Clients — ${AGENCY.name}</h3>
+    <table style="width:100%"><thead><tr><th>Client</th><th>Package</th><th>Account Owner</th></tr></thead><tbody>`;
+  AGENCY.agencyClients.forEach(c=>{
+    const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+    const ck=agMap[c.id]||c.id;
+    const d=CLIENTS[ck];
+    const owner=d?.bwTeam?.owner;
+    html+=`<tr><td><strong>${c.name}</strong> <span style="font-size:11px;color:var(--muted)">${c.type}</span></td><td>${c.package}</td>
+      <td><select onchange="setAdmOwner('${ck}',this.value)" style="padding:6px;border:1px solid var(--border);border-radius:4px;min-width:160px">
+        ${BW_EMPLOYEES.map(e=>`<option value="${e.name}" ${owner&&owner.name===e.name?'selected':''}>${e.name} — ${e.title}</option>`).join('')}
+      </select></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+
+  // Summary: who owns what
+  html+=`<div class="card"><h3>Owner Summary</h3><table style="width:100%"><thead><tr><th>BW Employee</th><th>Accounts Owned</th></tr></thead><tbody>`;
+  BW_EMPLOYEES.forEach(e=>{
+    const owned=[];
+    Object.keys(CLIENTS).forEach(k=>{
+      if(CLIENTS[k].bwTeam&&CLIENTS[k].bwTeam.owner&&CLIENTS[k].bwTeam.owner.name===e.name) owned.push(CLIENTS[k].name);
+    });
+    html+=`<tr><td><strong>${e.name}</strong> <span style="font-size:11px;color:var(--muted)">${e.title}</span></td><td>${owned.length?owned.join(', '):'<span style="color:var(--muted)">None</span>'}</td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+
+  el.innerHTML=html;
+}
+function setAdmOwner(clientKey,ownerName){
+  const d=CLIENTS[clientKey];
+  if(!d||!d.bwTeam) return;
+  const emp=BW_EMPLOYEES.find(e=>e.name===ownerName);
+  d.bwTeam.owner={name:ownerName,role:emp?emp.title:'Account Owner'};
+  showToast(ownerName+' assigned as owner for '+d.name);
+  renderMain();
+}
+
+// BW Owner: Simple billing overview
+function renderAdmPaymentsAll(el){
+  const accounts=ADMIN_ACCOUNTS;
+  el.innerHTML=`${admCtx()}
+    <div class="topbar"><h2>Billing</h2></div>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="padding:16px;background:var(--bg);border-radius:8px">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Active Accounts</div>
+          <div style="font-size:20px;font-weight:700">${accounts.length}</div>
+        </div>
+        <div style="padding:16px;background:var(--bg);border-radius:8px">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Status</div>
+          <div style="font-size:20px;font-weight:700"><span class="tag green">All Current</span></div>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <h3 style="font-size:15px;font-weight:600;margin-bottom:12px">Account Summary</h3>
+        <table style="width:100%"><thead><tr><th>Account</th><th>Type</th><th>Plan</th></tr></thead><tbody>`;
+  accounts.forEach(a=>{
+    el.innerHTML+=`<tr><td><strong>${a.name}</strong></td><td><span class="tag ${a.type==='Agency'?'orange':'blue'}">${a.type}</span></td><td>${a.package}</td></tr>`;
+  });
+  el.innerHTML+=`</tbody></table>
+      </div>
+      <div style="margin-top:16px;font-size:12px;color:var(--muted)">For detailed invoices and payment management, check your billing platform.</div>
     </div>`;
 }
 
@@ -1688,6 +2366,268 @@ function renderAdmAgencyBilling(el){
         </div>
       </div>
     </div>`;
+}
+
+let admPaymentAccount='all';
+function renderAdmPayments(el){
+  const accounts=ADMIN_ACCOUNTS;
+  let html=`<div class="topbar" style="margin-bottom:0"><h2>Manage Payments</h2></div>
+    <div style="margin:16px 0;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="${admPaymentAccount==='all'?'btn-admin':'btn-outline'}" onclick="admPaymentAccount='all';renderMain()" style="padding:6px 14px;font-size:12px">All Accounts</button>`;
+  accounts.forEach(a=>{
+    html+=`<button class="${admPaymentAccount===a.key?'btn-admin':'btn-outline'}" onclick="admPaymentAccount='${a.key}';renderMain()" style="padding:6px 14px;font-size:12px">${a.name}</button>`;
+  });
+  html+=`</div>`;
+
+  if(admPaymentAccount==='all'){
+    // Overview of all accounts
+    let totalRevenue=0,totalOutstanding=0;
+    accounts.forEach(a=>{
+      if(a.key.startsWith('agency')){
+        const inv=AGENCY.invoices||[];
+        totalRevenue+=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+        totalOutstanding+=inv.filter(x=>x.status!=='Paid').length;
+      } else {
+        const d=CLIENTS[a.key];
+        if(d){
+          totalRevenue+=(d.invoices||[]).filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+          totalOutstanding+=(d.invoices||[]).filter(x=>x.status!=='Paid').length;
+        }
+      }
+    });
+    html+=`<div class="kpi-row" style="margin-bottom:16px">
+      <div class="kpi-card"><div class="kpi-label">Total Revenue</div><div class="kpi-value">$${totalRevenue.toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Accounts</div><div class="kpi-value">${accounts.length}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Outstanding</div><div class="kpi-value"><span class="tag ${totalOutstanding?'orange':'green'}">${totalOutstanding||'None'}</span></div></div>
+    </div>`;
+    html+=`<div class="card"><h3>All Invoices</h3><table><thead><tr><th>Account</th><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead><tbody>`;
+    accounts.forEach(a=>{
+      const inv=a.key.startsWith('agency')?(AGENCY.invoices||[]):(CLIENTS[a.key]?.invoices||[]);
+      inv.forEach((x,idx)=>{
+        const sc=x.status==='Paid'?'green':x.status==='Pending'?'orange':'red';
+        html+=`<tr><td style="font-size:12px">${a.name}</td><td><strong>${x.id}</strong></td><td>${x.date}</td><td>${x.amount}</td><td><span class="tag ${sc}">${x.status}</span></td><td>${x.paidDate||'—'}</td><td><button style="background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;font-size:11px" onclick="admPaymentAccount='${a.key}';renderMain()">View</button></td></tr>`;
+      });
+    });
+    html+=`</tbody></table></div>`;
+  } else {
+    // Specific account billing - reuse existing rendering inline
+    const isAgency=admPaymentAccount.startsWith('agency');
+    if(isAgency){
+      const clientRevenue=AGENCY.agencyClients.reduce((s,c)=>{const amt=parseInt(c.package.replace(/[^0-9]/g,''));return s+(isNaN(amt)?0:amt)},0);
+      const inv=AGENCY.invoices||[];
+      const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+      const outst=inv.filter(x=>x.status!=='Paid').length;
+      html+=`<div class="kpi-row" style="margin-bottom:16px">
+        <div class="kpi-card"><div class="kpi-label">Monthly Invoice</div><div class="kpi-value">${AGENCY.totals.totalRevenue}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Clients Managed</div><div class="kpi-value">${AGENCY.totals.clients}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${totalCollected.toLocaleString()}</div></div>
+      </div>
+      <div class="card"><h3>Revenue by Client</h3><table><thead><tr><th>Client</th><th>Package</th><th>BW Fee</th></tr></thead><tbody>${AGENCY.agencyClients.map(c=>`<tr><td><strong>${c.name}</strong></td><td>${c.package}</td><td>${c.package}</td></tr>`).join('')}</tbody></table></div>
+      <div class="card"><h3>Invoice History</h3>
+        <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Detail</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
+        <tbody>${inv.map((x,idx)=>invRowHtml(x,idx,'agency_momentum',true)).join('')}</tbody></table>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Invoice</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+            <div><label style="font-size:11px;color:var(--muted);display:block">Invoice ID</label><input type="text" id="newInvId" placeholder="AG-2026-007" style="padding:6px;width:110px"></div>
+            <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newInvDate" placeholder="Mar 1, 2026" style="padding:6px;width:110px"></div>
+            <div><label style="font-size:11px;color:var(--muted);display:block">Amount</label><input type="text" id="newInvAmount" placeholder="$24,000" style="padding:6px;width:90px"></div>
+            <div><label style="font-size:11px;color:var(--muted);display:block">Detail</label><input type="text" id="newInvDetail" placeholder="6 clients" style="padding:6px;width:140px"></div>
+            <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newInvStatus" style="padding:6px"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
+            <div><label style="font-size:11px;color:var(--muted);display:block">Paid Date</label><input type="text" id="newInvPaid" placeholder="Mar 5, 2026" style="padding:6px;width:110px"></div>
+            <button class="btn-admin" onclick="addInvoice('agency_momentum')">Add</button>
+          </div>
+        </div>
+      </div>`;
+    } else {
+      const d=CLIENTS[admPaymentAccount];
+      if(d){
+        const inv=d.invoices||[];
+        const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+        const outst=inv.filter(x=>x.status!=='Paid').length;
+        html+=`<div class="kpi-row" style="margin-bottom:16px">
+          <div class="kpi-card"><div class="kpi-label">Monthly Fee</div><div class="kpi-value">${d.package}</div></div>
+          <div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${totalCollected.toLocaleString()}</div></div>
+          <div class="kpi-card"><div class="kpi-label">Payment Status</div><div class="kpi-value"><span class="tag ${outst?'orange':'green'}">${outst?outst+' Outstanding':'Current'}</span></div></div>
+        </div>
+        <div class="card"><h3>Invoice History — ${d.name}</h3>
+          <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
+          <tbody>${inv.map((x,idx)=>invRowHtml(x,idx,admPaymentAccount,false)).join('')}</tbody></table>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Invoice</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+              <div><label style="font-size:11px;color:var(--muted);display:block">Invoice ID</label><input type="text" id="newInvId" placeholder="INV-2026-007" style="padding:6px;width:120px"></div>
+              <div><label style="font-size:11px;color:var(--muted);display:block">Date</label><input type="text" id="newInvDate" placeholder="Mar 1, 2026" style="padding:6px;width:110px"></div>
+              <div><label style="font-size:11px;color:var(--muted);display:block">Amount</label><input type="text" id="newInvAmount" placeholder="$5,000" style="padding:6px;width:80px"></div>
+              <div><label style="font-size:11px;color:var(--muted);display:block">Status</label><select id="newInvStatus" style="padding:6px"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
+              <div><label style="font-size:11px;color:var(--muted);display:block">Paid Date</label><input type="text" id="newInvPaid" placeholder="Mar 3, 2026" style="padding:6px;width:110px"></div>
+              <button class="btn-admin" onclick="addInvoice('${admPaymentAccount}')">Add</button>
+            </div>
+          </div>
+        </div>`;
+      }
+    }
+  }
+  el.innerHTML=html;
+}
+
+let admUsersTab='bw_team';
+let admUsersClient=null;
+function renderAdmUsers(el){
+  let html=`<div class="topbar" style="margin-bottom:0"><h2>Manage Users</h2></div>
+    <div style="margin:16px 0;display:flex;gap:8px">
+      <button class="${admUsersTab==='bw_team'?'btn-admin':'btn-outline'}" onclick="admUsersTab='bw_team';renderMain()" style="padding:6px 14px;font-size:12px">BW Team Assignments</button>
+      <button class="${admUsersTab==='client_users'?'btn-admin':'btn-outline'}" onclick="admUsersTab='client_users';renderMain()" style="padding:6px 14px;font-size:12px">Client Account Users</button>
+    </div>`;
+
+  if(admUsersTab==='bw_team'){
+    // BW Team assignments across all clients
+    html+=`<div class="alert-row info" style="margin-bottom:16px">👥 Manage which BW employees are assigned to each client account.</div>`;
+
+    // Per-client assignment cards
+    const allClients=Object.keys(CLIENTS);
+    allClients.forEach(ck=>{
+      const d=CLIENTS[ck];
+      const owner=d.bwTeam.owner;
+      const viewers=d.bwTeam.viewers||[];
+      html+=`<div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div><h3 style="margin:0">${d.name}</h3><span style="font-size:12px;color:var(--muted)">${d.type} • ${d.package} • ${d.billing==='agency'?'Agency':'Direct'}</span></div>
+          <span class="tag blue">${1+viewers.length} assigned</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="padding:10px;background:var(--bg);border-radius:8px">
+            <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">Account Owner</div>
+            <div style="margin-bottom:8px"><strong>${owner.name}</strong></div>
+            <select onchange="CLIENTS['${ck}'].bwTeam.owner.name=this.options[this.selectedIndex].text;renderMain()" style="padding:5px;width:100%;font-size:12px;border:1px solid var(--border);border-radius:4px">
+              <option>${owner.name}</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name).map(e=>`<option>${e.name}</option>`).join('')}
+            </select>
+          </div>
+          <div style="padding:10px;background:var(--bg);border-radius:8px">
+            <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">Viewers (${viewers.length})</div>
+            ${viewers.map((v,idx)=>`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px"><span>${v.name}</span><button style="background:none;border:none;color:var(--red);cursor:pointer;font-size:10px;font-weight:600" onclick="CLIENTS['${ck}'].bwTeam.viewers.splice(${idx},1);renderMain()">Remove</button></div>`).join('')}
+            <div style="margin-top:6px;display:flex;gap:4px">
+              <select id="addViewer_${ck}" style="padding:4px;flex:1;font-size:11px;border:1px solid var(--border);border-radius:4px">
+                <option value="">Add...</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name&&!viewers.find(v=>v.name===e.name)).map(e=>`<option value="${e.name}">${e.name}</option>`).join('')}
+              </select>
+              <button class="btn-admin" onclick="var s=document.getElementById('addViewer_${ck}');var n=s.value;if(n){var emp=BW_EMPLOYEES.find(e=>e.name===n);if(emp)CLIENTS['${ck}'].bwTeam.viewers.push({name:emp.name,role:emp.title});renderMain()}" style="padding:4px 8px;font-size:10px">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    });
+  } else {
+    // Client account users
+    html+=`<div class="alert-row info" style="margin-bottom:16px">👤 Manage user accounts for each client.</div>`;
+    const allClientKeys=Object.keys(CLIENTS);
+    if(!admUsersClient) admUsersClient=allClientKeys[0];
+
+    html+=`<div style="margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap">`;
+    allClientKeys.forEach(ck=>{
+      html+=`<button class="${admUsersClient===ck?'btn-admin':'btn-outline'}" onclick="admUsersClient='${ck}';renderMain()" style="padding:6px 14px;font-size:12px">${CLIENTS[ck].name}</button>`;
+    });
+    html+=`</div>`;
+
+    const cd=CLIENTS[admUsersClient];
+    const team=cd.account.team;
+    html+=`<div class="card"><h3>${cd.name} — Users</h3>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+    team.forEach((u,idx)=>{
+      html+=`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td><td>${u.role==='Admin'?'—':`<button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${admUsersClient}'].account.team.splice(${idx},1);renderMain();showToast('User removed')">Remove</button>`}</td></tr>`;
+    });
+    html+=`</tbody></table>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+        <div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="admNewUserName" placeholder="Full name" style="padding:6px;width:140px"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="admNewUserEmail" placeholder="email@company.com" style="padding:6px;width:180px"></div>
+        <div><label style="font-size:11px;color:var(--muted);display:block">Role</label><select id="admNewUserRole" style="padding:6px"><option>Viewer</option><option>Admin</option></select></div>
+        <button class="btn-admin" onclick="var n=document.getElementById('admNewUserName').value.trim(),e=document.getElementById('admNewUserEmail').value.trim(),r=document.getElementById('admNewUserRole').value;if(!n||!e){showToast('Name and email required');return;}CLIENTS['${admUsersClient}'].account.team.push({name:n,email:e,role:r,status:'Invited'});document.getElementById('admNewUserName').value='';document.getElementById('admNewUserEmail').value='';renderMain();showToast(n+' added!')">Add User</button>
+      </div>
+    </div>`;
+
+    // Also show agency roster if there's an agency
+    html+=`<div class="card" style="margin-top:16px"><h3>Agency Team — ${AGENCY.name}</h3>
+      <div class="alert-row info" style="margin-bottom:12px">Agency team members are managed by the agency. Shown here for visibility.</div>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Status</th></tr></thead><tbody>`;
+    AGENCY.team.forEach(t=>{
+      html+=`<tr><td><strong>${t.name}</strong></td><td>${t.email}</td><td><span class="tag ${t.status==='Active'?'green':t.status==='Invited'?'orange':'red'}">${t.status}</span></td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+
+  el.innerHTML=html;
+}
+
+function renderAdmClientUsers(el,d,isAgency){
+  const clientKey=getAdmClientKey();
+  const cd=clientKey?CLIENTS[clientKey]:d;
+  if(!cd){el.innerHTML=`${admCtx()}<div class="card"><p>Select a client.</p></div>`;return;}
+
+  const team=cd.account?.team||[];
+  const bw=cd.bwTeam;
+  const agencyTeam=isAgency?(AGENCY.clientTeams[clientKey]||[]):[];
+
+  let html=`${admCtx()}
+    <div class="topbar"><h2>Users & Access — ${cd.name}</h2></div>`;
+
+  // Client Users
+  html+=`<div class="card" style="margin-bottom:16px"><h3>Client Users</h3>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+  team.forEach((u,idx)=>{
+    html+=`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td><td>${u.role==='Admin'?'—':`<button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${clientKey}'].account.team.splice(${idx},1);renderMain();showToast('User removed')">Remove</button>`}</td></tr>`;
+  });
+  html+=`</tbody></table>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="admCUName" placeholder="Full name" style="padding:6px;width:140px"></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="admCUEmail" placeholder="email@co.com" style="padding:6px;width:180px"></div>
+      <div><label style="font-size:11px;color:var(--muted);display:block">Role</label><select id="admCURole" style="padding:6px"><option>Viewer</option><option>Admin</option></select></div>
+      <button class="btn-admin" onclick="var n=document.getElementById('admCUName').value.trim(),e=document.getElementById('admCUEmail').value.trim(),r=document.getElementById('admCURole').value;if(!n||!e){showToast('Name and email required');return;}CLIENTS['${clientKey}'].account.team.push({name:n,email:e,role:r,status:'Invited'});document.getElementById('admCUName').value='';document.getElementById('admCUEmail').value='';renderMain();showToast(n+' added!')">Add User</button>
+    </div>
+  </div>`;
+
+  // BW Team Assignment
+  html+=`<div class="card" style="margin-bottom:16px"><h3>BossWallah Team</h3>`;
+  if(bw){
+    const owner=bw.owner;
+    const viewers=bw.viewers||[];
+    html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:12px;font-weight:600;margin-bottom:8px">Account Owner</div>
+        <div style="margin-bottom:8px"><strong>${owner.name}</strong></div>
+        <select onchange="CLIENTS['${clientKey}'].bwTeam.owner.name=this.options[this.selectedIndex].text;renderMain()" style="padding:6px;width:100%;border:1px solid var(--border);border-radius:4px">
+          <option>${owner.name}</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name).map(e=>`<option>${e.name}</option>`).join('')}
+        </select>
+      </div>
+      <div style="padding:12px;background:var(--bg);border-radius:8px">
+        <div style="font-size:12px;font-weight:600;margin-bottom:8px">Viewers (${viewers.length})</div>
+        <table style="width:100%"><tbody>${viewers.map((v,idx)=>`<tr><td style="font-size:13px">${v.name} <span style="color:var(--muted);font-size:11px">· ${v.role}</span></td><td style="text-align:right"><button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="CLIENTS['${clientKey}'].bwTeam.viewers.splice(${idx},1);renderMain()">Remove</button></td></tr>`).join('')}</tbody></table>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:6px">
+          <select id="addViewerSel_${clientKey}" style="padding:6px;flex:1;border:1px solid var(--border);border-radius:4px">
+            <option value="">Add viewer...</option>${BW_EMPLOYEES.filter(e=>e.name!==owner.name&&!viewers.find(v=>v.name===e.name)).map(e=>`<option value="${e.name}">${e.name}</option>`).join('')}
+          </select>
+          <button class="btn-admin" onclick="var s=document.getElementById('addViewerSel_${clientKey}');var n=s.value;if(n){var emp=BW_EMPLOYEES.find(e=>e.name===n);if(emp)CLIENTS['${clientKey}'].bwTeam.viewers.push({name:emp.name,role:emp.title});renderMain()}" style="padding:6px 12px;font-size:11px">Add</button>
+        </div>
+      </div>
+    </div>`;
+  }
+  html+=`</div>`;
+
+  // Agency Team (read-only) if this is an agency client
+  if(isAgency&&agencyTeam.length>0){
+    html+=`<div class="card"><h3>${AGENCY.name} Team</h3>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Agency team assignments are managed by the agency. Shown for visibility.</div>
+      <table><thead><tr><th>Name</th><th>Role</th><th>Permissions</th></tr></thead><tbody>`;
+    agencyTeam.forEach(m=>{
+      const isAdmin=m.access==='admin';
+      const isEdit=m.access==='edit';
+      const tagClass=isAdmin?'blue':isEdit?'green':'orange';
+      const tagLabel=isAdmin?'★ Client Admin':isEdit?'Editor':'Viewer';
+      const permText=isAdmin?'Can Preview & Publish':isEdit?'Can Edit Content':'View Only';
+      html+=`<tr><td><strong>${m.name}</strong></td><td><span class="tag ${tagClass}">${tagLabel}</span></td><td style="font-size:12px;color:var(--muted)">${permText}</td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+
+  el.innerHTML=html;
 }
 
 function recalcAgencyTotals(){
@@ -1833,7 +2773,7 @@ function renderAdmAgencyClients(el){
 }
 
 // ============ INIT ============
-buildClientSelect();renderNav();renderMain();
+buildRoleSelect();buildClientSelect();renderNav();renderMain();
 </script>
 </body>
 </html>
