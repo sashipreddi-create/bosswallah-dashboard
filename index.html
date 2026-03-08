@@ -729,8 +729,14 @@ function markUpdated(clientKey){
 
 function onAgencyClientSelectChange(){
   const v=document.getElementById('agencyClientSelect').value;
-  adminAgencyClient=v;
-  renderMain();
+  if(currentMode==='agency'){
+    agencyDrillClient=v;
+    currentSection='briefing';
+    renderNav();renderMain();
+  } else {
+    adminAgencyClient=v;
+    renderMain();
+  }
 }
 
 // ============ CLIENT SELECT DROPDOWN ============
@@ -739,20 +745,33 @@ function buildClientSelect(){
   const lbl=document.getElementById('switcherLabel');
   const agencySel=document.getElementById('agencyClientSelect');
   const agencyDiv=document.getElementById('agencyClientSwitcher');
-  
+
   if(currentMode==='client'){
     lbl.textContent='Client';
     sel.innerHTML=Object.keys(CLIENTS).map(k=>`<option value="${k}">${CLIENTS[k].name}</option>`).join('');
     sel.value=currentClient;
     agencyDiv.style.display='none';
+    document.getElementById('clientSwitcher').style.display='block';
+  } else if(currentMode==='agency'){
+    // Agency mode: show agency name as label, dropdown of agency's clients
+    lbl.textContent='Momentum Digital';
+    sel.style.display='none';
+    agencyDiv.style.display='block';
+    document.getElementById('agencyClientLabel').textContent='Client';
+    agencySel.innerHTML=AGENCY.agencyClients.map(ac=>`<option value="${ac.id}">${ac.name}</option>`).join('');
+    if(!agencyDrillClient) agencyDrillClient=AGENCY.agencyClients[0]?.id;
+    agencySel.value=agencyDrillClient||'';
+    document.getElementById('clientSwitcher').style.display='block';
   } else if(currentMode==='admin'){
+    sel.style.display='';
     lbl.textContent='Customer Account';
     sel.innerHTML=ADMIN_ACCOUNTS.map(a=>`<option value="${a.key}">${a.name}</option>`).join('');
     sel.value=adminClient;
-    
+
     // Show agency client sub-dropdown if this is an agency account
     if(adminClient.startsWith('agency')){
       agencyDiv.style.display='block';
+      document.getElementById('agencyClientLabel').textContent='Agency Client';
       agencySel.innerHTML=AGENCY.agencyClients.map(ac=>`<option value="${ac.id}">${ac.name}</option>`).join('');
       if(!adminAgencyClient) adminAgencyClient=AGENCY.agencyClients[0]?.id;
       agencySel.value=adminAgencyClient||'';
@@ -760,8 +779,11 @@ function buildClientSelect(){
       agencyDiv.style.display='none';
       adminAgencyClient=null;
     }
+    document.getElementById('clientSwitcher').style.display='block';
+  } else {
+    document.getElementById('clientSwitcher').style.display='none';
+    agencyDiv.style.display='none';
   }
-  document.getElementById('clientSwitcher').style.display=(currentMode==='client'||currentMode==='admin')?'block':'none';
 }
 function onClientSelectChange(){
   const v=document.getElementById('clientSelect').value;
@@ -801,27 +823,29 @@ const NAV={
     {id:'adm_briefing',icon:'✍️',label:'Update Briefing',group:'Dashboard Updates'},
     {id:'adm_content',icon:'🎬',label:'Update Content',group:'Dashboard Updates'},
     {id:'adm_metrics',icon:'📈',label:'Update Impact',group:'Dashboard Updates'},
-    {id:'adm_onboarding',icon:'🆕',label:'Onboard New Client',group:'Setup'},
+    {id:'adm_preview',icon:'👁️',label:'Preview Client View',group:'Dashboard Updates'},
+    {id:'adm_team',icon:'👥',label:'BW Team Assignment',group:'Account'},
     {id:'adm_billing',icon:'💳',label:'Billing & Payments',group:'Account'},
     {id:'adm_reports',icon:'📄',label:'Reports',group:'Account'},
-    {id:'adm_team',icon:'👥',label:'BW Team Assignment',group:'Account'},
-    {id:'adm_preview',icon:'👁️',label:'Preview Client View',group:'Account'},
+    {id:'adm_onboarding',icon:'🆕',label:'Onboard New Client',group:'Setup'},
   ],
   admin_agency:[
-    {id:'adm_agency_billing',icon:'💳',label:'Agency Billing',group:'Agency Account'},
-    {id:'adm_agency_clients',icon:'🏢',label:'Manage Clients',group:'Agency Account'},
-    {id:'adm_billing',icon:'💳',label:'All Account Billing',group:'Agency Account'},
-    {id:'adm_reports',icon:'📄',label:'Reports',group:'Agency Account'},
-    {id:'adm_agency_preview',icon:'👁️',label:'Preview Agency View',group:'Agency Account'},
+    {id:'adm_agency_billing',icon:'💳',label:'Agency Billing',group:'Dashboard Updates'},
+    {id:'adm_agency_clients',icon:'🏢',label:'Manage Clients',group:'Dashboard Updates'},
+    {id:'adm_agency_preview',icon:'👁️',label:'Preview Agency View',group:'Dashboard Updates'},
+    {id:'adm_billing',icon:'💳',label:'All Account Billing',group:'Account'},
+    {id:'adm_reports',icon:'📄',label:'Reports',group:'Account'},
   ],
 };
 
 function switchMode(mode){
-  currentMode=mode;agencyDrillClient=null;currentRole='viewer';
+  currentMode=mode;currentRole='viewer';
+  if(mode==='agency') agencyDrillClient=AGENCY.agencyClients[0]?.id||null;
+  else agencyDrillClient=null;
   document.querySelectorAll('#modeClient,#modeAgency,#modeAdmin').forEach(t=>{t.classList.remove('active','admin-active')});
   document.getElementById(mode==='client'?'modeClient':mode==='agency'?'modeAgency':'modeAdmin').classList.add(mode==='admin'?'admin-active':'active');
   document.getElementById('sidebar').classList.toggle('admin-mode',mode==='admin');
-  currentSection=mode==='client'?'briefing':mode==='agency'?'portfolio':'briefing';
+  currentSection='briefing';
   updateSidebarLogo();buildClientSelect();renderRoleTabs();renderNav();renderMain();
 }
 
@@ -836,7 +860,7 @@ function getNavItems(){
       return NAV.client.filter(i=>i.id!=='account');
     }
     if(currentRole==='owner'){
-      // BW Owner sees editor nav but no billing/onboarding
+      // BW Owner sees editor nav + preview, but no billing/onboarding/team
       const isAgency=adminClient.startsWith('agency');
       const base=NAV[isAgency?'admin_agency':'admin_client'];
       return base.filter(i=>!['adm_billing','adm_onboarding','adm_team'].includes(i.id));
@@ -845,11 +869,15 @@ function getNavItems(){
     return NAV[adminClient.startsWith('agency')?'admin_agency':'admin_client'];
   }
   if(currentMode==='agency'){
-    if(agencyDrillClient) return NAV.agency_drill;
+    // Agency always shows client view (selected via dropdown) plus agency-level items for owner
     if(currentRole==='viewer'){
-      return NAV.agency.filter(i=>['portfolio'].includes(i.id));
+      return NAV.agency_drill.filter(i=>!['messages'].includes(i.id));
     }
-    return NAV.agency;
+    // Owner sees client drill items + agency management
+    return [
+      ...NAV.agency_drill,
+      ...NAV.agency.filter(i=>!['portfolio'].includes(i.id)),
+    ];
   }
   // Client mode
   if(currentRole==='viewer'){
@@ -860,12 +888,7 @@ function getNavItems(){
 
 function renderNav(){
   let items=getNavItems();
-  let key='client'; // just for reference
   let html='',lastG='';
-  if(currentMode==='agency'&&agencyDrillClient){
-    const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
-    html+=`<div style="padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.1)"><a onclick="backToPortfolio()" style="cursor:pointer;color:rgba(255,255,255,.5);font-size:12px;display:flex;align-items:center;gap:6px">← Portfolio</a><div style="color:#fff;font-weight:600;font-size:14px;margin-top:6px">${cl?cl.name:''}</div><div style="font-size:11px;opacity:.5">${cl?cl.type:''}</div></div>`;
-  }
   items.forEach(i=>{if(i.group!==lastG){html+=`<div class="section-label">${i.group}</div>`;lastG=i.group;}
     html+=`<a data-section="${i.id}" class="${i.id===currentSection?'active':''}" onclick="navTo('${i.id}')"><span class="icon">${i.icon}</span>${i.label}</a>`;
   });
@@ -919,17 +942,29 @@ function renderMain(){
   }
   if(currentMode==='admin'){renderAdmin(main);return;}
   if(currentMode==='agency'){
-    if(agencyDrillClient){
-      const map={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
-      if(map[agencyDrillClient]){const d=CLIENTS[map[agencyDrillClient]];currentClient=map[agencyDrillClient];
-        switch(currentSection){case 'briefing':renderBriefing(main,d,true);break;case 'content':renderContent(main,d,true);break;case 'impact':renderImpact(main,d,true);break;case 'messages':renderMessages(main,d,true);break;case 'reports':renderReports(main,d,true);break;default:renderBriefing(main,d,true);}
-      } else {
-        const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
-        main.innerHTML=`<button class="btn-back" onclick="backToPortfolio()">← Portfolio</button><div class="topbar"><h2>${cl?.name||''}</h2></div><div class="card"><h3>Dashboard</h3><p style="color:var(--muted)">Full data available for GlowUp Beauty and DataForge AI in this prototype.</p></div>`;
+    const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+    if(!agencyDrillClient) agencyDrillClient=AGENCY.agencyClients[0]?.id;
+    const mapped=agMap[agencyDrillClient];
+    if(mapped&&CLIENTS[mapped]){
+      const d=CLIENTS[mapped];currentClient=mapped;
+      // Agency-level sections (owner only)
+      if(currentSection==='billing'){renderAgBilling(main);return;}
+      if(currentSection==='team'){renderAgTeam(main);return;}
+      if(currentSection==='settings'){renderAgSettings(main);return;}
+      // Client drill sections
+      switch(currentSection){
+        case 'briefing':renderBriefing(main,d);break;
+        case 'content':renderContent(main,d);break;
+        case 'impact':renderImpact(main,d);break;
+        case 'messages':renderMessages(main,d);break;
+        case 'reports':renderReports(main,d);break;
+        default:renderBriefing(main,d);
       }
-      return;
+    } else {
+      const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
+      main.innerHTML=`<div class="topbar"><h2>${cl?.name||''}</h2></div><div class="card"><h3>Dashboard</h3><p style="color:var(--muted)">Full data available for GlowUp Beauty and DataForge AI in this prototype.</p></div>`;
     }
-    renderAgency(main);return;
+    return;
   }
   const d=CLIENTS[currentClient];
   switch(currentSection){
