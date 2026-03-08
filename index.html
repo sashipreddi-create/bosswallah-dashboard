@@ -166,8 +166,10 @@ table tr:last-child td{border-bottom:none}
     <div class="view-tabs">
       <button class="view-tab active" onclick="switchMode('client')" id="modeClient">Client</button>
       <button class="view-tab" onclick="switchMode('agency')" id="modeAgency">Agency</button>
-      <button class="view-tab" onclick="switchMode('admin')" id="modeAdmin">Admin</button>
+      <button class="view-tab" onclick="switchMode('admin')" id="modeAdmin">BossWallah</button>
     </div>
+    <label style="margin-top:10px">View As</label>
+    <div class="view-tabs" id="roleTabs"></div>
   </div>
 </div>
 <div class="main" id="mainContent"></div>
@@ -619,6 +621,54 @@ function formatLocalTime(isoStr){
 let currentMode='client',currentClient='b2c',currentSection='briefing',agencyDrillClient=null,adminClient='b2c',adminAgencyClient=null,currentRole='viewer';
 let editingInvoiceIdx=null,editingActivityKey=null;
 let billingAccount='b2c';
+
+const ROLES={
+  client:[
+    {id:'viewer',label:'Viewer',desc:'Read-only dashboard access'},
+    {id:'owner',label:'Owner',desc:'Can edit, message, and manage account'},
+  ],
+  agency:[
+    {id:'viewer',label:'Viewer',desc:'Read-only access to assigned clients'},
+    {id:'owner',label:'Owner',desc:'Edits client dashboards, publishes updates'},
+  ],
+  admin:[
+    {id:'viewer',label:'Viewer',desc:'Read-only view of assigned clients'},
+    {id:'owner',label:'Owner',desc:'Edits dashboards, manages clients'},
+    {id:'admin',label:'Admin',desc:'Full access: billing, team, onboarding'},
+  ],
+};
+
+function getRolesForMode(mode){
+  if(mode==='admin') return ROLES.admin;
+  if(mode==='agency') return ROLES.agency;
+  return ROLES.client;
+}
+
+function switchRole(role){
+  currentRole=role;
+  // Reset section to a role-appropriate default
+  if(currentMode==='admin'){
+    if(role==='viewer') currentSection='briefing';
+    else if(role==='owner') currentSection='adm_briefing';
+    else currentSection='adm_briefing';
+  } else if(currentMode==='agency'){
+    currentSection='portfolio';
+  } else {
+    currentSection='briefing';
+  }
+  agencyDrillClient=null;
+  renderRoleTabs();renderNav();renderMain();
+}
+
+function renderRoleTabs(){
+  const roles=getRolesForMode(currentMode);
+  const isAdm=currentMode==='admin';
+  const html=roles.map(r=>{
+    const active=r.id===currentRole;
+    return `<button class="view-tab ${active?(isAdm?'admin-active':'active'):''}" onclick="switchRole('${r.id}')" title="${r.desc}">${r.label}</button>`;
+  }).join('');
+  document.getElementById('roleTabs').innerHTML=html;
+}
 let onboardingStep=1,onboardingData={};
 let commentThreads={};
 function initComments(){Object.keys(CLIENTS).forEach(k=>{commentThreads[k]={};if(CLIENTS[k].comments)Object.keys(CLIENTS[k].comments).forEach(s=>{commentThreads[k][s]=[...CLIENTS[k].comments[s]]})});}
@@ -716,7 +766,11 @@ function buildClientSelect(){
 function onClientSelectChange(){
   const v=document.getElementById('clientSelect').value;
   if(currentMode==='client'){currentClient=v;currentSection='briefing';}
-  else if(currentMode==='admin'){adminClient=v;currentSection='adm_briefing';}
+  else if(currentMode==='admin'){
+    adminClient=v;
+    if(currentRole==='viewer') currentSection='briefing';
+    else currentSection='adm_briefing';
+  }
   updateSidebarLogo();renderNav();renderMain();
 }
 
@@ -764,24 +818,49 @@ const NAV={
 
 function switchMode(mode){
   currentMode=mode;agencyDrillClient=null;currentRole='viewer';
-  document.querySelectorAll('.view-tab').forEach(t=>{t.classList.remove('active','admin-active')});
+  document.querySelectorAll('#modeClient,#modeAgency,#modeAdmin').forEach(t=>{t.classList.remove('active','admin-active')});
   document.getElementById(mode==='client'?'modeClient':mode==='agency'?'modeAgency':'modeAdmin').classList.add(mode==='admin'?'admin-active':'active');
   document.getElementById('sidebar').classList.toggle('admin-mode',mode==='admin');
-  currentSection=mode==='client'?'briefing':mode==='agency'?'portfolio':'adm_briefing';
-  updateSidebarLogo();buildClientSelect();renderNav();renderMain();
+  currentSection=mode==='client'?'briefing':mode==='agency'?'portfolio':'briefing';
+  updateSidebarLogo();buildClientSelect();renderRoleTabs();renderNav();renderMain();
 }
 
 function navTo(s){currentSection=s;previewSubTab=null;document.querySelectorAll('.sidebar nav a').forEach(a=>a.classList.remove('active'));document.querySelector(`[data-section="${s}"]`)?.classList.add('active');renderMain();}
 function drillIntoClient(cid){agencyDrillClient=cid;currentSection='briefing';renderNav();renderMain();}
 function backToPortfolio(){agencyDrillClient=null;currentSection='portfolio';renderNav();renderMain();}
 
+function getNavItems(){
+  if(currentMode==='admin'){
+    if(currentRole==='viewer'){
+      // BW Viewer sees read-only client dashboard
+      return NAV.client.filter(i=>i.id!=='account');
+    }
+    if(currentRole==='owner'){
+      // BW Owner sees editor nav but no billing/onboarding
+      const isAgency=adminClient.startsWith('agency');
+      const base=NAV[isAgency?'admin_agency':'admin_client'];
+      return base.filter(i=>!['adm_billing','adm_onboarding','adm_team'].includes(i.id));
+    }
+    // BW Admin sees everything
+    return NAV[adminClient.startsWith('agency')?'admin_agency':'admin_client'];
+  }
+  if(currentMode==='agency'){
+    if(agencyDrillClient) return NAV.agency_drill;
+    if(currentRole==='viewer'){
+      return NAV.agency.filter(i=>['portfolio'].includes(i.id));
+    }
+    return NAV.agency;
+  }
+  // Client mode
+  if(currentRole==='viewer'){
+    return NAV.client.filter(i=>!['messages','account'].includes(i.id));
+  }
+  return NAV.client;
+}
+
 function renderNav(){
-  let key,items;
-  if(currentMode==='admin'){key=adminClient.startsWith('agency')?'admin_agency':'admin_client';}
-  else if(currentMode==='agency'&&agencyDrillClient){key='agency_drill';}
-  else if(currentMode==='agency'){key='agency';}
-  else{key='client';}
-  items=NAV[key]||[];
+  let items=getNavItems();
+  let key='client'; // just for reference
   let html='',lastG='';
   if(currentMode==='agency'&&agencyDrillClient){
     const cl=AGENCY.agencyClients.find(c=>c.id===agencyDrillClient);
@@ -818,6 +897,26 @@ function sendC(sk,tid,ck){
 // ============ RENDER ============
 function renderMain(){
   const main=document.getElementById('mainContent');
+  if(currentMode==='admin'&&currentRole==='viewer'){
+    // BW Viewer: show read-only client dashboard
+    const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+    let clientKey=adminClient;
+    if(adminClient.startsWith('agency')){
+      const selId=adminAgencyClient||'glowup';
+      clientKey=agMap[selId]||'b2c';
+    }
+    const d=CLIENTS[clientKey];
+    if(!d){main.innerHTML='<div class="card"><p style="color:var(--muted)">Select a client to view their dashboard.</p></div>';return;}
+    const viewerBanner=`<div class="wl-banner" style="background:linear-gradient(135deg,var(--adm),#34495E)"><div><h3>Viewing as: ${d.name}</h3><p>BossWallah Viewer — Read-only</p></div></div>`;
+    switch(currentSection){
+      case 'briefing':renderBriefing(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
+      case 'content':renderContent(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
+      case 'impact':renderImpact(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
+      case 'reports':renderReports(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
+      default:renderBriefing(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
+    }
+    return;
+  }
   if(currentMode==='admin'){renderAdmin(main);return;}
   if(currentMode==='agency'){
     if(agencyDrillClient){
@@ -2041,7 +2140,7 @@ function renderAdmAgencyClients(el){
 }
 
 // ============ INIT ============
-buildClientSelect();renderNav();renderMain();
+buildClientSelect();renderRoleTabs();renderNav();renderMain();
 </script>
 </body>
 </html>
