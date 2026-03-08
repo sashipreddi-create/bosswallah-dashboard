@@ -743,13 +743,10 @@ function buildClientSelect(){
   const agencyDiv=document.getElementById('agencyClientSwitcher');
 
   if(currentMode==='client'){
-    lbl.textContent='Client';
-    // Only show direct-billed clients (not agency sub-clients)
-    const directClients=Object.keys(CLIENTS).filter(k=>CLIENTS[k].billing==='direct');
-    sel.innerHTML=directClients.map(k=>`<option value="${k}">${CLIENTS[k].name}</option>`).join('');
-    sel.style.display='';
-    if(!directClients.includes(currentClient)) currentClient=directClients[0]||'b2c';
-    sel.value=currentClient;
+    // Client sees just their name — no dropdown
+    const d=CLIENTS[currentClient];
+    lbl.textContent=d?d.name:'Client';
+    sel.style.display='none';
     agencyDiv.style.display='none';
     document.getElementById('clientSwitcher').style.display='block';
   } else if(currentMode==='agency'){
