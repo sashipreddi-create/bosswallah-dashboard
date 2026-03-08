@@ -649,14 +649,10 @@ function switchRole(role){
   // Reset section to a role-appropriate default
   if(currentMode==='admin'){
     if(role==='viewer') currentSection='briefing';
-    else if(role==='owner') currentSection='adm_briefing';
     else currentSection='adm_briefing';
-  } else if(currentMode==='agency'){
-    currentSection='portfolio';
   } else {
     currentSection='briefing';
   }
-  agencyDrillClient=null;
   renderRoleTabs();renderNav();renderMain();
 }
 
@@ -797,44 +793,43 @@ function onClientSelectChange(){
 }
 
 // ============ NAV ============
+// Consistent terminology: Briefing, Content, Impact | Messages, Reports | Team, Billing, Profile
 const NAV={
   client:[
-    {id:'briefing',icon:'📋',label:"This Week's Briefing",group:'Your Dashboard'},
-    {id:'content',icon:'🎬',label:'Content & Production',group:'Your Dashboard'},
-    {id:'impact',icon:'📈',label:'Business Impact',group:'Your Dashboard'},
+    {id:'briefing',icon:'📋',label:'Briefing',group:'Dashboard'},
+    {id:'content',icon:'🎬',label:'Content',group:'Dashboard'},
+    {id:'impact',icon:'📈',label:'Impact',group:'Dashboard'},
     {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
     {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
-    {id:'account',icon:'⚙️',label:'Account',group:'Settings'},
+    {id:'team',icon:'👥',label:'Team',group:'Account'},
+    {id:'billing',icon:'💳',label:'Billing',group:'Account'},
+    {id:'profile',icon:'⚙️',label:'Profile',group:'Account'},
   ],
   agency:[
-    {id:'portfolio',icon:'🏢',label:'Client Portfolio',group:'Agency'},
-    {id:'billing',icon:'💳',label:'Billing & Revenue',group:'Agency'},
-    {id:'team',icon:'👥',label:'Team & Access',group:'Agency'},
-    {id:'settings',icon:'⚙️',label:'Account',group:'Agency'},
-  ],
-  agency_drill:[
-    {id:'briefing',icon:'📋',label:"Briefing",group:'Client View'},
-    {id:'content',icon:'🎬',label:'Content',group:'Client View'},
-    {id:'impact',icon:'📈',label:'Impact',group:'Client View'},
-    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
-    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
+    {id:'billing',icon:'💳',label:'Billing',group:'Account'},
+    {id:'team',icon:'👥',label:'Team',group:'Account'},
+    {id:'profile',icon:'⚙️',label:'Profile',group:'Account'},
   ],
   admin_client:[
-    {id:'adm_briefing',icon:'✍️',label:'Update Briefing',group:'Dashboard Updates'},
-    {id:'adm_content',icon:'🎬',label:'Update Content',group:'Dashboard Updates'},
-    {id:'adm_metrics',icon:'📈',label:'Update Impact',group:'Dashboard Updates'},
-    {id:'adm_preview',icon:'👁️',label:'Preview Client View',group:'Dashboard Updates'},
-    {id:'adm_team',icon:'👥',label:'BW Team Assignment',group:'Account'},
-    {id:'adm_billing',icon:'💳',label:'Billing & Payments',group:'Account'},
-    {id:'adm_reports',icon:'📄',label:'Reports',group:'Account'},
+    {id:'adm_briefing',icon:'✍️',label:'Briefing',group:'Edit Dashboard'},
+    {id:'adm_content',icon:'🎬',label:'Content',group:'Edit Dashboard'},
+    {id:'adm_metrics',icon:'📈',label:'Impact',group:'Edit Dashboard'},
+    {id:'adm_preview',icon:'👁️',label:'Preview',group:'Edit Dashboard'},
+    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
+    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
+    {id:'adm_team',icon:'👥',label:'Team',group:'Account'},
+    {id:'adm_billing',icon:'💳',label:'Billing',group:'Account'},
+    {id:'profile',icon:'⚙️',label:'Profile',group:'Account'},
     {id:'adm_onboarding',icon:'🆕',label:'Onboard New Client',group:'Setup'},
   ],
   admin_agency:[
-    {id:'adm_agency_billing',icon:'💳',label:'Agency Billing',group:'Dashboard Updates'},
-    {id:'adm_agency_clients',icon:'🏢',label:'Manage Clients',group:'Dashboard Updates'},
-    {id:'adm_agency_preview',icon:'👁️',label:'Preview Agency View',group:'Dashboard Updates'},
-    {id:'adm_billing',icon:'💳',label:'All Account Billing',group:'Account'},
-    {id:'adm_reports',icon:'📄',label:'Reports',group:'Account'},
+    {id:'adm_agency_billing',icon:'💳',label:'Agency Billing',group:'Edit Dashboard'},
+    {id:'adm_agency_clients',icon:'🏢',label:'Manage Clients',group:'Edit Dashboard'},
+    {id:'adm_agency_preview',icon:'👁️',label:'Preview',group:'Edit Dashboard'},
+    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
+    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
+    {id:'adm_billing',icon:'💳',label:'Billing',group:'Account'},
+    {id:'profile',icon:'⚙️',label:'Profile',group:'Account'},
   ],
 };
 
@@ -854,34 +849,44 @@ function drillIntoClient(cid){agencyDrillClient=cid;currentSection='briefing';re
 function backToPortfolio(){agencyDrillClient=null;currentSection='portfolio';renderNav();renderMain();}
 
 function getNavItems(){
+  // Core dashboard items (same labels everywhere)
+  const dashItems=[
+    {id:'briefing',icon:'📋',label:'Briefing',group:'Dashboard'},
+    {id:'content',icon:'🎬',label:'Content',group:'Dashboard'},
+    {id:'impact',icon:'📈',label:'Impact',group:'Dashboard'},
+  ];
+  const commItems=[
+    {id:'messages',icon:'💬',label:'Messages',group:'Communication'},
+    {id:'reports',icon:'📄',label:'Reports',group:'Communication'},
+  ];
+  const profileItem={id:'profile',icon:'⚙️',label:'Profile',group:'Account'};
+
   if(currentMode==='admin'){
     if(currentRole==='viewer'){
-      // BW Viewer sees read-only client dashboard
-      return NAV.client.filter(i=>i.id!=='account');
+      // BW Viewer: read-only dashboard + reports + profile
+      return [...dashItems,...commItems,profileItem];
     }
     if(currentRole==='owner'){
-      // BW Owner sees editor nav + preview, but no billing/onboarding/team
+      // BW Owner: edit dashboard + preview + communication + profile (no billing/team/onboarding)
       const isAgency=adminClient.startsWith('agency');
       const base=NAV[isAgency?'admin_agency':'admin_client'];
       return base.filter(i=>!['adm_billing','adm_onboarding','adm_team'].includes(i.id));
     }
-    // BW Admin sees everything
+    // BW Admin: everything
     return NAV[adminClient.startsWith('agency')?'admin_agency':'admin_client'];
   }
   if(currentMode==='agency'){
-    // Agency always shows client view (selected via dropdown) plus agency-level items for owner
     if(currentRole==='viewer'){
-      return NAV.agency_drill.filter(i=>!['messages'].includes(i.id));
+      // Agency Viewer: dashboard + reports + profile
+      return [...dashItems,commItems[1],profileItem];
     }
-    // Owner sees client drill items + agency management
-    return [
-      ...NAV.agency_drill,
-      ...NAV.agency.filter(i=>!['portfolio'].includes(i.id)),
-    ];
+    // Agency Owner: dashboard + communication + account management
+    return [...dashItems,...commItems,...NAV.agency];
   }
   // Client mode
   if(currentRole==='viewer'){
-    return NAV.client.filter(i=>!['messages','account'].includes(i.id));
+    // Client Viewer: dashboard + reports + profile
+    return [...dashItems,commItems[1],profileItem];
   }
   return NAV.client;
 }
@@ -920,8 +925,11 @@ function sendC(sk,tid,ck){
 // ============ RENDER ============
 function renderMain(){
   const main=document.getElementById('mainContent');
+  // Profile is universal — works in any mode
+  if(currentSection==='profile'){renderProfile(main);return;}
+
   if(currentMode==='admin'&&currentRole==='viewer'){
-    // BW Viewer: show read-only client dashboard
+    // BW Viewer: read-only client dashboard
     const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
     let clientKey=adminClient;
     if(adminClient.startsWith('agency')){
@@ -930,11 +938,12 @@ function renderMain(){
     }
     const d=CLIENTS[clientKey];
     if(!d){main.innerHTML='<div class="card"><p style="color:var(--muted)">Select a client to view their dashboard.</p></div>';return;}
-    const viewerBanner=`<div class="wl-banner" style="background:linear-gradient(135deg,var(--adm),#34495E)"><div><h3>Viewing as: ${d.name}</h3><p>BossWallah Viewer — Read-only</p></div></div>`;
+    const viewerBanner=`<div class="wl-banner" style="background:linear-gradient(135deg,var(--adm),#34495E)"><div><h3>Viewing: ${d.name}</h3><p>Read-only</p></div></div>`;
     switch(currentSection){
       case 'briefing':renderBriefing(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
       case 'content':renderContent(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
       case 'impact':renderImpact(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
+      case 'messages':renderMessages(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
       case 'reports':renderReports(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
       default:renderBriefing(main,d);main.innerHTML=viewerBanner+main.innerHTML;break;
     }
@@ -950,8 +959,7 @@ function renderMain(){
       // Agency-level sections (owner only)
       if(currentSection==='billing'){renderAgBilling(main);return;}
       if(currentSection==='team'){renderAgTeam(main);return;}
-      if(currentSection==='settings'){renderAgSettings(main);return;}
-      // Client drill sections
+      // Client sections
       switch(currentSection){
         case 'briefing':renderBriefing(main,d);break;
         case 'content':renderContent(main,d);break;
@@ -966,11 +974,16 @@ function renderMain(){
     }
     return;
   }
+  // Client mode
   const d=CLIENTS[currentClient];
   switch(currentSection){
-    case 'briefing':renderBriefing(main,d);break;case 'content':renderContent(main,d);break;
+    case 'briefing':renderBriefing(main,d);break;
+    case 'content':renderContent(main,d);break;
     case 'impact':renderImpact(main,d);break;
-    case 'next':renderBriefing(main,d);break;case 'messages':renderMessages(main,d);break;case 'reports':renderReports(main,d);break;case 'account':renderAccount(main,d);break;
+    case 'messages':renderMessages(main,d);break;
+    case 'reports':renderReports(main,d);break;
+    case 'team':renderAccount(main,d);break;
+    case 'billing':renderClientBilling(main,d);break;
     default:renderBriefing(main,d);
   }
 }
@@ -1137,11 +1150,54 @@ function renderReports(el,d,drill){
 
 function renderAccount(el,d){
   const t=d.account.team;
-  el.innerHTML=`<div class="topbar"><h2>Account</h2></div>
-    <div class="grid-2"><div class="card"><h3>Organization</h3><table><tr><td style="width:40%"><strong>Company</strong></td><td>${d.name}</td></tr><tr><td><strong>Package</strong></td><td><span class="tag blue">${d.package}</span></td></tr><tr><td><strong>Admin</strong></td><td>${d.account.admin}</td></tr><tr><td><strong>Email</strong></td><td>${d.account.email}</td></tr></table></div>
-    <div class="card"><h3>Login</h3><div class="alert-row info" style="margin-bottom:12px">🔒 One login per org.</div><table><tr><td style="width:40%"><strong>Email</strong></td><td>${d.account.email}</td></tr><tr><td><strong>Password</strong></td><td>••••••••</td></tr></table><div style="margin-top:12px"><button class="btn-primary" onclick="openModal('passwordModal')">🔑 Change</button></div></div></div>
+  el.innerHTML=`<div class="topbar"><h2>Team</h2></div>
+    <div class="card" style="margin-bottom:16px"><h3>Organization</h3><table><tr><td style="width:40%"><strong>Company</strong></td><td>${d.name}</td></tr><tr><td><strong>Package</strong></td><td><span class="tag blue">${d.package}</span></td></tr><tr><td><strong>Admin</strong></td><td>${d.account.admin}</td></tr><tr><td><strong>Email</strong></td><td>${d.account.email}</td></tr></table></div>
     <div class="card"><h3>Team Members</h3><div class="alert-row info" style="margin-bottom:12px">Manage who can view this dashboard. The account admin has full access; viewers have read-only access.</div><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>${t.map((u,idx)=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td><span class="tag ${u.role==='Admin'?'blue':'green'}">${u.role}</span></td><td><span class="tag green">${u.status}</span></td><td>${u.role==='Admin'?'—':`<button style="background:none;border:none;color:var(--red);cursor:pointer;font-weight:600;font-size:11px" onclick="removeClientTeamMember(${idx})">Remove</button>`}</td></tr>`).join('')}</tbody></table>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:12px">+ Add Viewer</div><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><div><label style="font-size:11px;color:var(--muted);display:block">Name</label><input type="text" id="clientNewUserName" placeholder="Full name" style="padding:6px;width:150px"></div><div><label style="font-size:11px;color:var(--muted);display:block">Email</label><input type="text" id="clientNewUserEmail" placeholder="email@company.com" style="padding:6px;width:180px"></div><button class="btn-primary" onclick="addClientTeamMember()">Add Viewer</button></div></div></div>`;
+}
+
+function renderProfile(el){
+  // Universal profile page — same for every user type
+  let email='user@example.com',name='User';
+  if(currentMode==='client'){
+    const d=CLIENTS[currentClient];
+    if(d){email=d.account.email;name=d.account.admin;}
+  } else if(currentMode==='agency'){
+    email='sarah@momentumdigital.com';name='Sarah Chen';
+  } else {
+    email='sashi@bosswallah.com';name='Sashi Reddy';
+  }
+  el.innerHTML=`<div class="topbar"><h2>Profile</h2></div>
+    <div class="grid-2">
+      <div class="card"><h3>Your Info</h3>
+        <table><tr><td style="width:40%"><strong>Name</strong></td><td>${name}</td></tr>
+        <tr><td><strong>Email</strong></td><td>${email}</td></tr>
+        <tr><td><strong>Role</strong></td><td><span class="tag blue">${currentRole.charAt(0).toUpperCase()+currentRole.slice(1)}</span></td></tr></table>
+      </div>
+      <div class="card"><h3>Login Credentials</h3>
+        <div class="alert-row info" style="margin-bottom:12px">Update your password here.</div>
+        <table><tr><td style="width:40%"><strong>Email</strong></td><td>${email}</td></tr>
+        <tr><td><strong>Password</strong></td><td>••••••••</td></tr></table>
+        <div style="margin-top:12px"><button class="btn-primary" onclick="openModal('passwordModal')">Change Password</button></div>
+      </div>
+    </div>`;
+}
+
+function renderClientBilling(el,d){
+  const inv=d.invoices||[];
+  const totalCollected=inv.filter(x=>x.status==='Paid').reduce((s,x)=>s+parseInt(x.amount.replace(/[^0-9]/g,'')),0);
+  const outstanding=inv.filter(x=>x.status!=='Paid').length;
+  el.innerHTML=`<div class="topbar"><h2>Billing</h2></div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Monthly Fee</div><div class="kpi-value">${d.package}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Billing Type</div><div class="kpi-value">Direct</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Collected</div><div class="kpi-value">$${totalCollected.toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Payment Status</div><div class="kpi-value"><span class="tag ${outstanding?'orange':'green'}">${outstanding?outstanding+' Outstanding':'Current'}</span></div></div>
+    </div>
+    <div class="card"><h3>Invoice History</h3>
+      <table><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th>Paid Date</th></tr></thead>
+      <tbody>${inv.map(x=>`<tr><td><strong>${x.id}</strong></td><td>${x.date}</td><td>${x.amount}</td><td><span class="tag ${x.status==='Paid'?'green':x.status==='Overdue'?'red':'orange'}">${x.status}</span></td><td>${x.paidDate||'—'}</td></tr>`).join('')}</tbody></table>
+    </div>`;
 }
 function removeClientTeamMember(idx){
   const d=CLIENTS[currentClient];
@@ -1553,10 +1609,20 @@ function completeOnboarding(commitStr){
   showToast('Client onboarded!');
 }
 
+function getAdminClientData(){
+  const agMap={glowup:'b2c',dataforge:'b2b',freshbowl:'freshbowl',novapay:'novapay',petvibe:'petvibe',cloudhr:'cloudhr'};
+  if(adminClient.startsWith('agency')){
+    const selId=adminAgencyClient||'glowup';
+    return CLIENTS[agMap[selId]]||CLIENTS.b2c;
+  }
+  return CLIENTS[adminClient];
+}
+
 function renderAdmin(el){
-  // Universal admin sections (work regardless of which account is selected)
+  // Universal sections
   if(currentSection==='adm_billing'){renderAdmAllBilling(el);return;}
-  if(currentSection==='adm_reports'){renderAdmReports(el);return;}
+  if(currentSection==='reports'){const d=getAdminClientData();if(d)renderReports(el,d);return;}
+  if(currentSection==='messages'){const d=getAdminClientData();if(d)renderMessages(el,d);return;}
 
   if(adminClient.startsWith('agency')){
     switch(currentSection){
@@ -1574,7 +1640,6 @@ function renderAdmin(el){
           case 'adm_briefing':renderAdmBriefing(el,d);break;
           case 'adm_content':renderAdmContent(el,d);break;
           case 'adm_metrics':renderAdmMetrics(el,d);break;
-          case 'adm_next':renderAdmBriefing(el,d);break;
           case 'adm_team':renderAdmTeam(el,d);break;
           case 'adm_preview':renderAdmClientPreview(el,d);break;
           default:renderAdmBriefing(el,d);
